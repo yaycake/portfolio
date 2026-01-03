@@ -1,34 +1,90 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState, useEffect } from 'react'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [titleReveal, setTitleReveal] = useState(0)
+  const [descReveal, setDescReveal] = useState(0)
+  const [isTitleComplete, setIsTitleComplete] = useState(false)
+
+  const title = "Hi, I'm Grace Yang"
+  const description = "Cross-functional product designer who loves to use (+ design) (+ code). I work with humans and like to experiment, test, and build products for other humans."
+
+  // Easing function for organic feel
+  const easeOutCubic = (t: number): number => {
+    return 1 - Math.pow(1 - t, 3)
+  }
+
+  useEffect(() => {
+    // Smoothly reveal the title from top to bottom
+    const duration = 1800 // 1.8 seconds
+    const startTime = Date.now()
+
+    const animate = () => {
+      const elapsed = Date.now() - startTime
+      const rawProgress = Math.min(elapsed / duration, 1)
+      const easedProgress = easeOutCubic(rawProgress) * 100
+      
+      setTitleReveal(easedProgress)
+      
+      if (rawProgress < 1) {
+        requestAnimationFrame(animate)
+      } else {
+        setIsTitleComplete(true)
+      }
+    }
+
+    requestAnimationFrame(animate)
+  }, [])
+
+  useEffect(() => {
+    // Smoothly reveal the description after title is complete
+    if (!isTitleComplete) return
+
+    const duration = 2500 // 2.5 seconds
+    const startTime = Date.now()
+
+    const animate = () => {
+      const elapsed = Date.now() - startTime
+      const rawProgress = Math.min(elapsed / duration, 1)
+      const easedProgress = easeOutCubic(rawProgress) * 100
+      
+      setDescReveal(easedProgress)
+      
+      if (rawProgress < 1) {
+        requestAnimationFrame(animate)
+      }
+    }
+
+    requestAnimationFrame(animate)
+  }, [isTitleComplete])
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="landing-page">
+      <div className="content">
+        <h1 className="title">
+          <span 
+            className="reveal-text"
+            style={{ 
+              '--reveal-progress': `${titleReveal}%`
+            } as React.CSSProperties}
+          >
+            {title}
+          </span>
+        </h1>
+        {isTitleComplete && (
+          <p className="description">
+            <span 
+              className="reveal-text"
+              style={{ 
+                '--reveal-progress': `${descReveal}%`
+              } as React.CSSProperties}
+            >
+              {description}
+            </span>
+          </p>
+        )}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </div>
   )
 }
 
