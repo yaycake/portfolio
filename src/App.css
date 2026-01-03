@@ -248,29 +248,32 @@
   align-items: flex-start;
   position: relative;
   --reveal-edge: var(--reveal-progress);
-  --fade-distance: 25%;
+  --fade-distance: 30%;
+  --full-opaque-end: calc(var(--reveal-edge) + 15%);
   mask-image: linear-gradient(
     to bottom right,
     black 0%,
-    black calc(var(--reveal-edge) - var(--fade-distance)),
-    rgba(0, 0, 0, 0.9) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.9)),
-    rgba(0, 0, 0, 0.7) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.7)),
-    rgba(0, 0, 0, 0.5) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.5)),
-    rgba(0, 0, 0, 0.3) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.3)),
-    rgba(0, 0, 0, 0.1) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.1)),
-    transparent var(--reveal-edge),
+    black var(--full-opaque-end),
+    rgba(0, 0, 0, 0.95) calc(var(--full-opaque-end) + 3%),
+    rgba(0, 0, 0, 0.85) calc(var(--full-opaque-end) + 6%),
+    rgba(0, 0, 0, 0.7) calc(var(--full-opaque-end) + 10%),
+    rgba(0, 0, 0, 0.5) calc(var(--full-opaque-end) + 15%),
+    rgba(0, 0, 0, 0.3) calc(var(--full-opaque-end) + 20%),
+    rgba(0, 0, 0, 0.1) calc(var(--full-opaque-end) + 28%),
+    transparent calc(var(--full-opaque-end) + 40%),
     transparent 100%
   );
   -webkit-mask-image: linear-gradient(
     to bottom right,
     black 0%,
-    black calc(var(--reveal-edge) - var(--fade-distance)),
-    rgba(0, 0, 0, 0.9) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.9)),
-    rgba(0, 0, 0, 0.7) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.7)),
-    rgba(0, 0, 0, 0.5) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.5)),
-    rgba(0, 0, 0, 0.3) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.3)),
-    rgba(0, 0, 0, 0.1) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.1)),
-    transparent var(--reveal-edge),
+    black var(--full-opaque-end),
+    rgba(0, 0, 0, 0.95) calc(var(--full-opaque-end) + 3%),
+    rgba(0, 0, 0, 0.85) calc(var(--full-opaque-end) + 6%),
+    rgba(0, 0, 0, 0.7) calc(var(--full-opaque-end) + 10%),
+    rgba(0, 0, 0, 0.5) calc(var(--full-opaque-end) + 15%),
+    rgba(0, 0, 0, 0.3) calc(var(--full-opaque-end) + 20%),
+    rgba(0, 0, 0, 0.1) calc(var(--full-opaque-end) + 28%),
+    transparent calc(var(--full-opaque-end) + 40%),
     transparent 100%
   );
   will-change: mask-image, -webkit-mask-image;

@@ -379,8 +379,12 @@ function App() {
                 <div className="experiences-list">
                   {experiences.map((exp, index) => {
                     // Stagger each experience item
-                    const staggerDelay = index * 20
-                    const itemProgress = Math.max(0, Math.min(100, contentReveal - staggerDelay))
+                    const staggerDelay = index * 15
+                    const baseProgress = Math.max(0, contentReveal - staggerDelay)
+                    // Ensure items that have started revealing continue to 100% when contentReveal completes
+                    const itemProgress = contentReveal >= 100 && baseProgress > 0 
+                      ? 100 
+                      : Math.min(100, baseProgress)
                     
                     return (
                       <div 
