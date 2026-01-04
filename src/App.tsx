@@ -4,18 +4,14 @@ import './App.css'
 function App() {
   const [titleReveal, setTitleReveal] = useState(0)
   const [descReveal, setDescReveal] = useState(0)
-  const [headingReveal, setHeadingReveal] = useState(0)
-  const [buttonReveals, setButtonReveals] = useState([0, 0, 0])
+  const [buttonReveals, setButtonReveals] = useState([0, 0, 0, 0])
   const [isTitleComplete, setIsTitleComplete] = useState(false)
   const [isDescComplete, setIsDescComplete] = useState(false)
-  const [isHeadingComplete, setIsHeadingComplete] = useState(false)
   const [activeContent, setActiveContent] = useState<string[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [contentReveals, setContentReveals] = useState<Record<string, number>>({})
   const [clickedActions, setClickedActions] = useState<string[]>([])
-  const [bottomHeadingReveal, setBottomHeadingReveal] = useState(0)
   const [bottomButtonReveals, setBottomButtonReveals] = useState<number[]>([])
-  const [isBottomHeadingComplete, setIsBottomHeadingComplete] = useState(false)
 
   const title = "Hi, I'm Grace Yang"
   const description = "Cross-functional product designer who loves to vibe (+design) (+code). I work with humans and AI to experiment, test, and build products for other humans."
@@ -31,7 +27,7 @@ function App() {
       role: "Founding Designer",
       description: "Built an AI powered patent platform to disrupt intellectual property workflows.",
       company: "Patlytics",
-      duration: "15+ years"
+      duration: "2+ years"
     },
     {
       iconColor: '#a855f7', // purple
@@ -42,7 +38,7 @@ function App() {
       ),
       role: "Founding Designer",
       description: "Design a way to instantly live stream to troubleshoot and instantly find solutions.",
-      company: "Patlytics",
+      company: "Viewabo",
       duration: "1+ years"
     },
     {
@@ -55,8 +51,8 @@ function App() {
       ),
       role: "Digital Director",
       description: "Manage digital operations for STEAM education and camps (& during COVID!)",
-      company: "Patlytics",
-      duration: "15+ years"
+      company: "Skyrock",
+      duration: "1.5 + years"
     },
     {
       iconColor: '#f97316', // orange
@@ -68,8 +64,8 @@ function App() {
       ),
       role: "Design & Code",
       description: "Design & development for Ubisoft Shanghai, ORM Fertility, and more.",
-      company: "Patlytics",
-      duration: "10+ years"
+      company: "Freelance",
+      duration: "10 + years"
     }
   ]
 
@@ -142,7 +138,7 @@ function App() {
           <path d="M4 10.5L6 8.5M12 5.5L10 7.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
         </svg>
       ),
-      text: "Understand my working style"
+      text: "Understand what kind of designer I am"
     },
     {
       id: 'contact',
@@ -189,9 +185,7 @@ function App() {
     setClickedActions(prev => [...prev, actionId])
     
     // Reset bottom section states for re-animation
-    setBottomHeadingReveal(0)
     setBottomButtonReveals([])
-    setIsBottomHeadingComplete(false)
     
     setIsLoading(true)
     
@@ -272,32 +266,8 @@ function App() {
   }, [isTitleComplete])
 
   useEffect(() => {
-    // Smoothly reveal the heading first, after description is complete
+    // Cascade the buttons after description is complete
     if (!isDescComplete) return
-
-    const duration = 1500 // 1.5 seconds for heading
-    const startTime = Date.now()
-
-    const animate = () => {
-      const elapsed = Date.now() - startTime
-      const rawProgress = Math.min(elapsed / duration, 1)
-      const easedProgress = easeOutCubic(rawProgress) * 100
-      
-      setHeadingReveal(easedProgress)
-      
-      if (rawProgress < 1) {
-        requestAnimationFrame(animate)
-      } else {
-        setIsHeadingComplete(true)
-      }
-    }
-
-    requestAnimationFrame(animate)
-  }, [isDescComplete])
-
-  useEffect(() => {
-    // Cascade the buttons after heading is complete
-    if (!isHeadingComplete) return
 
     const buttonDuration = 1200 // 1.2 seconds per button
     const delayBetweenButtons = 300 // 0.3s delay between each button
@@ -330,71 +300,45 @@ function App() {
         requestAnimationFrame(animate)
       }, delay)
     })
-  }, [isHeadingComplete])
+  }, [isDescComplete])
 
   useEffect(() => {
-    // Animate bottom section when content is loaded and there are available actions
+    // Cascade bottom buttons when content is loaded and there are available actions
     if (activeContent.length === 0 || availableActions.length === 0 || isLoading) return
 
-    // Start with heading animation after a short delay
-    setTimeout(() => {
-      const headingDuration = 1500
-      const startTime = Date.now()
-
-      const animateHeading = () => {
-        const elapsed = Date.now() - startTime
-        const rawProgress = Math.min(elapsed / headingDuration, 1)
-        const easedProgress = easeOutCubic(rawProgress) * 100
-        
-        setBottomHeadingReveal(easedProgress)
-        
-        if (rawProgress < 1) {
-          requestAnimationFrame(animateHeading)
-        } else {
-          setIsBottomHeadingComplete(true)
-        }
-      }
-
-      requestAnimationFrame(animateHeading)
-    }, 500) // Small delay after content starts loading
-  }, [activeContent, availableActions.length, isLoading])
-
-  useEffect(() => {
-    // Cascade bottom buttons after heading is complete
-    // Exclude LinkedIn from bottom section (it only appears in initial section)
-    const bottomActions = availableActions.filter(action => action.id !== 'linkedin')
-    if (!isBottomHeadingComplete || bottomActions.length === 0) return
-
     // Initialize button reveals array
-    setBottomButtonReveals(new Array(bottomActions.length).fill(0))
+    setBottomButtonReveals(new Array(availableActions.length).fill(0))
 
     const buttonDuration = 1200
     const delayBetweenButtons = 300
 
-    bottomActions.forEach((_, index) => {
-      setTimeout(() => {
-        const startTime = Date.now()
-        
-        const animate = () => {
-          const elapsed = Date.now() - startTime
-          const rawProgress = Math.min(elapsed / buttonDuration, 1)
-          const easedProgress = easeOutCubic(rawProgress) * 100
+    // Small delay before starting bottom buttons animation
+    setTimeout(() => {
+      availableActions.forEach((_, index) => {
+        setTimeout(() => {
+          const startTime = Date.now()
           
-          setBottomButtonReveals(prev => {
-            const newReveals = [...prev]
-            newReveals[index] = easedProgress
-            return newReveals
-          })
-          
-          if (rawProgress < 1) {
-            requestAnimationFrame(animate)
+          const animate = () => {
+            const elapsed = Date.now() - startTime
+            const rawProgress = Math.min(elapsed / buttonDuration, 1)
+            const easedProgress = easeOutCubic(rawProgress) * 100
+            
+            setBottomButtonReveals(prev => {
+              const newReveals = [...prev]
+              newReveals[index] = easedProgress
+              return newReveals
+            })
+            
+            if (rawProgress < 1) {
+              requestAnimationFrame(animate)
+            }
           }
-        }
 
-        requestAnimationFrame(animate)
-      }, index * delayBetweenButtons)
-    })
-  }, [isBottomHeadingComplete, availableActions.length])
+          requestAnimationFrame(animate)
+        }, index * delayBetweenButtons)
+      })
+    }, 500) // Small delay after content starts loading
+  }, [activeContent, availableActions.length, isLoading])
 
   return (
     <div className="landing-page">
@@ -706,18 +650,7 @@ function App() {
         )}
         {isDescComplete && clickedActions.length === 0 && (
           <div className="suggested-actions">
-            <h2 className="actions-heading">
-              <span 
-                className="reveal-text"
-                style={{ 
-                  '--reveal-progress': `${headingReveal}%`
-                } as React.CSSProperties}
-              >
-                Would you like to:
-              </span>
-            </h2>
-            {isHeadingComplete && (
-              <div className="actions-list">
+            <div className="actions-list">
                 {suggestedActions.map((action, index) => {
                   // Only start LinkedIn animation after contact (index 2) has reached 50% progress
                   if (action.id === 'linkedin' && buttonReveals[2] < 50) {
@@ -763,24 +696,12 @@ function App() {
                   )
                 })}
               </div>
-            )}
           </div>
         )}
         {clickedActions.length > 0 && availableActions.length > 0 && activeContent.length > 0 && !isLoading && (
           <div className="suggested-actions-bottom">
-            <h2 className="actions-heading">
-              <span 
-                className="reveal-text"
-                style={{ 
-                  '--reveal-progress': `${bottomHeadingReveal}%`
-                } as React.CSSProperties}
-              >
-                Would you like to:
-              </span>
-            </h2>
-            {isBottomHeadingComplete && (
-              <div className="actions-list">
-                {availableActions.filter(action => action.id !== 'linkedin').map((action, index) => {
+            <div className="actions-list">
+                {availableActions.map((action, index) => {
                   if ('isLink' in action && action.isLink && 'href' in action && action.href) {
                     const linkAction = action as { id: string; icon: React.ReactElement; text: string; isLink: boolean; href: string }
                     return (
@@ -820,11 +741,10 @@ function App() {
                   )
                 })}
               </div>
-            )}
           </div>
         )}
       </div>
-    </div>
+      </div>
   )
 }
 
