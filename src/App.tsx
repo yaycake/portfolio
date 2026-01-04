@@ -12,6 +12,7 @@ function App() {
   const [contentReveals, setContentReveals] = useState<Record<string, number>>({})
   const [clickedActions, setClickedActions] = useState<string[]>([])
   const [bottomButtonReveals, setBottomButtonReveals] = useState<number[]>([])
+  const [selectedExperience, setSelectedExperience] = useState<number | null>(null)
 
   const title = "Hi, I'm Grace Yang"
   const description = "Cross-functional product designer who loves to vibe (+design) (+code). I work with humans and AI to experiment, test, and build products for other humans."
@@ -340,8 +341,157 @@ function App() {
     }, 500) // Small delay after content starts loading
   }, [activeContent, availableActions.length, isLoading])
 
+  // Handle ESC key to close overlay
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && selectedExperience !== null) {
+        setSelectedExperience(null)
+      }
+    }
+    window.addEventListener('keydown', handleEsc)
+    return () => window.removeEventListener('keydown', handleEsc)
+  }, [selectedExperience])
+
   return (
     <div className="landing-page">
+      {selectedExperience !== null && (
+        <div className="experience-overlay" onClick={() => setSelectedExperience(null)}>
+          <div className="overlay-content" onClick={(e) => e.stopPropagation()}>
+            <div className="overlay-navigation">
+              <button 
+                className="nav-link nav-back"
+                onClick={() => setSelectedExperience(null)}
+              >
+                Close
+              </button>
+              <div className="nav-group">
+                <button 
+                  className="nav-link"
+                  onClick={() => {
+                    const prevIndex = selectedExperience > 0 ? selectedExperience - 1 : experiences.length - 1
+                    setSelectedExperience(prevIndex)
+                  }}
+                >
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10 12L6 8L10 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  Previous
+                </button>
+                <button 
+                  className="nav-link"
+                  onClick={() => {
+                    const nextIndex = selectedExperience < experiences.length - 1 ? selectedExperience + 1 : 0
+                    setSelectedExperience(nextIndex)
+                  }}
+                >
+                  Next
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6 4L10 8L6 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+            
+            {selectedExperience === 0 && (
+              <div className="overlay-project">
+                <div className="overlay-header">
+                  <div className="overlay-header-left">
+                    <div 
+                      className="overlay-icon" 
+                      style={{ backgroundColor: experiences[0].iconColor }}
+                    >
+                      {experiences[0].icon}
+                    </div>
+                    <h1 className="overlay-title">{experiences[0].role}</h1>
+                  </div>
+                  <div className="overlay-header-right">
+                    <span className="overlay-company">@{experiences[0].company}</span>
+                    <span className="overlay-duration">{experiences[0].duration}</span>
+                  </div>
+                </div>
+                <p className="overlay-description">{experiences[0].description}</p>
+                
+                <div className="overlay-section">
+                  <h2 className="overlay-section-title">Role & Scope</h2>
+                  <p>Zero-to-one design lead for an AI-driven patent platform. I owned the loop: customer discovery → rapid prototyping → ship. Designed role-based, multi-stakeholder workflows; set patterns and decision gates; used generative AI to cut time-to-insight. My focus: keep complexity from becoming clutter—and make the hard parts feel obvious.</p>
+                </div>
+
+                <div className="overlay-section">
+                  <h2 className="overlay-section-title">Problem</h2>
+                  <p>Patent teams work across fragmented tools—legacy databases, spreadsheets, PDFs, and email—creating slow, expensive, and inconsistent workflows. Prior art search, claim mapping, and comparative analysis are manual and duplicative, with low reuse of knowledge. The result: long cycle times, high cost per search, uneven quality across teams, and limited confidence in decisions.</p>
+                </div>
+
+                <div className="overlay-section">
+                  <h2 className="overlay-section-title">Discovery</h2>
+                  
+                  <h3 className="overlay-subsection-title">Hypothesis</h3>
+                  <p>If generative AI handles the heavy lifting—search, synthesis, and first-pass comparisons—patent teams can spend their time where it counts: reasoning through evidence and quickly exploring, testing, and iterating on IP strategies. With guided, role-based flows and structured, explainable outputs (citations, controls, provenance), we should cut time-to-insight, improve consistency across stakeholders, and keep legal rigor intact while accelerating decision-making.</p>
+
+                  <h3 className="overlay-subsection-title">Stakeholders</h3>
+                  <ul className="overlay-list">
+                    <li>In-house counsel: manage portfolios, assess risk, and make defensible decisions under time pressure.</li>
+                    <li>Law firm partners/associates: monetize IP, standardize quality across matters, and reduce costly manual research.</li>
+                    <li>Corporate R&D/product teams: inform strategy and investment with fast, explainable insights tied to technical provenance.</li>
+                    <li>Patent analysts/search specialists: execute prior art and claim comparisons efficiently, with reusable, citeable outputs.</li>
+                    <li>Procurement/Operations (secondary): control cost, ensure consistency, and integrate workflows with existing tools.</li>
+                  </ul>
+
+                  <h3 className="overlay-subsection-title">Prototyping & methods</h3>
+                  <ul className="overlay-list">
+                    <li>Rapid, hypothesis-led prototyping in Figma to model search, analysis, and role-based flows; kept fidelity light to speed learning.</li>
+                    <li>Generative AI/LLM prototypes to test auto-draft search, synthesis, and first-pass comparisons; instrumented prompts and guardrails for explainability.</li>
+                    <li>Short feedback cycles with in-house counsel, firm attorneys, analysts, and R&D decision gates to pivot or deepen based on evidence.</li>
+                    <li>Feasibility spikes with Engineering on ingestion, semantic comparison, and performance; aligned constraints early to de-risk builds.</li>
+                    <li>Validation loops using real matters and edge cases; measured time-to-insight, reuse of outputs, and error rates to confirm direction.</li>
+                  </ul>
+                </div>
+
+                <div className="overlay-section">
+                  <h2 className="overlay-section-title">Design Craft</h2>
+                  
+                  <h3 className="overlay-subsection-title">Principles</h3>
+                  <ul className="overlay-list">
+                    <li>Reduce cognitive load without hiding necessary complexity.</li>
+                    <li>Keep provenance, citations, and explainability visible so outputs are trusted.</li>
+                    <li>Let users move fluidly from search → analysis → synthesis with minimal friction.</li>
+                    <li>Support fast scanning and deep dives; the UI should invite curiosity, not guesswork.</li>
+                  </ul>
+
+                  <h3 className="overlay-subsection-title">Systems & decisions</h3>
+                  <ul className="overlay-list">
+                    <li>Information architecture oriented around strategy, not keywords—role-based flows and decision gates.</li>
+                    <li>Interaction patterns that make comparisons legible (claim charts, overlap maps, side-by-sides).</li>
+                    <li>Clean hierarchy, spacing, and typography to keep complexity from becoming clutter.</li>
+                    <li>Structured, exportable outputs users can cite and reuse; guardrails to steer generative AI rather than accept black-box results.</li>
+                    <li>Lightweight design system: components tuned for multi-stakeholder workflows and zero-to-one iteration speed.</li>
+                  </ul>
+                </div>
+
+                <div className="overlay-section">
+                  <h2 className="overlay-section-title">Solution</h2>
+                  
+                  <h3 className="overlay-subsection-title">Learnings</h3>
+                  <ul className="overlay-list">
+                    <li>Generative AI shines at first-pass synthesis and comparison; humans should own framing, exceptions, and judgment.</li>
+                    <li>Explainability (citations, provenance, controls) is a feature, not a footer; trust increases when users can interrogate results.</li>
+                    <li>Prompt design is product design; guardrails and interaction patterns matter as much as models.</li>
+                    <li>Designing for reuse (structured outputs, exportability) compounds value across matters and teams. This is important for all stakeholders and how they collaborate within their team structures</li>
+                  </ul>
+
+                  <h3 className="overlay-subsection-title">Outcomes</h3>
+                  <ul className="overlay-list">
+                    <li>"You've returned the three hits that took from 15 - $20,000 in search companies to find... I don't know how these search companies are going to complete"</li>
+                    <li>"Clients are spending, you know, nine to $15,000 on that project alone. So if we can do it faster and cheaper with this tool, that's a huge win".</li>
+                    <li>"I think it really contextualizes it to show that this is the result you would get in 1/100th of the time that it normally takes to get us here"</li>
+                    <li>"You know, it can take tasks that typically take, you know, days or weeks, and you know, make it take one day."</li>
+                    <li>"Honestly, I'm looking at [ COMPETITOR ] as a competitor of yours... they say they do the same thing... I like your product better, it looks really well organized and it's a great UI".</li>
+                  </ul>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
       <div className="content">
         <h1 className="title">
           <span 
@@ -441,9 +591,10 @@ function App() {
                             <div 
                               key={index}
                               className="experience-item"
+                              onClick={() => setSelectedExperience(index)}
                             >
                               <div 
-                                className="experience-icon" 
+                                className={`experience-icon ${ensureComplete(iconProgress) >= 100 ? 'fully-revealed' : ''}`}
                                 style={{ 
                                   backgroundColor: exp.iconColor,
                                   '--reveal-progress': `${ensureComplete(iconProgress)}%`
