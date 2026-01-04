@@ -13,6 +13,7 @@ function App() {
   const [clickedActions, setClickedActions] = useState<string[]>([])
   const [bottomButtonReveals, setBottomButtonReveals] = useState<number[]>([])
   const [selectedExperience, setSelectedExperience] = useState<number | null>(null)
+  const [showMoreExperiences, setShowMoreExperiences] = useState(false)
 
   const title = "Hi, I'm Grace Yang"
   const description = "Cross-functional product designer who loves to vibe (+design) (+code). I work with humans and AI to experiment, test, and build products for other humans."
@@ -67,6 +68,42 @@ function App() {
       description: "Design & development for Ubisoft Shanghai, ORM Fertility, and more.",
       company: "Freelance",
       duration: "10 + years"
+    },
+    {
+      iconColor: '#3b82f6', // blue
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10 3L12 7L16 8L13 11L13.5 15L10 13L6.5 15L7 11L4 8L8 7L10 3Z" fill="white"/>
+        </svg>
+      ),
+      role: "Design Engineer",
+      description: "Design & development for ORM Fertility.",
+      company: "ORM Fertility",
+      duration: "3 months"
+    },
+    {
+      iconColor: '#8b5cf6', // violet
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10 3L12 7L16 8L13 11L13.5 15L10 13L6.5 15L7 11L4 8L8 7L10 3Z" fill="white"/>
+        </svg>
+      ),
+      role: "Mini Program Designer",
+      description: "Design & development for Ubisoft Shanghai.",
+      company: "Ubisoft Shanghai",
+      duration: "2 months"
+    },
+    {
+      iconColor: '#06b6d4', // cyan
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10 3L12 7L16 8L13 11L13.5 15L10 13L6.5 15L7 11L4 8L8 7L10 3Z" fill="white"/>
+        </svg>
+      ),
+      role: "Design Engineer",
+      description: "Design & development for A Pure Person.",
+      company: "A Pure Person",
+      duration: "2 months"
     }
   ]
 
@@ -643,7 +680,12 @@ function App() {
                         </span>
                       </p>
                       <div className="experiences-list">
-                        {experiences.map((exp, index) => {
+                        {(showMoreExperiences ? experiences : experiences.slice(0, 4)).map((exp, index) => {
+                          // If showing more experiences and this is one of the newly added items (index >= 4),
+                          // show immediately since content is already loaded
+                          const isNewItem = showMoreExperiences && index >= 4
+                          const shouldShowImmediately = isNewItem
+                          
                           // First item starts when subtitle is at 80% (subtitleProgress = 80)
                           // Subtitle reaches 80% when: (contentReveal - 80) * 5 = 80
                           // So: contentReveal = 80 + 16 = 96
@@ -655,12 +697,14 @@ function App() {
                           
                           // Calculate item progress with faster animation to fit in remaining range
                           const remainingRange = 100 - itemStartPoint
-                          const itemProgress = contentReveal >= itemStartPoint
+                          const itemProgress = shouldShowImmediately 
+                            ? 100 
+                            : contentReveal >= itemStartPoint
                             ? Math.min(100, ((contentReveal - itemStartPoint) / remainingRange) * 100)
                             : 0
                           
                           // Ensure items complete when contentReveal reaches 100%
-                          const finalProgress = contentReveal >= 100 && itemProgress > 0 
+                          const finalProgress = shouldShowImmediately || (contentReveal >= 100 && itemProgress > 0)
                             ? 100 
                             : itemProgress
                           
@@ -748,6 +792,14 @@ function App() {
                           )
                         })}
                       </div>
+                      {!showMoreExperiences && (
+                        <button 
+                          className="see-more-button"
+                          onClick={() => setShowMoreExperiences(true)}
+                        >
+                          See more
+                        </button>
+                      )}
                     </div>
                   </div>
                 )
