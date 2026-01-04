@@ -9,9 +9,9 @@ function App() {
   const [isTitleComplete, setIsTitleComplete] = useState(false)
   const [isDescComplete, setIsDescComplete] = useState(false)
   const [isHeadingComplete, setIsHeadingComplete] = useState(false)
-  const [activeContent, setActiveContent] = useState<string | null>(null)
+  const [activeContent, setActiveContent] = useState<string[]>([])
   const [isLoading, setIsLoading] = useState(false)
-  const [contentReveal, setContentReveal] = useState(0)
+  const [contentReveals, setContentReveals] = useState<Record<string, number>>({})
   const [clickedActions, setClickedActions] = useState<string[]>([])
   const [bottomHeadingReveal, setBottomHeadingReveal] = useState(0)
   const [bottomButtonReveals, setBottomButtonReveals] = useState<number[]>([])
@@ -73,6 +73,40 @@ function App() {
     }
   ]
 
+  const workingStyleTraits = [
+    {
+      icon: (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.5"/>
+          <path d="M12 1V4M12 20V23M23 12H20M4 12H1M19.07 4.93L17.66 6.34M6.34 17.66L4.93 19.07M19.07 19.07L17.66 17.66M6.34 6.34L4.93 4.93" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+        </svg>
+      ),
+      title: "Curious",
+      description: "Work is a form of play; together, we can solve an infinite number of puzzles."
+    },
+    {
+      icon: (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M21 15C21 15.5304 20.7893 16.0391 20.4142 16.4142C20.0391 16.7893 19.5304 17 19 17H7L3 21V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H19C19.5304 3 20.0391 3.21071 20.4142 3.58579C20.7893 3.96086 21 4.46957 21 5V15Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      ),
+      title: "Communicative",
+      description: "Transparency and trust facilitates efficient and fulfilling team work."
+    },
+    {
+      icon: (
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.5"/>
+          <circle cx="9" cy="10" r="1.5" fill="currentColor"/>
+          <circle cx="15" cy="10" r="1.5" fill="currentColor"/>
+          <path d="M8 14C8 14 9.5 16 12 16C14.5 16 16 14 16 14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+        </svg>
+      ),
+      title: "Cool as a Cucumber",
+      description: "Respect is a two-way street, and designing with empathy isn't just for the end-users."
+    }
+  ]
+
   const suggestedActions = [
     {
       id: 'experiences',
@@ -115,26 +149,27 @@ function App() {
   const availableActions = suggestedActions.filter(action => !clickedActions.includes(action.id))
 
   const handleActionClick = (actionId: string) => {
-    if (activeContent === actionId || clickedActions.includes(actionId)) return
+    // Prevent clicking the same action twice
+    if (activeContent.includes(actionId) || clickedActions.includes(actionId)) return
     
-    // Add to clicked actions
+    // Add to clicked actions (removes it from available actions list)
     setClickedActions(prev => [...prev, actionId])
     
-    // Reset bottom section states
+    // Reset bottom section states for re-animation
     setBottomHeadingReveal(0)
     setBottomButtonReveals([])
     setIsBottomHeadingComplete(false)
     
     setIsLoading(true)
-    setActiveContent(null)
-    setContentReveal(0)
     
     // Simulate loading delay
     setTimeout(() => {
       setIsLoading(false)
-      setActiveContent(actionId)
+      // Append to active content array - this allows multiple content blocks
+      // to be displayed in the order they were clicked (e.g., working-style before experiences)
+      setActiveContent(prev => [...prev, actionId])
       
-      // Start content reveal animation
+      // Start content reveal animation for this specific content
       const duration = 2000
       const startTime = Date.now()
       
@@ -143,7 +178,10 @@ function App() {
         const rawProgress = Math.min(elapsed / duration, 1)
         const easedProgress = easeOutCubic(rawProgress) * 100
         
-        setContentReveal(easedProgress)
+        setContentReveals(prev => ({
+          ...prev,
+          [actionId]: easedProgress
+        }))
         
         if (rawProgress < 1) {
           requestAnimationFrame(animate)
@@ -258,7 +296,7 @@ function App() {
 
   useEffect(() => {
     // Animate bottom section when content is loaded and there are available actions
-    if (!activeContent || availableActions.length === 0 || isLoading) return
+    if (activeContent.length === 0 || availableActions.length === 0 || isLoading) return
 
     // Start with heading animation after a short delay
     setTimeout(() => {
@@ -281,7 +319,7 @@ function App() {
 
       requestAnimationFrame(animateHeading)
     }, 500) // Small delay after content starts loading
-  }, [activeContent, availableActions.length, isLoading])
+  }, [activeContent.length, availableActions.length, isLoading])
 
   useEffect(() => {
     // Cascade bottom buttons after heading is complete
@@ -343,82 +381,138 @@ function App() {
             </span>
           </p>
         )}
-        {(isLoading || activeContent) && (
-          <div className="content-block">
-            {isLoading && (
-              <div className="loading-state">
-                <div className="loading-dots">
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                </div>
-              </div>
-            )}
-            {activeContent === 'experiences' && !isLoading && (
-              <div className="experiences-content">
-                <h2 className="content-title">
-                  <span 
-                    className="reveal-text"
-                    style={{ 
-                      '--reveal-progress': `${contentReveal}%`
-                    } as React.CSSProperties}
-                  >
-                    What have I helped build lately?
-                  </span>
-                </h2>
-                <p className="content-subtitle">
-                  <span 
-                    className="reveal-text"
-                    style={{ 
-                      '--reveal-progress': `${contentReveal}%`
-                    } as React.CSSProperties}
-                  >
-                    Here's a quick preview of my latest experiences:
-                  </span>
-                </p>
-                <div className="experiences-list">
-                  {experiences.map((exp, index) => {
-                    // Stagger each experience item
-                    const staggerDelay = index * 15
-                    const baseProgress = Math.max(0, contentReveal - staggerDelay)
-                    // Ensure items that have started revealing continue to 100% when contentReveal completes
-                    const itemProgress = contentReveal >= 100 && baseProgress > 0 
-                      ? 100 
-                      : Math.min(100, baseProgress)
-                    
-                    return (
-                      <div 
-                        key={index}
-                        className="experience-item"
-                        style={{ 
-                          '--reveal-progress': `${itemProgress}%`
-                        } as React.CSSProperties}
-                      >
-                        <div className="experience-icon" style={{ backgroundColor: exp.iconColor }}>
-                          {exp.icon}
-                        </div>
-                        <div className="experience-content">
-                          <div className="experience-main">
-                            <h3 className="experience-role">{exp.role}</h3>
-                            <p className="experience-description">{exp.description}</p>
-                          </div>
-                          <div className="experience-meta">
-                            <span className="experience-company">{exp.company}</span>
-                            <span className="experience-duration">
-                              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="7" cy="7" r="6" stroke="currentColor" strokeWidth="1.5"/>
-                                <path d="M7 4V7L9 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                              </svg>
-                              {exp.duration}
-                            </span>
-                          </div>
-                        </div>
+        {activeContent.map((contentId) => {
+              const contentReveal = contentReveals[contentId] || 0
+              
+              if (contentId === 'experiences') {
+                return (
+                  <div key={contentId} className="content-block">
+                    <div className="experiences-content">
+                      <h2 className="content-title">
+                        <span 
+                          className="reveal-text"
+                          style={{ 
+                            '--reveal-progress': `${contentReveal}%`
+                          } as React.CSSProperties}
+                        >
+                          What have I helped build lately?
+                        </span>
+                      </h2>
+                      <p className="content-subtitle">
+                        <span 
+                          className="reveal-text"
+                          style={{ 
+                            '--reveal-progress': `${contentReveal}%`
+                          } as React.CSSProperties}
+                        >
+                          Here's a quick preview of my latest experiences:
+                        </span>
+                      </p>
+                      <div className="experiences-list">
+                        {experiences.map((exp, index) => {
+                          // Stagger each experience item
+                          const staggerDelay = index * 15
+                          const baseProgress = Math.max(0, contentReveal - staggerDelay)
+                          // Ensure items that have started revealing continue to 100% when contentReveal completes
+                          const itemProgress = contentReveal >= 100 && baseProgress > 0 
+                            ? 100 
+                            : Math.min(100, baseProgress)
+                          
+                          return (
+                            <div 
+                              key={index}
+                              className="experience-item"
+                              style={{ 
+                                '--reveal-progress': `${itemProgress}%`
+                              } as React.CSSProperties}
+                            >
+                              <div className="experience-icon" style={{ backgroundColor: exp.iconColor }}>
+                                {exp.icon}
+                              </div>
+                              <div className="experience-content">
+                                <div className="experience-main">
+                                  <h3 className="experience-role">{exp.role}</h3>
+                                  <p className="experience-description">{exp.description}</p>
+                                </div>
+                                <div className="experience-meta">
+                                  <span className="experience-company">{exp.company}</span>
+                                  <span className="experience-duration">
+                                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                      <circle cx="7" cy="7" r="6" stroke="currentColor" strokeWidth="1.5"/>
+                                      <path d="M7 4V7L9 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                                    </svg>
+                                    {exp.duration}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          )
+                        })}
                       </div>
-                    )
-                  })}
-                </div>
+                    </div>
+                  </div>
+                )
+              }
+              
+              if (contentId === 'working-style') {
+                return (
+                  <div key={contentId} className="content-block">
+                    <div className="working-style-content">
+                      <h2 className="content-title">
+                        <span 
+                          className="reveal-text"
+                          style={{ 
+                            '--reveal-progress': `${contentReveal}%`
+                          } as React.CSSProperties}
+                        >
+                          What is it like to work with me?
+                        </span>
+                      </h2>
+                      <div className="working-style-list">
+                        {workingStyleTraits.map((trait, index) => {
+                          // Stagger each trait item
+                          const staggerDelay = index * 15
+                          const baseProgress = Math.max(0, contentReveal - staggerDelay)
+                          // Ensure items that have started revealing continue to 100% when contentReveal completes
+                          const itemProgress = contentReveal >= 100 && baseProgress > 0 
+                            ? 100 
+                            : Math.min(100, baseProgress)
+                          
+                          return (
+                            <div 
+                              key={index}
+                              className="working-style-item"
+                              style={{ 
+                                '--reveal-progress': `${itemProgress}%`
+                              } as React.CSSProperties}
+                            >
+                              <div className="working-style-icon">
+                                {trait.icon}
+                              </div>
+                              <div className="working-style-text">
+                                <h3 className="working-style-title">{trait.title}</h3>
+                                <p className="working-style-description">{trait.description}</p>
+                              </div>
+                            </div>
+                          )
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                )
+              }
+              
+              return null
+            })}
+        {isLoading && (
+          <div className="content-block">
+            <div className="loading-state">
+              <div className="loading-dots">
+                <span></span>
+                <span></span>
+                <span></span>
               </div>
-            )}
+            </div>
           </div>
         )}
         {isDescComplete && clickedActions.length === 0 && (
@@ -453,7 +547,7 @@ function App() {
             )}
           </div>
         )}
-        {clickedActions.length > 0 && availableActions.length > 0 && activeContent && !isLoading && (
+        {clickedActions.length > 0 && availableActions.length > 0 && activeContent.length > 0 && !isLoading && (
           <div className="suggested-actions-bottom">
             <h2 className="actions-heading">
               <span 
