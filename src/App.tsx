@@ -489,6 +489,106 @@ function App() {
                 </div>
               </div>
             )}
+
+            {selectedExperience === 1 && (
+              <div className="overlay-project">
+                <div className="overlay-header">
+                  <div className="overlay-header-left">
+                    <div 
+                      className="overlay-icon" 
+                      style={{ backgroundColor: experiences[1].iconColor }}
+                    >
+                      {experiences[1].icon}
+                    </div>
+                    <h1 className="overlay-title">{experiences[1].role}</h1>
+                  </div>
+                  <div className="overlay-header-right">
+                    <span className="overlay-company">@{experiences[1].company}</span>
+                    <span className="overlay-duration">{experiences[1].duration}</span>
+                  </div>
+                </div>
+                <p className="overlay-description">{experiences[1].description}</p>
+                
+                <div className="overlay-section">
+                  <h2 className="overlay-section-title">Role & Scope</h2>
+                  <p>Led end-to-end design for a real-time visual support platform and Zendesk integration. Shaped product strategy, defined the service blueprint, and built fast, reliable workflows for high-pressure support contexts. Partnered with engineering on WebRTC constraints, privacy-by-design guardrails, and low-bandwidth resiliency; collaborated with Sales/CS to align UX to measurable outcomes (resolution time, truck rolls, CSAT). Focus: turn messy field issues into clear, actionable evidence with minimal effort for non-technical users.</p>
+                </div>
+
+                <div className="overlay-section">
+                  <h2 className="overlay-section-title">Problem</h2>
+                  <p>Most support happens blind: text/email tickets, screenshots, and long back-and-forths. Agents can't see the issue, customers can't describe it, and resolution requires escalations or on-site visits. This drives slow ticket resolution, high operational cost, and frustrated customers—especially in hardware, home services, and field operations where context matters most.</p>
+                </div>
+
+                <div className="overlay-section">
+                  <h2 className="overlay-section-title">Discovery</h2>
+                  
+                  <h3 className="overlay-subsection-title">Hypothesis</h3>
+                  <p>If we make it one-tap to share live video—with consent, guidance, and lightweight capture—agents can diagnose in minutes instead of days. Structured evidence (annotated clips, device metadata, steps taken) should compress triage, improve first-contact resolution, and reduce unnecessary truck rolls while preserving user privacy.</p>
+
+                  <h3 className="overlay-subsection-title">Stakeholders</h3>
+                  <ul className="overlay-list">
+                    <li>Support agents and team leads: need fast, reliable context to resolve and standardize quality.</li>
+                    <li>Field technicians: require clear remote guidance and a record of work.</li>
+                    <li>End customers: want frictionless, safe, and private help on mobile.</li>
+                    <li>Customer Success/Ops: care about CSAT, cost per ticket, and playbook consistency.</li>
+                    <li>Security/Compliance (secondary): require consent flows, data retention controls, and auditability.</li>
+                  </ul>
+
+                  <h3 className="overlay-subsection-title">Prototyping & methods</h3>
+                  <ul className="overlay-list">
+                    <li>Figma flows simulating invite → join → capture → annotate → summarize; optimized for mobile first for the client's end-users.</li>
+                    <li>WebRTC feasibility spikes: bandwidth adaptation, reconnect strategies, backups to guided photo capture.</li>
+                    <li>Consent and privacy trials: explicit affordances, redaction, and opt-in data sharing.</li>
+                    <li>Rapid hallway tests with agents/customers; time-to-diagnosis and error-rate instrumentation.</li>
+                    <li>Service blueprinting across Support, CS, and Ops to align tooling and escalation paths.</li>
+                  </ul>
+                </div>
+
+                <div className="overlay-section">
+                  <h2 className="overlay-section-title">Design Craft</h2>
+                  
+                  <h3 className="overlay-subsection-title">Principles</h3>
+                  <ul className="overlay-list">
+                    <li>Prioritize speed and clarity under stress; reduce steps without sacrificing safety.</li>
+                    <li>Privacy-by-design: explicit consent, visible recording status, scoped data collection.</li>
+                    <li>Mobile-first accessibility: large tap targets, readable UI in varied lighting, assistive prompts.</li>
+                  </ul>
+
+                  <h3 className="overlay-subsection-title">Systems & decisions</h3>
+                  <ul className="overlay-list">
+                    <li>Invite mechanics: SMS/email deep links; no-app joins; device checks before session.</li>
+                    <li>Guided capture: checklists, on-screen arrows, auto-focus hints, and quick annotations.</li>
+                    <li>Case timeline: structured artifacts (clips, notes, parts) that travel across teams.</li>
+                    <li>Low-bandwidth modes: adaptive video quality, snapshot fallback, and resumable sessions.</li>
+                    <li>Lightweight design system tuned for field use—robust, legible, and forgiving.</li>
+                  </ul>
+                </div>
+
+                <div className="overlay-section">
+                  <h2 className="overlay-section-title">Solution</h2>
+                  <p>A streamlined, consent-forward visual support flow: agents send a secure link; customers join without installing an app, pass device checks, and share live video. The UI guides capture with overlays and prompts; agents annotate in real time, attach notes and parts, and generate a post-call summary. All artifacts land in a searchable case timeline that standardizes handoffs and accelerates repeat issues.</p>
+                </div>
+
+                <div className="overlay-section">
+                  <h2 className="overlay-section-title">Learnings</h2>
+                  <ul className="overlay-list">
+                    <li>Reliability beats bells and whistles: reconnect logic and guidance matter more than fancy tools.</li>
+                    <li>Consent is UX: clear status, control over what's shared, and easy exits increase trust.</li>
+                    <li>Design for constraints: glare, noise, shaky hands; the interface must compensate.</li>
+                    <li>Structured evidence unlocks scale: standardized artifacts improve routing, QA, and training.</li>
+                  </ul>
+                </div>
+
+                <div className="overlay-section">
+                  <h2 className="overlay-section-title">Outcomes</h2>
+                  <ul className="overlay-list">
+                    <li>"Viewabo is a great product to interact with customers. I would say it's a positive experience and makes my life and the customer's lives easier...I am able to directly see what the customer is seeing and can help better navigate through troubleshooting steps. Sometimes it is very hard to explain something clearly just using words, so having a way to view the eyes through the customer has been very helpful."</li>
+                    <li>"Overall, it takes out the guesswork on trying to figure out that the customer is trying to explain to us. We can literally see what there seeing in Realtime and not have to wait for emails to come in with pictures."</li>
+                    <li>"Has helped many inexperienced customer locate components and troubleshoot their PCs"</li>
+                  </ul>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}
