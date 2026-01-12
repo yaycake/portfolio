@@ -172,7 +172,7 @@ function App() {
           <path d="M8 4V3H3V13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
       ),
-      text: "Explore case studies"
+      text: "Explore work"
     },
     {
       id: 'working-style',
@@ -183,7 +183,7 @@ function App() {
           <path d="M4 10.5L6 8.5M12 5.5L10 7.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
         </svg>
       ),
-      text: "My Design Approach"
+      text: "View Design Approach"
     },
     {
       id: 'contact',
@@ -192,7 +192,7 @@ function App() {
           <path d="M3 6C3 4.89543 3.89543 4 5 4H11C12.1046 4 13 4.89543 13 6V10C13 11.1046 12.1046 12 11 12H7L4 14V12H5C3.89543 12 3 11.1046 3 10V6Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
       ),
-      text: "Contact"
+      text: "Contact Me"
     },
     {
       id: 'linkedin',
