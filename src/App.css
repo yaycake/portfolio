@@ -351,6 +351,7 @@ a.action-button:focus .action-arrow {
   background-color: #1a1a1a;
 }
 
+
 .experience-icon {
   width: 40px;
   height: 40px;
@@ -362,6 +363,7 @@ a.action-button:focus .action-arrow {
   position: relative;
   --reveal-edge: var(--reveal-progress);
   --fade-distance: 25%;
+  mix-blend-mode: screen;
   --full-opaque-end: calc(var(--reveal-edge) + var(--fade-distance));
   mask-image: linear-gradient(
     to bottom right,
@@ -392,6 +394,17 @@ a.action-button:focus .action-arrow {
     black 100%
   );
   will-change: mask-image, -webkit-mask-image;
+}
+
+.experience-icon svg {
+  width: 20px;
+  height: 20px;
+  mix-blend-mode: screen;
+}
+
+.experience-icon svg path {
+  fill: white !important;
+  stroke: white;
 }
 
 /* When fully revealed (100%), remove mask completely */
@@ -1088,7 +1101,6 @@ a.action-button:focus .action-arrow {
 
   .overlay-header-right {
     align-items: flex-start;
-  }
     border-bottom: 1px solid #1f1f1f;
     padding-right: 0;
     padding-bottom: 2rem;
