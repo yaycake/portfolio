@@ -22,6 +22,8 @@ import PaperPlaneTiltLine from './assets/icons/paperplanetilt-line.svg?react'
 import PaperPlaneTiltSolid from './assets/icons/paperplanetilt-solid.svg?react'
 import HandPeaceLine from './assets/icons/handpeace-line.svg?react'
 import HandPeaceSolid from './assets/icons/handpeace-solid.svg?react'
+import SparkleLine from './assets/icons/sparkle-line.svg?react'
+import SparkleSolid from './assets/icons/sparkle-solid.svg?react'
 
 function App() {
   const [titleReveal, setTitleReveal] = useState(0)
@@ -40,6 +42,7 @@ function App() {
   const [hoveredAction, setHoveredAction] = useState<string | null>(null)
   const [hoveredHowIWorkStep, setHoveredHowIWorkStep] = useState<number | null>(null)
   const [overlayContentReveal, setOverlayContentReveal] = useState(0)
+  const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0)
 
   const title = "Hi, I'm Grace Yang"
   const description = <>Cross-functional product designer combining design and code to craft AI-driven, user-friendly products.<br /><br />I prototype rapidly, validate with real users, and achieve measurable results—leading to increased engagement, streamlined workflows, and sleek interfaces.</>
@@ -145,6 +148,12 @@ function App() {
       text: "Contact Me"
     },
     {
+      id: 'impact',
+      icon: <SparkleLine width="16" height="16" fill="white" />,
+      iconFill: <SparkleSolid width="16" height="16" fill="white" />,
+      text: "My Impact"
+    },
+    {
       id: 'linkedin',
       icon: (
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -170,6 +179,22 @@ function App() {
     if (overlayContentReveal >= sectionEnd) return 100
     return ((overlayContentReveal - sectionStart) / (sectionEnd - sectionStart)) * 100
   }
+
+  // Testimonials data
+  const testimonials = [
+    {
+      text: "Her skill set, across research, design, and communication make her one of the one most complete product folks I've ever worked with and her ability to collaborate, think innovatively and speak her mind make her an invaluable asset to any team.",
+      author: "GTM Lead at Patlytics"
+    },
+    {
+      text: "Grace's ability to navigate and excel in a dynamic startup environment is truly impressive",
+      author: "CTO of Viewabo"
+    },
+    {
+      text: "Grace is a true creative spirit with strong ties to her community, friends and colleagues. Her dynamic personality and strong passion for her work have made her a strong asset",
+      author: "Marketing Director of BKB"
+    }
+  ]
 
   // Filter out clicked actions
   const availableActions = suggestedActions.filter(action => !clickedActions.includes(action.id))
@@ -1496,6 +1521,69 @@ function App() {
                           </button>
                         </div>
                       </form>
+                    </div>
+                  </div>
+                )
+              }
+
+              if (contentId === 'impact') {
+                return (
+                  <div key={contentId} className="content-block">
+                    <div className="impact-content">
+                      <h2 className="content-title">
+                        <span 
+                          className="reveal-text"
+                          style={{ 
+                            '--reveal-progress': `${contentReveal}%`
+                          } as React.CSSProperties}
+                        >
+                          My Impact
+                        </span>
+                      </h2>
+                      <div className="testimonial-carousel">
+                        <div className="testimonial-cards-wrapper">
+                          <button
+                            className="carousel-button prev"
+                            onClick={() => setCurrentTestimonialIndex((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1))}
+                            aria-label="Previous testimonial"
+                          >
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M10 12L6 8L10 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                            </svg>
+                          </button>
+                          {testimonials.map((testimonial, index) => (
+                            <div
+                              key={index}
+                              className={`testimonial-card ${index === currentTestimonialIndex ? 'active' : ''}`}
+                              style={{
+                                '--reveal-progress': `${contentReveal}%`
+                              } as React.CSSProperties}
+                            >
+                              <p className="testimonial-text">"{testimonial.text}"</p>
+                              <p className="testimonial-author">— {testimonial.author}</p>
+                            </div>
+                          ))}
+                          <button
+                            className="carousel-button next"
+                            onClick={() => setCurrentTestimonialIndex((prev) => (prev === testimonials.length - 1 ? 0 : prev + 1))}
+                            aria-label="Next testimonial"
+                          >
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M6 4L10 8L6 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                            </svg>
+                          </button>
+                        </div>
+                        <div className="carousel-indicators">
+                          {testimonials.map((_, index) => (
+                            <button
+                              key={index}
+                              className={`carousel-indicator ${index === currentTestimonialIndex ? 'active' : ''}`}
+                              onClick={() => setCurrentTestimonialIndex(index)}
+                              aria-label={`Go to testimonial ${index + 1}`}
+                            />
+                          ))}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 )
