@@ -113,6 +113,15 @@
   flex-shrink: 0;
 }
 
+.action-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.action-icon svg path {
+  fill: white !important;
+}
+
 .action-text {
   flex: 1;
   color: #d1d5db;
@@ -363,7 +372,6 @@ a.action-button:focus .action-arrow {
   position: relative;
   --reveal-edge: var(--reveal-progress);
   --fade-distance: 25%;
-  mix-blend-mode: screen;
   --full-opaque-end: calc(var(--reveal-edge) + var(--fade-distance));
   mask-image: linear-gradient(
     to bottom right,
@@ -399,12 +407,11 @@ a.action-button:focus .action-arrow {
 .experience-icon svg {
   width: 20px;
   height: 20px;
-  mix-blend-mode: screen;
+  mix-blend-mode: hard-light;
 }
 
 .experience-icon svg path {
-  fill: white !important;
-  stroke: white;
+  mix-blend-mode: hard-light;
 }
 
 /* When fully revealed (100%), remove mask completely */
@@ -1005,6 +1012,14 @@ a.action-button:focus .action-arrow {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+}
+
+.overlay-icon svg {
+  mix-blend-mode: hard-light;
+}
+
+.overlay-icon svg path {
+  mix-blend-mode: hard-light;
 }
 
 .overlay-title {

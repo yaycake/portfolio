@@ -14,6 +14,12 @@ import WechatLine from './assets/icons/wechat-line.svg?react'
 import WechatSolid from './assets/icons/wechat-solid.svg?react'
 import VinylLine from './assets/icons/vinyl-line.svg?react'
 import VinylSolid from './assets/icons/vinyl-solid.svg?react'
+import BriefcaseLine from './assets/icons/briefcase-line.svg?react'
+import BriefcaseSolid from './assets/icons/briefcase-solid.svg?react'
+import EyesLine from './assets/icons/eyes-line.svg?react'
+import EyesSolid from './assets/icons/eyes-solid.svg?react'
+import PaperPlaneTiltLine from './assets/icons/paperplanetilt-line.svg?react'
+import PaperPlaneTiltSolid from './assets/icons/paperplanetilt-solid.svg?react'
 
 function App() {
   const [titleReveal, setTitleReveal] = useState(0)
@@ -29,6 +35,7 @@ function App() {
   const [selectedExperience, setSelectedExperience] = useState<number | null>(null)
   const [showMoreExperiences, setShowMoreExperiences] = useState(false)
   const [hoveredExperience, setHoveredExperience] = useState<number | null>(null)
+  const [hoveredAction, setHoveredAction] = useState<string | null>(null)
 
   const title = "Hi, I'm Grace Yang"
   const description = <>Cross-functional product designer combining design and code to craft AI-driven, user-friendly products.<br /><br />I prototype rapidly, validate with real users, and achieve measurable results—leading to increased engagement, streamlined workflows, and sleek interfaces.</>
@@ -36,8 +43,8 @@ function App() {
   const experiences = [
     {
       iconColor: '#10b981', // green
-      icon: <FileMagnifyingGlassLine width="20" height="20" fill="white" />,
-      iconFill: <FileMagnifyingGlassSolid width="20" height="20" fill="white" />,
+      icon: (color: string) => <FileMagnifyingGlassLine width="20" height="20" fill={color} />,
+      iconFill: (color: string) => <FileMagnifyingGlassSolid width="20" height="20" fill={color} />,
       role: "Founding Designer",
       description: "Built an AI powered patent platform to disrupt intellectual property workflows.",
       company: "Patlytics",
@@ -45,8 +52,8 @@ function App() {
     },
     {
       iconColor: '#3b82f6', // blue
-      icon: <VideocamLine width="20" height="20" fill="white" />,
-      iconFill: <VideocamSolid width="20" height="20" fill="white" />,
+      icon: (color: string) => <VideocamLine width="20" height="20" fill={color} />,
+      iconFill: (color: string) => <VideocamSolid width="20" height="20" fill={color} />,
       role: "Founding Designer",
       description: "Design a way to instantly live stream to troubleshoot and instantly find solutions.",
       company: "Viewabo",
@@ -54,8 +61,8 @@ function App() {
     },
     {
       iconColor: '#ef4444', // red
-      icon: <AtomLine width="20" height="20" fill="white" />,
-      iconFill: <AtomSolid width="20" height="20" fill="white" />,
+      icon: (color: string) => <AtomLine width="20" height="20" fill={color} />,
+      iconFill: (color: string) => <AtomSolid width="20" height="20" fill={color} />,
       role: "Digital Director",
       description: "Manage digital operations for STEAM education and camps (& during COVID!)",
       company: "Skyrock",
@@ -63,8 +70,8 @@ function App() {
     },
     {
       iconColor: '#f97316', // orange
-      icon: <FramecornersLine width="20" height="20" fill="white" />,
-      iconFill: <FramecornersSolid width="20" height="20" fill="white" />,
+      icon: (color: string) => <FramecornersLine width="20" height="20" fill={color} />,
+      iconFill: (color: string) => <FramecornersSolid width="20" height="20" fill={color} />,
       role: "Design & Code",
       description: "Design & development for Ubisoft Shanghai, ORM Fertility, and more.",
       company: "Freelance",
@@ -72,8 +79,8 @@ function App() {
     },
     {
       iconColor: '#f472b6', // pink
-      icon: <BabyLine width="20" height="20" fill="white" />,
-      iconFill: <BabySolid width="20" height="20" fill="white" />,
+      icon: (color: string) => <BabyLine width="20" height="20" fill={color} />,
+      iconFill: (color: string) => <BabySolid width="20" height="20" fill={color} />,
       role: "Design Engineer",
       description: "Design & development for ORM Fertility.",
       company: "ORM Fertility",
@@ -81,8 +88,8 @@ function App() {
     },
     {
       iconColor: '#22c55e', // green
-      icon: <WechatLine width="20" height="20" fill="white" />,
-      iconFill: <WechatSolid width="20" height="20" fill="white" />,
+      icon: (color: string) => <WechatLine width="20" height="20" fill={color} />,
+      iconFill: (color: string) => <WechatSolid width="20" height="20" fill={color} />,
       role: "Mini Program Designer",
       description: "Design & development for Ubisoft Shanghai.",
       company: "Ubisoft Shanghai",
@@ -90,8 +97,8 @@ function App() {
     },
     {
       iconColor: '#06b6d4', // cyan
-      icon: <VinylLine width="20" height="20" fill="white" />,
-      iconFill: <VinylSolid width="20" height="20" fill="white" />,
+      icon: (color: string) => <VinylLine width="20" height="20" fill={color} />,
+      iconFill: (color: string) => <VinylSolid width="20" height="20" fill={color} />,
       role: "Design Engineer",
       description: "Design & development for A Pure Person.",
       company: "A Pure Person",
@@ -151,40 +158,27 @@ function App() {
   const suggestedActions = [
     {
       id: 'experiences',
-      icon: (
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M3 3H7L8 4H13V13H3V3Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M8 4V3H3V13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      ),
+      icon: <BriefcaseLine width="16" height="16" fill="white" />,
+      iconFill: <BriefcaseSolid width="16" height="16" fill="white" />,
       text: "Explore work"
     },
     {
       id: 'working-style',
-      icon: (
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M5.5 6.5C5.5 7.05228 5.94772 7.5 6.5 7.5C7.05228 7.5 7.5 7.05228 7.5 6.5C7.5 5.94772 7.05228 5.5 6.5 5.5C5.94772 5.5 5.5 5.94772 5.5 6.5Z" stroke="currentColor" strokeWidth="1.5"/>
-          <path d="M8.5 9.5C8.5 10.0523 8.94772 10.5 9.5 10.5C10.0523 10.5 10.5 10.0523 10.5 9.5C10.5 8.94772 10.0523 8.5 9.5 8.5C8.94772 8.5 8.5 8.94772 8.5 9.5Z" stroke="currentColor" strokeWidth="1.5"/>
-          <path d="M4 10.5L6 8.5M12 5.5L10 7.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-        </svg>
-      ),
-      text: "View Design Approach"
+      icon: <EyesLine width="16" height="16" fill="white" />,
+      iconFill: <EyesSolid width="16" height="16" fill="white" />,
+      text: "View design approach"
     },
     {
       id: 'contact',
-      icon: (
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M3 6C3 4.89543 3.89543 4 5 4H11C12.1046 4 13 4.89543 13 6V10C13 11.1046 12.1046 12 11 12H7L4 14V12H5C3.89543 12 3 11.1046 3 10V6Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      ),
+      icon: <PaperPlaneTiltLine width="16" height="16" fill="white" />,
+      iconFill: <PaperPlaneTiltSolid width="16" height="16" fill="white" />,
       text: "Contact Me"
     },
     {
       id: 'linkedin',
       icon: (
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M3 3H13V13H3V3Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M6 6V10M10 6V10M6 6H10M6 10H10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20.447 20.452H16.893V15.885C16.893 14.555 16.866 12.816 15.041 12.816C13.188 12.816 12.905 14.183 12.905 15.785V20.452H9.357V9H12.765V10.561H12.811C13.288 9.661 14.448 8.711 16.181 8.711C19.782 8.711 20.448 11.081 20.448 14.993V20.452H20.447ZM5.337 7.433C4.193 7.433 3.274 6.507 3.274 5.367C3.274 4.228 4.194 3.312 5.337 3.312C6.477 3.312 7.401 4.228 7.401 5.367C7.401 6.507 6.476 7.433 5.337 7.433ZM7.119 20.452H3.555V9H7.119V20.452ZM22.225 0H1.771C0.792 0 0 0.774 0 1.729V22.271C0 23.227 0.792 24 1.771 24H22.222C23.2 24 24 23.227 24 22.271V1.729C24 0.774 23.2 0 22.222 0H22.225Z" fill="white"/>
         </svg>
       ),
       text: "LinkedIn",
@@ -429,7 +423,7 @@ function App() {
                       className="overlay-icon" 
                       style={{ backgroundColor: experiences[0].iconColor }}
                     >
-                      {experiences[0].icon}
+                      {(experiences[0].icon as any)(experiences[0].iconColor)}
                     </div>
                     <h1 className="overlay-title">{experiences[0].role}</h1>
                   </div>
@@ -527,7 +521,7 @@ function App() {
                       className="overlay-icon" 
                       style={{ backgroundColor: experiences[1].iconColor }}
                     >
-                      {experiences[1].icon}
+                      {(experiences[1].icon as any)(experiences[1].iconColor)}
                     </div>
                     <h1 className="overlay-title">{experiences[1].role}</h1>
                   </div>
@@ -627,7 +621,7 @@ function App() {
                       className="overlay-icon" 
                       style={{ backgroundColor: experiences[4].iconColor }}
                     >
-                      {experiences[4].icon}
+                      {(experiences[4].icon as any)(experiences[4].iconColor)}
                     </div>
                     <h1 className="overlay-title">{experiences[4].role}</h1>
                   </div>
@@ -679,7 +673,7 @@ function App() {
                       className="overlay-icon" 
                       style={{ backgroundColor: experiences[5].iconColor }}
                     >
-                      {experiences[5].icon}
+                      {(experiences[5].icon as any)(experiences[5].iconColor)}
                     </div>
                     <h1 className="overlay-title">{experiences[5].role}</h1>
                   </div>
@@ -748,7 +742,7 @@ function App() {
                       className="overlay-icon" 
                       style={{ backgroundColor: experiences[6].iconColor }}
                     >
-                      {experiences[6].icon}
+                      {(experiences[6].icon as any)(experiences[6].iconColor)}
                     </div>
                     <h1 className="overlay-title">{experiences[6].role}</h1>
                   </div>
@@ -906,6 +900,8 @@ function App() {
                               key={index}
                               className="experience-item"
                               onClick={() => setSelectedExperience(index)}
+                              onMouseEnter={() => setHoveredExperience(index)}
+                              onMouseLeave={() => setHoveredExperience(null)}
                             >
                               <div 
                                 className={`experience-icon ${ensureComplete(iconProgress) >= 100 ? 'fully-revealed' : ''}`}
@@ -913,10 +909,10 @@ function App() {
                                   backgroundColor: exp.iconColor,
                                   '--reveal-progress': `${ensureComplete(iconProgress)}%`
                                 } as React.CSSProperties}
-                                onMouseEnter={() => setHoveredExperience(index)}
-                                onMouseLeave={() => setHoveredExperience(null)}
                               >
-                                {(hoveredExperience === index && (exp as any).iconFill) ? (exp as any).iconFill : exp.icon}
+                                {(hoveredExperience === index && (exp as any).iconFill) 
+                                  ? (exp as any).iconFill(exp.iconColor) 
+                                  : (exp as any).icon(exp.iconColor)}
                               </div>
                               <div className="experience-content">
                                 <div className="experience-main">
@@ -1254,11 +1250,17 @@ function App() {
                           e.preventDefault()
                           handleActionClick(action.id, linkAction.isLink, linkAction.href)
                         }}
+                        onMouseEnter={() => setHoveredAction(action.id)}
+                        onMouseLeave={() => setHoveredAction(null)}
                         style={{ 
                           '--reveal-progress': `${buttonReveals[index]}%`
                         } as React.CSSProperties}
                       >
-                        <span className="action-icon">{action.icon}</span>
+                        <span className="action-icon">
+                          {(hoveredAction === action.id && 'iconFill' in action && (action as any).iconFill) 
+                            ? (action as any).iconFill 
+                            : action.icon}
+                        </span>
                         <span className="action-text">{action.text}</span>
                         <span className="action-arrow">→</span>
                       </a>
@@ -1269,11 +1271,17 @@ function App() {
                       key={action.id}
                       className="action-button"
                       onClick={() => handleActionClick(action.id)}
+                      onMouseEnter={() => setHoveredAction(action.id)}
+                      onMouseLeave={() => setHoveredAction(null)}
                       style={{ 
                         '--reveal-progress': `${buttonReveals[index]}%`
                       } as React.CSSProperties}
                     >
-                      <span className="action-icon">{action.icon}</span>
+                      <span className="action-icon">
+                        {(hoveredAction === action.id && 'iconFill' in action && action.iconFill) 
+                          ? action.iconFill 
+                          : action.icon}
+                      </span>
                       <span className="action-text">{action.text}</span>
                       <span className="action-arrow">→</span>
                     </button>
@@ -1299,11 +1307,17 @@ function App() {
                           e.preventDefault()
                           handleActionClick(action.id, linkAction.isLink, linkAction.href)
                         }}
+                        onMouseEnter={() => setHoveredAction(action.id)}
+                        onMouseLeave={() => setHoveredAction(null)}
                         style={{ 
                           '--reveal-progress': `${bottomButtonReveals[index] || 0}%`
                         } as React.CSSProperties}
                       >
-                        <span className="action-icon">{action.icon}</span>
+                        <span className="action-icon">
+                          {(hoveredAction === action.id && 'iconFill' in action && (action as any).iconFill) 
+                            ? (action as any).iconFill 
+                            : action.icon}
+                        </span>
                         <span className="action-text">{action.text}</span>
                         <span className="action-arrow">→</span>
                       </a>
@@ -1314,11 +1328,17 @@ function App() {
                       key={action.id}
                       className="action-button"
                       onClick={() => handleActionClick(action.id)}
+                      onMouseEnter={() => setHoveredAction(action.id)}
+                      onMouseLeave={() => setHoveredAction(null)}
                       style={{ 
                         '--reveal-progress': `${bottomButtonReveals[index] || 0}%`
                       } as React.CSSProperties}
                     >
-                      <span className="action-icon">{action.icon}</span>
+                      <span className="action-icon">
+                        {(hoveredAction === action.id && 'iconFill' in action && action.iconFill) 
+                          ? action.iconFill 
+                          : action.icon}
+                      </span>
                       <span className="action-text">{action.text}</span>
                       <span className="action-arrow">→</span>
                     </button>
