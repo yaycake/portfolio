@@ -24,6 +24,7 @@ import HandPeaceLine from './assets/icons/handpeace-line.svg?react'
 import HandPeaceSolid from './assets/icons/handpeace-solid.svg?react'
 import SparkleLine from './assets/icons/sparkle-line.svg?react'
 import SparkleSolid from './assets/icons/sparkle-solid.svg?react'
+import CaretDownLine from './assets/icons/caretdown-line.svg?react'
 
 function App() {
   const [titleReveal, setTitleReveal] = useState(0)
@@ -43,6 +44,7 @@ function App() {
   const [hoveredHowIWorkStep, setHoveredHowIWorkStep] = useState<number | null>(null)
   const [overlayContentReveal, setOverlayContentReveal] = useState(0)
   const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const title = "Hi, I'm Grace Yang"
   const description = <>Cross-functional product designer combining design and code to craft AI-driven, user-friendly products.<br /><br />I prototype rapidly, validate with real users, and achieve measurable results—leading to increased engagement, streamlined workflows, and sleek interfaces.</>
@@ -385,8 +387,93 @@ function App() {
     return () => window.removeEventListener('keydown', handleEsc)
   }, [selectedExperience])
 
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement
+      if (isMenuOpen && !target.closest('.floating-menu')) {
+        setIsMenuOpen(false)
+      }
+    }
+
+    if (isMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside)
+      return () => document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [isMenuOpen])
+
+  // Menu items mapping
+  const menuItems = [
+    { id: 'experiences', label: 'Work' },
+    { id: 'working-style', label: 'Design Approach' },
+    { id: 'contact', label: 'Contact Me' },
+    { id: 'impact', label: 'My Impact' },
+    { id: 'linkedin', label: 'Visit LinkedIn', isLink: true, href: 'https://www.linkedin.com/in/ygrace/' }
+  ]
+
+  const handleMenuClick = (item: typeof menuItems[0]) => {
+    setIsMenuOpen(false)
+    
+    // If it's a link, just open it
+    if (item.isLink && item.href) {
+      handleActionClick(item.id, true, item.href)
+      return
+    }
+    
+    // Check if content is already loaded
+    if (activeContent.includes(item.id)) {
+      // Content is already loaded, scroll to it
+      setTimeout(() => {
+        const element = document.getElementById(`content-${item.id}`)
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }
+      }, 100) // Small delay to ensure menu closes first
+    } else {
+      // Content not loaded, load it and then scroll
+      handleActionClick(item.id)
+      // Wait for content to be added to DOM, then scroll
+      // Use a polling approach to wait for element to appear
+      const checkAndScroll = () => {
+        const element = document.getElementById(`content-${item.id}`)
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        } else {
+          // Check again after a short delay
+          setTimeout(checkAndScroll, 100)
+        }
+      }
+      // Start checking after loading animation begins
+      setTimeout(checkAndScroll, 300)
+    }
+  }
+
   return (
     <div className="landing-page">
+      {/* Floating Menu Button */}
+      <div className="floating-menu">
+        <button
+          className="menu-button"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          aria-label="Menu"
+          aria-expanded={isMenuOpen}
+        >
+          <CaretDownLine width="16" height="16" fill="white" />
+        </button>
+        {isMenuOpen && (
+          <div className="menu-dropdown">
+            {menuItems.map((item) => (
+              <button
+                key={item.id}
+                className="menu-item"
+                onClick={() => handleMenuClick(item)}
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
       {selectedExperience !== null && (
         <div 
           className="experience-overlay" 
@@ -1079,7 +1166,7 @@ function App() {
               
               if (contentId === 'experiences') {
                 return (
-                  <div key={contentId} className="content-block">
+                  <div key={contentId} id={`content-${contentId}`} className="content-block">
                     <div className="experiences-content">
                       <h2 className="content-title">
                         <span 
@@ -1347,7 +1434,7 @@ function App() {
                 ]
 
                 return (
-                  <div key={contentId} className="content-block">
+                  <div key={contentId} id={`content-${contentId}`} className="content-block">
                     <div className="working-style-content">
                       <h2 className="content-title">
                         <span
@@ -1453,7 +1540,7 @@ function App() {
               
               if (contentId === 'contact') {
                 return (
-                  <div key={contentId} className="content-block">
+                  <div key={contentId} id={`content-${contentId}`} className="content-block">
                     <div className="contact-content">
                       <h2 className="content-title">
                         <span 
@@ -1528,7 +1615,7 @@ function App() {
 
               if (contentId === 'impact') {
                 return (
-                  <div key={contentId} className="content-block">
+                  <div key={contentId} id={`content-${contentId}`} className="content-block">
                     <div className="impact-content">
                       <h2 className="content-title">
                         <span 
