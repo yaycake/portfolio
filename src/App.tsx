@@ -20,8 +20,8 @@ import EyesLine from './assets/icons/eyes-line.svg?react'
 import EyesSolid from './assets/icons/eyes-solid.svg?react'
 import PaperPlaneTiltLine from './assets/icons/paperplanetilt-line.svg?react'
 import PaperPlaneTiltSolid from './assets/icons/paperplanetilt-solid.svg?react'
-import SparkleLine from './assets/icons/sparkle-line.svg?react'
-import SparkleSolid from './assets/icons/sparkle-solid.svg?react'
+import HandPeaceLine from './assets/icons/handpeace-line.svg?react'
+import HandPeaceSolid from './assets/icons/handpeace-solid.svg?react'
 
 function App() {
   const [titleReveal, setTitleReveal] = useState(0)
@@ -111,37 +111,14 @@ function App() {
 
   const workingStyleTraits = [
     {
-      icon: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="6" y="8" width="12" height="8" rx="2" stroke="currentColor" strokeWidth="1.5"/>
-          <path d="M8 10H16M10 12H14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-          <path d="M12 8V6M12 16V18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-          <circle cx="9" cy="13" r="1" fill="currentColor"/>
-          <circle cx="15" cy="13" r="1" fill="currentColor"/>
-        </svg>
-      ),
       title: "Learning as Play",
       description: "Hypothesis-driven design at startup speed: customer discovery, lightweight experiments, clear decision gates. "
     },
     {
-      icon: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M21 15C21 15.5304 20.7893 16.0391 20.4142 16.4142C20.0391 16.7893 19.5304 17 19 17H7L3 21V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H19C19.5304 3 20.0391 3.21071 20.4142 3.58579C20.7893 3.96086 21 4.46957 21 5V15Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M12 8L14 11L18 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M12 4L14 6L12 8L10 6L12 4Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      ),
       title: "Speedy iteration, Prioritize Feedback",
       description: "Insight-driven iteration with short feedback cycles across multi-stakeholder ecosystems."
     },
     {
-      icon: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M3 3H21M3 7H21M3 11H21M3 15H21M3 19H21" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-          <path d="M5 2V22M19 2V22" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-          <path d="M8 1L10 3L8 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      ),
       title: "Strong visual design fundamentals",
       description: "Information architecture, interaction design, and clean hierarchy/spacing/typography keep complexity from becoming clutter."
     }
@@ -1260,8 +1237,8 @@ function App() {
               if (contentId === 'working-style') {
                 const howIWorkSteps = [
                   {
-                    iconLine: <SparkleLine width="20" height="20" />,
-                    iconFill: <SparkleSolid width="20" height="20" />,
+                    iconLine: <HandPeaceLine width="20" height="20" />,
+                    iconFill: <HandPeaceSolid width="20" height="20" />,
                     title: "How I work",
                     description: "Product design & development guidelines"
                   },
@@ -1347,7 +1324,7 @@ function App() {
                             '--reveal-progress': `${contentReveal}%`
                           } as React.CSSProperties}
                         >
-                          How I Work
+                          My Design Approach
                         </span>
                       </h2>
                       <p 
@@ -1412,9 +1389,11 @@ function App() {
                                 '--reveal-progress': `${finalProgress}%`
                               } as React.CSSProperties}
                             >
-                              <div className="working-style-icon">
-                                {trait.icon}
-                              </div>
+                              {'icon' in trait && (trait as any).icon && (
+                                <div className="working-style-icon">
+                                  {(trait as any).icon}
+                                </div>
+                              )}
                               <div className="working-style-text">
                                 <h3 className="working-style-title">{trait.title}</h3>
                                 <p className="working-style-description">{trait.description}</p>
