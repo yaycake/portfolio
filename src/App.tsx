@@ -1384,16 +1384,6 @@ function App() {
                         })}
                       </div>
 
-                      <h2 className="content-title" style={{ marginTop: '2rem' }}>
-                        <span
-                          className="reveal-text"
-                          style={{
-                            '--reveal-progress': `${contentReveal}%`
-                          } as React.CSSProperties}
-                        >
-                          What kind of designer am I?
-                        </span>
-                      </h2>
                       <div className="working-style-list">
                         {workingStyleTraits.map((trait, index) => {
                           // First item starts when title is at 80% (contentReveal = 80)
