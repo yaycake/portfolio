@@ -644,6 +644,7 @@ a.action-button:focus .action-arrow {
   gap: 0.75rem;
   padding: 1.25rem;
   border-radius: 0;
+  cursor: default;
   --reveal-edge: var(--reveal-progress);
   --fade-distance: 30%;
   --full-opaque-end: calc(var(--reveal-edge) + 15%);
@@ -699,6 +700,7 @@ a.action-button:focus .action-arrow {
   border-radius: 0.5rem;
   color: #ffffff;
   flex-shrink: 0;
+  transition: background-color 0.2s ease;
 }
 
 .how-i-work-icon svg {
@@ -706,10 +708,20 @@ a.action-button:focus .action-arrow {
   height: 1.25rem;
   fill: #ffffff;
   color: #ffffff;
+  transition: fill 0.2s ease;
 }
 
 .how-i-work-icon svg path {
   fill: #ffffff !important;
+  stroke: #ffffff;
+  transition: fill 0.2s ease;
+}
+
+/* On hover, keep icon white even with colored background */
+.how-i-work-item:hover .how-i-work-icon svg,
+.how-i-work-item:hover .how-i-work-icon svg path {
+  fill: #ffffff !important;
+  color: #ffffff;
   stroke: #ffffff;
 }
 
@@ -718,6 +730,7 @@ a.action-button:focus .action-arrow {
   flex-direction: column;
   gap: 0.375rem;
   text-align: left;
+  cursor: default;
 }
 
 .how-i-work-title {
@@ -725,12 +738,16 @@ a.action-button:focus .action-arrow {
   font-weight: 600;
   font-size: 0.9375rem;
   line-height: 1.4;
+  cursor: default;
+  user-select: none;
 }
 
 .how-i-work-description {
   color: #9ca3af;
   font-size: 0.875rem;
   line-height: 1.5;
+  cursor: default;
+  user-select: none;
 }
 
 .working-style-list {
