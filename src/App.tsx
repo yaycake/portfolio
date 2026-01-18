@@ -20,6 +20,8 @@ import EyesLine from './assets/icons/eyes-line.svg?react'
 import EyesSolid from './assets/icons/eyes-solid.svg?react'
 import PaperPlaneTiltLine from './assets/icons/paperplanetilt-line.svg?react'
 import PaperPlaneTiltSolid from './assets/icons/paperplanetilt-solid.svg?react'
+import HandPeaceLine from './assets/icons/handpeace-line.svg?react'
+import HandPeaceSolid from './assets/icons/handpeace-solid.svg?react'
 
 function App() {
   const [titleReveal, setTitleReveal] = useState(0)
@@ -36,6 +38,8 @@ function App() {
   const [showMoreExperiences, setShowMoreExperiences] = useState(false)
   const [hoveredExperience, setHoveredExperience] = useState<number | null>(null)
   const [hoveredAction, setHoveredAction] = useState<string | null>(null)
+  const [hoveredHowIWorkStep, setHoveredHowIWorkStep] = useState<number | null>(null)
+  const [overlayContentReveal, setOverlayContentReveal] = useState(0)
 
   const title = "Hi, I'm Grace Yang"
   const description = <>Cross-functional product designer combining design and code to craft AI-driven, user-friendly products.<br /><br />I prototype rapidly, validate with real users, and achieve measurable results—leading to increased engagement, streamlined workflows, and sleek interfaces.</>
@@ -108,50 +112,16 @@ function App() {
 
   const workingStyleTraits = [
     {
-      icon: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 4C10 4 8 6 8 8C8 10 10 12 12 12C14 12 16 10 16 8C16 6 14 4 12 4Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M12 12V20M8 16H16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-          <path d="M6 20H18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-        </svg>
-      ),
-      title: "Super IC",
-      description: "Senior Product Designer shipping zero-to-one (greenfield) products end-to-end as a founding/solo designer. I own product discovery, rapid prototyping, and delivery, tracing business outcomes back to early problem framing, first-principles decisions, and validation loops."
-    },
-    {
-      icon: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="6" y="8" width="12" height="8" rx="2" stroke="currentColor" strokeWidth="1.5"/>
-          <path d="M8 10H16M10 12H14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-          <path d="M12 8V6M12 16V18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-          <circle cx="9" cy="13" r="1" fill="currentColor"/>
-          <circle cx="15" cy="13" r="1" fill="currentColor"/>
-        </svg>
-      ),
       title: "Learning as Play",
-      description: "Hypothesis-driven design at startup speed: customer discovery, lightweight experiments, clear decision gates. New domains (B2B SaaS, AI-powered workflows) become fuel to simplify complex, multi-step processes—reducing time-to-value and de-risking builds."
+      description: "Hypothesis-driven design at startup speed: customer discovery, lightweight experiments, clear decision gates. "
     },
     {
-      icon: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M21 15C21 15.5304 20.7893 16.0391 20.4142 16.4142C20.0391 16.7893 19.5304 17 19 17H7L3 21V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H19C19.5304 3 20.0391 3.21071 20.4142 3.58579C20.7893 3.96086 21 4.46957 21 5V15Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M12 8L14 11L18 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M12 4L14 6L12 8L10 6L12 4Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      ),
       title: "Speedy iteration, Prioritize Feedback",
-      description: "Insight-driven iteration with short feedback cycles across multi-stakeholder ecosystems. I pivot when evidence changes, using prototypes (including generative AI/LLM prototypes) as truth-finding tools to save engineering effort and accelerate learning per hour."
+      description: "Insight-driven iteration with short feedback cycles across multi-stakeholder ecosystems."
     },
     {
-      icon: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M3 3H21M3 7H21M3 11H21M3 15H21M3 19H21" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-          <path d="M5 2V22M19 2V22" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-          <path d="M8 1L10 3L8 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      ),
       title: "Strong visual design fundamentals",
-      description: "Information architecture, interaction design, and clean hierarchy/spacing/typography keep complexity from becoming clutter. I align PM, Engineering, Sales, and Support around competing needs so platform experiences work across role-based users with different levels of sophistication."
+      description: "Information architecture, interaction design, and clean hierarchy/spacing/typography keep complexity from becoming clutter."
     }
   ]
 
@@ -190,6 +160,15 @@ function App() {
   // Easing function for organic feel
   const easeOutCubic = (t: number): number => {
     return 1 - Math.pow(1 - t, 3)
+  }
+
+  // Helper function to calculate overlay section reveal progress
+  const getOverlaySectionProgress = (sectionIndex: number, totalSections: number, descriptionProgress: number = 20) => {
+    const sectionStart = descriptionProgress + (sectionIndex * ((100 - descriptionProgress) / totalSections))
+    const sectionEnd = descriptionProgress + ((sectionIndex + 1) * ((100 - descriptionProgress) / totalSections))
+    if (overlayContentReveal < sectionStart) return 0
+    if (overlayContentReveal >= sectionEnd) return 100
+    return ((overlayContentReveal - sectionStart) / (sectionEnd - sectionStart)) * 100
   }
 
   // Filter out clicked actions
@@ -368,7 +347,13 @@ function App() {
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && selectedExperience !== null) {
-        setSelectedExperience(null)
+        if (document.startViewTransition) {
+          document.startViewTransition(() => {
+            setSelectedExperience(null)
+          })
+        } else {
+          setSelectedExperience(null)
+        }
       }
     }
     window.addEventListener('keydown', handleEsc)
@@ -378,12 +363,33 @@ function App() {
   return (
     <div className="landing-page">
       {selectedExperience !== null && (
-        <div className="experience-overlay" onClick={() => setSelectedExperience(null)}>
+        <div 
+          className="experience-overlay" 
+          onClick={() => {
+            if (document.startViewTransition) {
+              document.startViewTransition(() => {
+                setSelectedExperience(null)
+                setOverlayContentReveal(0)
+              })
+            } else {
+              setSelectedExperience(null)
+              setOverlayContentReveal(0)
+            }
+          }}
+        >
           <div className="overlay-content" onClick={(e) => e.stopPropagation()}>
             <div className="overlay-navigation">
               <button 
                 className="nav-link nav-back"
-                onClick={() => setSelectedExperience(null)}
+                onClick={() => {
+                  if (document.startViewTransition) {
+                    document.startViewTransition(() => {
+                      setSelectedExperience(null)
+                    })
+                  } else {
+                    setSelectedExperience(null)
+                  }
+                }}
               >
                 Close
               </button>
@@ -392,7 +398,13 @@ function App() {
                   className="nav-link"
                   onClick={() => {
                     const prevIndex = selectedExperience > 0 ? selectedExperience - 1 : experiences.length - 1
-                    setSelectedExperience(prevIndex)
+                    if (document.startViewTransition) {
+                      document.startViewTransition(() => {
+                        setSelectedExperience(prevIndex)
+                      })
+                    } else {
+                      setSelectedExperience(prevIndex)
+                    }
                   }}
                 >
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -404,7 +416,13 @@ function App() {
                   className="nav-link"
                   onClick={() => {
                     const nextIndex = selectedExperience < experiences.length - 1 ? selectedExperience + 1 : 0
-                    setSelectedExperience(nextIndex)
+                    if (document.startViewTransition) {
+                      document.startViewTransition(() => {
+                        setSelectedExperience(nextIndex)
+                      })
+                    } else {
+                      setSelectedExperience(nextIndex)
+                    }
                   }}
                 >
                   Next
@@ -417,7 +435,10 @@ function App() {
             
             {selectedExperience === 0 && (
               <div className="overlay-project">
-                <div className="overlay-header">
+                <div 
+                  className="overlay-header"
+                  style={{ viewTransitionName: `experience-header-0` } as React.CSSProperties}
+                >
                   <div className="overlay-header-left">
                     <div 
                       className="overlay-icon" 
@@ -425,26 +446,53 @@ function App() {
                     >
                       {(experiences[0].icon as any)(experiences[0].iconColor)}
                     </div>
-                    <h1 className="overlay-title">{experiences[0].role}</h1>
+                    <h1 
+                      className="overlay-title"
+                      style={{ viewTransitionName: `experience-title-0` } as React.CSSProperties}
+                    >
+                      {experiences[0].role}
+                    </h1>
                   </div>
                   <div className="overlay-header-right">
                     <span className="overlay-company">@{experiences[0].company}</span>
                     <span className="overlay-duration">{experiences[0].duration}</span>
                   </div>
                 </div>
-                <p className="overlay-description">{experiences[0].description}</p>
+                <p 
+                  className="overlay-description"
+                  style={{ 
+                    '--reveal-progress': `${Math.min(overlayContentReveal, 20)}%`
+                  } as React.CSSProperties}
+                >
+                  {experiences[0].description}
+                </p>
                 
-                <div className="overlay-section">
+                <div 
+                  className="overlay-section"
+                  style={{ 
+                    '--reveal-progress': `${getOverlaySectionProgress(0, 5)}%`
+                  } as React.CSSProperties}
+                >
                   <h2 className="overlay-section-title">Role & Scope</h2>
                   <p>Zero-to-one design lead for an AI-driven patent platform. I owned the loop: customer discovery → rapid prototyping → ship. Designed role-based, multi-stakeholder workflows; set patterns and decision gates; used generative AI to cut time-to-insight. My focus: keep complexity from becoming clutter—and make the hard parts feel obvious.</p>
                 </div>
 
-                <div className="overlay-section">
+                <div 
+                  className="overlay-section"
+                  style={{ 
+                    '--reveal-progress': `${getOverlaySectionProgress(1, 5)}%`
+                  } as React.CSSProperties}
+                >
                   <h2 className="overlay-section-title">Problem</h2>
                   <p>Patent teams work across fragmented tools—legacy databases, spreadsheets, PDFs, and email—creating slow, expensive, and inconsistent workflows. Prior art search, claim mapping, and comparative analysis are manual and duplicative, with low reuse of knowledge. The result: long cycle times, high cost per search, uneven quality across teams, and limited confidence in decisions.</p>
                 </div>
 
-                <div className="overlay-section">
+                <div 
+                  className="overlay-section"
+                  style={{ 
+                    '--reveal-progress': `${getOverlaySectionProgress(2, 5)}%`
+                  } as React.CSSProperties}
+                >
                   <h2 className="overlay-section-title">Discovery</h2>
                   
                   <h3 className="overlay-subsection-title">Hypothesis</h3>
@@ -515,7 +563,10 @@ function App() {
 
             {selectedExperience === 1 && (
               <div className="overlay-project">
-                <div className="overlay-header">
+                <div 
+                  className="overlay-header"
+                  style={{ viewTransitionName: `experience-header-1` } as React.CSSProperties}
+                >
                   <div className="overlay-header-left">
                     <div 
                       className="overlay-icon" 
@@ -523,26 +574,53 @@ function App() {
                     >
                       {(experiences[1].icon as any)(experiences[1].iconColor)}
                     </div>
-                    <h1 className="overlay-title">{experiences[1].role}</h1>
+                    <h1 
+                      className="overlay-title"
+                      style={{ viewTransitionName: `experience-title-1` } as React.CSSProperties}
+                    >
+                      {experiences[1].role}
+                    </h1>
                   </div>
                   <div className="overlay-header-right">
                     <span className="overlay-company">@{experiences[1].company}</span>
                     <span className="overlay-duration">{experiences[1].duration}</span>
                   </div>
                 </div>
-                <p className="overlay-description">{experiences[1].description}</p>
+                <p 
+                  className="overlay-description"
+                  style={{ 
+                    '--reveal-progress': `${Math.min(overlayContentReveal, 20)}%`
+                  } as React.CSSProperties}
+                >
+                  {experiences[1].description}
+                </p>
                 
-                <div className="overlay-section">
+                <div 
+                  className="overlay-section"
+                  style={{ 
+                    '--reveal-progress': `${getOverlaySectionProgress(0, 5)}%`
+                  } as React.CSSProperties}
+                >
                   <h2 className="overlay-section-title">Role & Scope</h2>
                   <p>Led end-to-end design for a real-time visual support platform and Zendesk integration. Shaped product strategy, defined the service blueprint, and built fast, reliable workflows for high-pressure support contexts. Partnered with engineering on WebRTC constraints, privacy-by-design guardrails, and low-bandwidth resiliency; collaborated with Sales/CS to align UX to measurable outcomes (resolution time, truck rolls, CSAT). Focus: turn messy field issues into clear, actionable evidence with minimal effort for non-technical users.</p>
                 </div>
 
-                <div className="overlay-section">
+                <div 
+                  className="overlay-section"
+                  style={{ 
+                    '--reveal-progress': `${getOverlaySectionProgress(1, 5)}%`
+                  } as React.CSSProperties}
+                >
                   <h2 className="overlay-section-title">Problem</h2>
                   <p>Most support happens blind: text/email tickets, screenshots, and long back-and-forths. Agents can't see the issue, customers can't describe it, and resolution requires escalations or on-site visits. This drives slow ticket resolution, high operational cost, and frustrated customers—especially in hardware, home services, and field operations where context matters most.</p>
                 </div>
 
-                <div className="overlay-section">
+                <div 
+                  className="overlay-section"
+                  style={{ 
+                    '--reveal-progress': `${getOverlaySectionProgress(2, 5)}%`
+                  } as React.CSSProperties}
+                >
                   <h2 className="overlay-section-title">Discovery</h2>
                   
                   <h3 className="overlay-subsection-title">Hypothesis</h3>
@@ -567,7 +645,12 @@ function App() {
                   </ul>
                 </div>
 
-                <div className="overlay-section">
+                <div 
+                  className="overlay-section"
+                  style={{ 
+                    '--reveal-progress': `${getOverlaySectionProgress(3, 5)}%`
+                  } as React.CSSProperties}
+                >
                   <h2 className="overlay-section-title">Design Craft</h2>
                   
                   <h3 className="overlay-subsection-title">Principles</h3>
@@ -587,12 +670,22 @@ function App() {
                   </ul>
                 </div>
 
-                <div className="overlay-section">
+                <div 
+                  className="overlay-section"
+                  style={{ 
+                    '--reveal-progress': `${getOverlaySectionProgress(4, 7)}%`
+                  } as React.CSSProperties}
+                >
                   <h2 className="overlay-section-title">Solution</h2>
                   <p>A streamlined, consent-forward visual support flow: agents send a secure link; customers join without installing an app, pass device checks, and share live video. The UI guides capture with overlays and prompts; agents annotate in real time, attach notes and parts, and generate a post-call summary. All artifacts land in a searchable case timeline that standardizes handoffs and accelerates repeat issues.</p>
                 </div>
 
-                <div className="overlay-section">
+                <div 
+                  className="overlay-section"
+                  style={{ 
+                    '--reveal-progress': `${getOverlaySectionProgress(5, 7)}%`
+                  } as React.CSSProperties}
+                >
                   <h2 className="overlay-section-title">Learnings</h2>
                   <ul className="overlay-list">
                     <li>Reliability beats bells and whistles: reconnect logic and guidance matter more than fancy tools.</li>
@@ -602,7 +695,12 @@ function App() {
                   </ul>
                 </div>
 
-                <div className="overlay-section">
+                <div 
+                  className="overlay-section"
+                  style={{ 
+                    '--reveal-progress': `${getOverlaySectionProgress(6, 7)}%`
+                  } as React.CSSProperties}
+                >
                   <h2 className="overlay-section-title">Outcomes</h2>
                   <ul className="overlay-list">
                     <li>"Viewabo is a great product to interact with customers. I would say it's a positive experience and makes my life and the customer's lives easier...I am able to directly see what the customer is seeing and can help better navigate through troubleshooting steps. Sometimes it is very hard to explain something clearly just using words, so having a way to view the eyes through the customer has been very helpful."</li>
@@ -615,7 +713,10 @@ function App() {
 
             {selectedExperience === 4 && (
               <div className="overlay-project">
-                <div className="overlay-header">
+                <div 
+                  className="overlay-header"
+                  style={{ viewTransitionName: `experience-header-4` } as React.CSSProperties}
+                >
                   <div className="overlay-header-left">
                     <div 
                       className="overlay-icon" 
@@ -623,42 +724,84 @@ function App() {
                     >
                       {(experiences[4].icon as any)(experiences[4].iconColor)}
                     </div>
-                    <h1 className="overlay-title">{experiences[4].role}</h1>
+                    <h1 
+                      className="overlay-title"
+                      style={{ viewTransitionName: `experience-title-4` } as React.CSSProperties}
+                    >
+                      {experiences[4].role}
+                    </h1>
                   </div>
                   <div className="overlay-header-right">
                     <span className="overlay-company">@{experiences[4].company}</span>
                     <span className="overlay-duration">{experiences[4].duration}</span>
                   </div>
                 </div>
-                <p className="overlay-description">{experiences[4].description}</p>
+                <p 
+                  className="overlay-description"
+                  style={{ 
+                    '--reveal-progress': `${Math.min(overlayContentReveal, 20)}%`
+                  } as React.CSSProperties}
+                >
+                  {experiences[4].description}
+                </p>
                 
-                <div className="overlay-section">
+                <div 
+                  className="overlay-section"
+                  style={{ 
+                    '--reveal-progress': `${getOverlaySectionProgress(0, 6)}%`
+                  } as React.CSSProperties}
+                >
                   <h2 className="overlay-section-title">Role & Scope</h2>
                   <p>Mini Program + Web Development for ORM Fertility. Designed and developed a WeChat Mini Program to help ORM Fertility establish their marketing presence in Shanghai and take ownership over their community in the WeChat ecosystem.</p>
                 </div>
 
-                <div className="overlay-section">
+                <div 
+                  className="overlay-section"
+                  style={{ 
+                    '--reveal-progress': `${getOverlaySectionProgress(1, 6)}%`
+                  } as React.CSSProperties}
+                >
                   <h2 className="overlay-section-title">Problem</h2>
                   <p>ORM Fertility was laying down roots in Shanghai; as they looked to grow their marketing arm independent of local partners, they wanted a way to take ownership over their community. They needed a direct way to market their services in the WeChat ecosystem that would significantly decrease friction for people to share information on ORM as well as provide valuable insights and analytics.</p>
                 </div>
 
-                <div className="overlay-section">
+                <div 
+                  className="overlay-section"
+                  style={{ 
+                    '--reveal-progress': `${getOverlaySectionProgress(2, 6)}%`
+                  } as React.CSSProperties}
+                >
                   <h2 className="overlay-section-title">Product Design</h2>
                   <p>ORM Fertility already had a WeChat Official Account, so I had to work with them to figure out how the mini program would fit in with their current marketing workflow and team resources. We went through a discovery phase, where I provided examples of different information-heavy mini programs and illustrated certain strengths and weaknesses of the mini program framework. We coasted through three user experience design rounds and user interaction design rounds.</p>
                 </div>
 
-                <div className="overlay-section">
+                <div 
+                  className="overlay-section"
+                  style={{ 
+                    '--reveal-progress': `${getOverlaySectionProgress(3, 6)}%`
+                  } as React.CSSProperties}
+                >
                   <h2 className="overlay-section-title">Front End Development</h2>
                   <p>One of the most exciting phases of the project is where I take my designs and step into the front-end developer role to bring them to life. Working in the WeChat IDE, the framework has evolved with "React" features, so I organized all the front-end code into functional and higher-order components.</p>
                 </div>
 
-                <div className="overlay-section">
+                <div 
+                  className="overlay-section"
+                  style={{ 
+                    '--reveal-progress': `${getOverlaySectionProgress(4, 6)}%`
+                  } as React.CSSProperties}
+                >
                   <h2 className="overlay-section-title">Skills & Tools</h2>
                   <p><strong>Skills:</strong> Product design, user interaction design, user experience design, WeChat development, front end development</p>
                   <p><strong>Tools:</strong> WXML, WXSS, WeChat components, Ruby on Rails, HTML, CSS, Javascript</p>
                 </div>
 
-                <div className="overlay-section">
+                <div 
+                  className="overlay-section"
+                  style={{ 
+                    '--reveal-progress': `${getOverlaySectionProgress(5, 6)}%`
+                  } as React.CSSProperties}
+                >
                   <h2 className="overlay-section-title">Status</h2>
                   <p>Currently, the project is in the process of being deployed onto Chinese servers beyond the Great Firewall.</p>
                 </div>
@@ -667,7 +810,10 @@ function App() {
 
             {selectedExperience === 5 && (
               <div className="overlay-project">
-                <div className="overlay-header">
+                <div 
+                  className="overlay-header"
+                  style={{ viewTransitionName: `experience-header-5` } as React.CSSProperties}
+                >
                   <div className="overlay-header-left">
                     <div 
                       className="overlay-icon" 
@@ -675,27 +821,54 @@ function App() {
                     >
                       {(experiences[5].icon as any)(experiences[5].iconColor)}
                     </div>
-                    <h1 className="overlay-title">{experiences[5].role}</h1>
+                    <h1 
+                      className="overlay-title"
+                      style={{ viewTransitionName: `experience-title-5` } as React.CSSProperties}
+                    >
+                      {experiences[5].role}
+                    </h1>
                   </div>
                   <div className="overlay-header-right">
                     <span className="overlay-company">@{experiences[5].company}</span>
                     <span className="overlay-duration">{experiences[5].duration}</span>
                   </div>
                 </div>
-                <p className="overlay-description">{experiences[5].description}</p>
+                <p 
+                  className="overlay-description"
+                  style={{ 
+                    '--reveal-progress': `${Math.min(overlayContentReveal, 20)}%`
+                  } as React.CSSProperties}
+                >
+                  {experiences[5].description}
+                </p>
                 
-                <div className="overlay-section">
+                <div 
+                  className="overlay-section"
+                  style={{ 
+                    '--reveal-progress': `${getOverlaySectionProgress(0, 6)}%`
+                  } as React.CSSProperties}
+                >
                   <h2 className="overlay-section-title">Role & Scope</h2>
                   <p>Mini Program + Web Design for Ubisoft Shanghai's ChinaJoy Mini Program. Worked with the Ubisoft Shanghai creative, marketing, and mobile development teams to draft UX workflows, design UI elements, and provide front-end consulting for the WeChat framework.</p>
                 </div>
 
-                <div className="overlay-section">
+                <div 
+                  className="overlay-section"
+                  style={{ 
+                    '--reveal-progress': `${getOverlaySectionProgress(1, 6)}%`
+                  } as React.CSSProperties}
+                >
                   <h2 className="overlay-section-title">Context</h2>
                   <p>Ubisoft Shanghai is the second largest Chinese development studio, and Ubisoft's second largest studio behind Ubisoft Montreal. Held annually in Shanghai, China, ChinaJoy or China Digital Entertainment Expo & Conference is a digital entertainment expo and the largest gaming and digital entertainment exhibition held in China and Asia.</p>
                   <p>ChinaJoy boasted 340,000+ visitors from all over the world. WeChat is the social, financial, and cultural infrastructure that everyday China relies on. With the advent of WeChat Mini Programs, Ubisoft Shanghai shared a vision of a community united through the excitement and passion of China Joy.</p>
                 </div>
 
-                <div className="overlay-section">
+                <div 
+                  className="overlay-section"
+                  style={{ 
+                    '--reveal-progress': `${getOverlaySectionProgress(2, 6)}%`
+                  } as React.CSSProperties}
+                >
                   <h2 className="overlay-section-title">The User Stories</h2>
                   <p>Users would be able to:</p>
                   <ul className="overlay-list">
@@ -707,23 +880,43 @@ function App() {
                   <p>As for Ubisoft Shanghai, they would be able to collect information on attendees, and be able to reach out and connect the China community to their official WeChat page.</p>
                 </div>
 
-                <div className="overlay-section">
+                <div 
+                  className="overlay-section"
+                  style={{ 
+                    '--reveal-progress': `${getOverlaySectionProgress(3, 6)}%`
+                  } as React.CSSProperties}
+                >
                   <h2 className="overlay-section-title">The Process</h2>
                   <p>I worked with the Ubisoft Shanghai creative, marketing, and mobile development teams to draft UX workflows, design UI elements, and provide some front-end consulting for the WeChat framework.</p>
                 </div>
 
-                <div className="overlay-section">
+                <div 
+                  className="overlay-section"
+                  style={{ 
+                    '--reveal-progress': `${getOverlaySectionProgress(4, 6)}%`
+                  } as React.CSSProperties}
+                >
                   <h2 className="overlay-section-title">The Deliverables</h2>
                   <p>I provided a full PDF UX map with labelled Sketch artboards & 3 edit rounds. I also provided all UI components and unique graphics specific to the Mini Program (i.e. icons for each of Ubisoft's games, the lucky draw backdrop).</p>
                 </div>
 
-                <div className="overlay-section">
+                <div 
+                  className="overlay-section"
+                  style={{ 
+                    '--reveal-progress': `${getOverlaySectionProgress(5, 6)}%`
+                  } as React.CSSProperties}
+                >
                   <h2 className="overlay-section-title">Skills & Tools</h2>
                   <p><strong>Skills:</strong> Product design, WeChat development</p>
                   <p><strong>Tools:</strong> Sketch, Figma, WeChat IDE, HTML, CSS, Javascript</p>
                 </div>
 
-                <div className="overlay-section">
+                <div 
+                  className="overlay-section"
+                  style={{ 
+                    '--reveal-progress': `${getOverlaySectionProgress(6, 7)}%`
+                  } as React.CSSProperties}
+                >
                   <h2 className="overlay-section-title">Coverage</h2>
                   <ul className="overlay-list">
                     <li>Ubisoft Is Taking China Joy By Storm-- WeChat Global</li>
@@ -736,7 +929,10 @@ function App() {
 
             {selectedExperience === 6 && (
               <div className="overlay-project">
-                <div className="overlay-header">
+                <div 
+                  className="overlay-header"
+                  style={{ viewTransitionName: `experience-header-6` } as React.CSSProperties}
+                >
                   <div className="overlay-header-left">
                     <div 
                       className="overlay-icon" 
@@ -744,21 +940,43 @@ function App() {
                     >
                       {(experiences[6].icon as any)(experiences[6].iconColor)}
                     </div>
-                    <h1 className="overlay-title">{experiences[6].role}</h1>
+                    <h1 
+                      className="overlay-title"
+                      style={{ viewTransitionName: `experience-title-6` } as React.CSSProperties}
+                    >
+                      {experiences[6].role}
+                    </h1>
                   </div>
                   <div className="overlay-header-right">
                     <span className="overlay-company">@{experiences[6].company}</span>
                     <span className="overlay-duration">{experiences[6].duration}</span>
                   </div>
                 </div>
-                <p className="overlay-description">{experiences[6].description}</p>
+                <p 
+                  className="overlay-description"
+                  style={{ 
+                    '--reveal-progress': `${Math.min(overlayContentReveal, 20)}%`
+                  } as React.CSSProperties}
+                >
+                  {experiences[6].description}
+                </p>
                 
-                <div className="overlay-section">
+                <div 
+                  className="overlay-section"
+                  style={{ 
+                    '--reveal-progress': `${getOverlaySectionProgress(0, 4)}%`
+                  } as React.CSSProperties}
+                >
                   <h2 className="overlay-section-title">Role & Scope</h2>
                   <p>Web Development for A Pure Person album website. Designed and developed an interactive audio-visual website to accompany the release of the Lin Qiang & Guests album, featuring minimal design aligned with the album cover and audio-visual interactivity for each track.</p>
                 </div>
 
-                <div className="overlay-section">
+                <div 
+                  className="overlay-section"
+                  style={{ 
+                    '--reveal-progress': `${getOverlaySectionProgress(1, 4)}%`
+                  } as React.CSSProperties}
+                >
                   <h2 className="overlay-section-title">The Idea</h2>
                   <p>The Lin Qiang & Guests production team wanted a website to accompany the release of their album. Priorities for the site included:</p>
                   <ul className="overlay-list">
@@ -768,7 +986,12 @@ function App() {
                   <p>Inspirations included <em>Holodec.world</em>'s website by creative digital design and development agency Bureau Cool. The way the album was designed, however, begged a simpler design for the interactivity. Looking at the fairly minimal design, I proposed a type of audio visualization with the image associated with each track.</p>
                 </div>
 
-                <div className="overlay-section">
+                <div 
+                  className="overlay-section"
+                  style={{ 
+                    '--reveal-progress': `${getOverlaySectionProgress(2, 4)}%`
+                  } as React.CSSProperties}
+                >
                   <h2 className="overlay-section-title">Research, Tools, and Processes</h2>
                   <p>While I hadn't executed an interactive creative concept like this, I was very excited to dive in. Research and requirements led me to Web Audio API + CurtainsJS.</p>
                   <p>I initialized the project with Gatsby.js thinking we would have more pages to work with, but as the album cover design was finalized, I stripped the structure of the site down to match.</p>
@@ -777,13 +1000,23 @@ function App() {
                   <p>Towards the end of the project, I tested and optimized the site for accessibility and improved performance with code-splitting and lazy loading.</p>
                 </div>
 
-                <div className="overlay-section">
+                <div 
+                  className="overlay-section"
+                  style={{ 
+                    '--reveal-progress': `${getOverlaySectionProgress(3, 4)}%`
+                  } as React.CSSProperties}
+                >
                   <h2 className="overlay-section-title">The Site</h2>
                   <p>For the soft launch and teaser, the team requested that only certain tracks be available before October 15th, the hard launch of the album.</p>
                   <p>The project is currently live at apureperson.com.</p>
                 </div>
 
-                <div className="overlay-section">
+                <div 
+                  className="overlay-section"
+                  style={{ 
+                    '--reveal-progress': `${getOverlaySectionProgress(4, 5)}%`
+                  } as React.CSSProperties}
+                >
                   <h2 className="overlay-section-title">Skills & Tools</h2>
                   <p><strong>Skills:</strong> Product design, front-end development</p>
                   <p><strong>Tools:</strong> Javascript, HTML, CSS, Sass, GatsbyJS, CurtainsJS, Web Audio API</p>
@@ -899,7 +1132,32 @@ function App() {
                             <div 
                               key={index}
                               className="experience-item"
-                              onClick={() => setSelectedExperience(index)}
+                              onClick={() => {
+                                if (document.startViewTransition) {
+                                  document.startViewTransition(() => {
+                                    setSelectedExperience(index)
+                                    setOverlayContentReveal(0)
+                                  })
+                                } else {
+                                  setSelectedExperience(index)
+                                  setOverlayContentReveal(0)
+                                }
+                                // Start content reveal animation after a short delay
+                                setTimeout(() => {
+                                  const duration = 2000
+                                  const startTime = Date.now()
+                                  const animate = () => {
+                                    const elapsed = Date.now() - startTime
+                                    const rawProgress = Math.min(elapsed / duration, 1)
+                                    const easedProgress = easeOutCubic(rawProgress) * 100
+                                    setOverlayContentReveal(easedProgress)
+                                    if (rawProgress < 1) {
+                                      requestAnimationFrame(animate)
+                                    }
+                                  }
+                                  requestAnimationFrame(animate)
+                                }, 400) // Wait for header transition to start
+                              }}
                               onMouseEnter={() => setHoveredExperience(index)}
                               onMouseLeave={() => setHoveredExperience(null)}
                             >
@@ -914,12 +1172,16 @@ function App() {
                                   ? (exp as any).iconFill(exp.iconColor) 
                                   : (exp as any).icon(exp.iconColor)}
                               </div>
-                              <div className="experience-content">
+                              <div 
+                                className="experience-content"
+                                style={{ viewTransitionName: `experience-header-${index}` } as React.CSSProperties}
+                              >
                                 <div className="experience-main">
                                   <h3 
                                     className="experience-role"
                                     style={{ 
-                                      '--reveal-progress': `${ensureComplete(roleProgress)}%`
+                                      '--reveal-progress': `${ensureComplete(roleProgress)}%`,
+                                      viewTransitionName: `experience-title-${index}`
                                     } as React.CSSProperties}
                                   >
                                     {exp.role}
@@ -976,6 +1238,14 @@ function App() {
               if (contentId === 'working-style') {
                 const howIWorkSteps = [
                   {
+                    iconColor: '#10b981', // green
+                    iconLine: <HandPeaceLine width="20" height="20" />,
+                    iconFill: <HandPeaceSolid width="20" height="20" />,
+                    title: "How I work",
+                    description: "Product design & development guidelines"
+                  },
+                  {
+                    iconColor: '#3b82f6', // blue
                     iconLine: (
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M18.75 7.5V10.5C18.75 10.6989 18.671 10.8897 18.5303 11.0303C18.3897 11.171 18.1989 11.25 18 11.25C17.8011 11.25 17.6103 11.171 17.4697 11.0303C17.329 10.8897 17.25 10.6989 17.25 10.5V8.25H15C14.8011 8.25 14.6103 8.17098 14.4697 8.03033C14.329 7.88968 14.25 7.69891 14.25 7.5C14.25 7.30109 14.329 7.11032 14.4697 6.96967C14.6103 6.82902 14.8011 6.75 15 6.75H18C18.1989 6.75 18.3897 6.82902 18.5303 6.96967C18.671 7.11032 18.75 7.30109 18.75 7.5ZM9 15.75H6.75V13.5C6.75 13.3011 6.67098 13.1103 6.53033 12.9697C6.38968 12.829 6.19891 12.75 6 12.75C5.80109 12.75 5.61032 12.829 5.46967 12.9697C5.32902 13.1103 5.25 13.3011 5.25 13.5V16.5C5.25 16.6989 5.32902 16.8897 5.46967 17.0303C5.61032 17.171 5.80109 17.25 6 17.25H9C9.19891 17.25 9.38968 17.171 9.53033 17.0303C9.67098 16.8897 9.75 16.6989 9.75 16.5C9.75 16.3011 9.67098 16.1103 9.53033 15.9697C9.38968 15.829 9.19891 15.75 9 15.75ZM21.75 5.25V18.75C21.75 19.1478 21.592 19.5294 21.3107 19.8107C21.0294 20.092 20.6478 20.25 20.25 20.25H3.75C3.35218 20.25 2.97064 20.092 2.68934 19.8107C2.40804 19.5294 2.25 19.1478 2.25 18.75V5.25C2.25 4.85218 2.40804 4.47064 2.68934 4.18934C2.97064 3.90804 3.35218 3.75 3.75 3.75H20.25C20.6478 3.75 21.0294 3.90804 21.3107 4.18934C21.592 4.47064 21.75 4.85218 21.75 5.25ZM20.25 18.75V5.25H3.75V18.75H20.25Z" fill="currentColor"/>
@@ -990,6 +1260,7 @@ function App() {
                     description: "Define the problem, users, and constraints with data and interviews."
                   },
                   {
+                    iconColor: '#ef4444', // red
                     iconLine: (
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M20.25 3.75H3.75C3.35218 3.75 2.97064 3.90804 2.68934 4.18934C2.40804 4.47064 2.25 4.85218 2.25 5.25V18.75C2.25 19.1478 2.40804 19.5294 2.68934 19.8107C2.97064 20.092 3.35218 20.25 3.75 20.25H20.25C20.6478 20.25 21.0294 20.092 21.3107 19.8107C21.592 19.5294 21.75 19.1478 21.75 18.75V5.25C21.75 4.85218 21.592 4.47064 21.3107 4.18934C21.0294 3.90804 20.6478 3.75 20.25 3.75ZM20.25 18.75H3.75V5.25H20.25V18.75ZM7.5 7.875C7.5 8.0975 7.43402 8.31501 7.3104 8.50002C7.18679 8.68502 7.01109 8.82922 6.80552 8.91436C6.59995 8.99951 6.37375 9.02179 6.15552 8.97838C5.93729 8.93498 5.73684 8.82783 5.5795 8.6705C5.42217 8.51316 5.31502 8.31271 5.27162 8.09448C5.22821 7.87625 5.25049 7.65005 5.33564 7.44448C5.42078 7.23891 5.56498 7.06321 5.74998 6.9396C5.93499 6.81598 6.1525 6.75 6.375 6.75C6.67337 6.75 6.95952 6.86853 7.1705 7.0795C7.38147 7.29048 7.5 7.57663 7.5 7.875ZM11.25 7.875C11.25 8.0975 11.184 8.31501 11.0604 8.50002C10.9368 8.68502 10.7611 8.82922 10.5555 8.91436C10.35 8.99951 10.1238 9.02179 9.90552 8.97838C9.68729 8.93498 9.48684 8.82783 9.3295 8.6705C9.17217 8.51316 9.06502 8.31271 9.02162 8.09448C8.97821 7.87625 9.00049 7.65005 9.08564 7.44448C9.17078 7.23891 9.31498 7.06321 9.49998 6.9396C9.68499 6.81598 9.9025 6.75 10.125 6.75C10.4234 6.75 10.7095 6.86853 10.9205 7.0795C11.1315 7.29048 11.25 7.57663 11.25 7.875Z" fill="currentColor"/>
@@ -1004,6 +1275,7 @@ function App() {
                     description: "Code high-fidelity prototypes to test real interactions early."
                   },
                   {
+                    iconColor: '#f97316', // orange
                     iconLine: (
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M23.25 10.5H20.6325L16.1794 4.36781C16.0444 4.18253 15.8688 4.03065 15.666 3.92381C15.4632 3.81698 15.2387 3.75804 15.0095 3.75152C14.7804 3.745 14.5529 3.79108 14.3443 3.88621C14.1358 3.98135 13.9518 4.12301 13.8066 4.30031L12.6019 5.69719L12.5831 5.71875C12.5133 5.80644 12.4246 5.87726 12.3237 5.92594C12.2227 5.97461 12.1121 5.99989 12 5.99989C11.8879 5.99989 11.7773 5.97461 11.6763 5.92594C11.5754 5.87726 11.4867 5.80644 11.4169 5.71875L11.3981 5.69719L10.1934 4.30031C10.0482 4.12301 9.86422 3.98135 9.65568 3.88621C9.44714 3.79108 9.21958 3.745 8.99046 3.75152C8.76134 3.75804 8.53676 3.81698 8.33397 3.92381C8.13118 4.03065 7.95557 4.18253 7.82062 4.36781L3.3675 10.5H0.75C0.551088 10.5 0.360322 10.579 0.21967 10.7197C0.0790176 10.8603 0 11.0511 0 11.25C0 11.4489 0.0790176 11.6397 0.21967 11.7803C0.360322 11.921 0.551088 12 0.75 12H23.25C23.4489 12 23.6397 11.921 23.7803 11.7803C23.921 11.6397 24 11.4489 24 11.25C24 11.0511 23.921 10.8603 23.7803 10.7197C23.6397 10.579 23.4489 10.5 23.25 10.5ZM9.03187 5.25L9.04969 5.27156L10.2544 6.6675C10.4654 6.92693 10.7315 7.13607 11.0335 7.27971C11.3354 7.42336 11.6656 7.49789 12 7.49789C12.3344 7.49789 12.6646 7.42336 12.9665 7.27971C13.2685 7.13607 13.5346 6.92693 13.7456 6.6675L14.9503 5.27156C14.9559 5.26406 14.9597 5.2575 14.9662 5.25L18.7781 10.5H5.22094L9.03187 5.25ZM16.875 13.5C16.0449 13.5002 15.2441 13.8062 14.6254 14.3596C14.0068 14.9131 13.6138 15.6751 13.5216 16.5H10.4784C10.386 15.6758 9.99334 14.9146 9.37539 14.3614C8.75745 13.8083 7.95748 13.5021 7.12815 13.5012C6.29882 13.5003 5.49819 13.8048 4.87904 14.3565C4.25989 14.9083 3.86557 15.6687 3.77133 16.4927C3.67709 17.3166 3.88953 18.1465 4.3681 18.8238C4.84667 19.5011 5.55788 19.9785 6.36599 20.1649C7.17411 20.3512 8.02256 20.2336 8.74944 19.8343C9.47632 19.435 10.0307 18.782 10.3069 18H13.6931C13.8994 18.5834 14.262 19.0988 14.7414 19.49C15.2209 19.8811 15.7986 20.133 16.4115 20.218C17.0243 20.303 17.6488 20.2179 18.2166 19.972C18.7843 19.726 19.2736 19.3287 19.6308 18.8235C19.988 18.3183 20.1995 17.7246 20.2421 17.1073C20.2847 16.49 20.1568 15.8729 19.8723 15.3234C19.5879 14.774 19.1578 14.3132 18.6292 13.9916C18.1006 13.6701 17.4938 13.5 16.875 13.5ZM7.125 18.75C6.75416 18.75 6.39165 18.64 6.08331 18.434C5.77496 18.228 5.53464 17.9351 5.39273 17.5925C5.25081 17.2499 5.21368 16.8729 5.28603 16.5092C5.35837 16.1455 5.53695 15.8114 5.79917 15.5492C6.0614 15.287 6.39549 15.1084 6.75921 15.036C7.12292 14.9637 7.49992 15.0008 7.84253 15.1427C8.18514 15.2846 8.47798 15.525 8.68401 15.8333C8.89003 16.1416 9 16.5042 9 16.875C9 17.1212 8.9515 17.365 8.85727 17.5925C8.76305 17.82 8.62494 18.0267 8.45083 18.2008C8.27672 18.3749 8.07002 18.513 7.84253 18.6073C7.61505 18.7015 7.37123 18.75 7.125 18.75ZM16.875 18.75C16.5042 18.75 16.1416 18.64 15.8333 18.434C15.525 18.228 15.2846 17.9351 15.1427 17.5925C15.0008 17.2499 14.9637 16.8729 15.036 16.5092C15.1084 16.1455 15.287 15.8114 15.5492 15.5492C15.8114 15.287 16.1455 15.1084 16.5092 15.036C16.8729 14.9637 17.2499 15.0008 17.5925 15.1427C17.9351 15.2846 18.228 15.525 18.434 15.8333C18.64 16.1416 18.75 16.5042 18.75 16.875C18.75 17.3723 18.5525 17.8492 18.2008 18.2008C17.8492 18.5525 17.3723 18.75 16.875 18.75Z" fill="currentColor"/>
@@ -1018,6 +1290,7 @@ function App() {
                     description: "Run usability tests; iterate quickly on signal, not noise."
                   },
                   {
+                    iconColor: '#f472b6', // pink
                     iconLine: (
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M22.1625 6.62346L12.2062 3.77909C12.1049 3.75003 11.9985 3.74268 11.8941 3.75753L2.03812 5.16565C1.68127 5.21814 1.35506 5.39683 1.11871 5.6693C0.882364 5.94178 0.751544 6.28996 0.75 6.65065V17.3494C0.751544 17.7101 0.882364 18.0583 1.11871 18.3307C1.35506 18.6032 1.68127 18.7819 2.03812 18.8344L11.8941 20.2406C11.9291 20.2461 11.9645 20.2493 12 20.25C12.0698 20.2502 12.1392 20.2404 12.2062 20.221L22.1625 17.3766C22.4748 17.2862 22.7494 17.0972 22.9454 16.8378C23.1414 16.5784 23.2483 16.2626 23.25 15.9375V8.06253C23.2483 7.73743 23.1414 7.42163 22.9454 7.16226C22.7494 6.90289 22.4748 6.71389 22.1625 6.62346ZM9 11.25H7.5V5.90065L11.25 5.3644V18.6357L7.5 18.0994V12.75H9C9.19891 12.75 9.38968 12.671 9.53033 12.5304C9.67098 12.3897 9.75 12.1989 9.75 12C9.75 11.8011 9.67098 11.6103 9.53033 11.4697C9.38968 11.329 9.19891 11.25 9 11.25ZM2.25 6.65065L6 6.1144V11.25H4.5C4.30109 11.25 4.11032 11.329 3.96967 11.4697C3.82902 11.6103 3.75 11.8011 3.75 12C3.75 12.1989 3.82902 12.3897 3.96967 12.5304C4.11032 12.671 4.30109 12.75 4.5 12.75H6V17.8857L2.25 17.3494V6.65065ZM12.75 18.5053V5.49471L21.75 8.06253V15.9375L12.75 18.5053Z" fill="currentColor"/>
@@ -1032,6 +1305,7 @@ function App() {
                     description: "Partner with engineering to deliver accessible, performant UI."
                   },
                   {
+                    iconColor: '#22c55e', // green
                     iconLine: (
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M22.0612 6.87846L17.1216 1.93971C16.9823 1.80038 16.8169 1.68986 16.6349 1.61446C16.4529 1.53905 16.2578 1.50024 16.0608 1.50024C15.8638 1.50024 15.6687 1.53905 15.4867 1.61446C15.3047 1.68986 15.1393 1.80038 15 1.93971L1.93874 15C1.79942 15.1393 1.6889 15.3047 1.6135 15.4867C1.53809 15.6687 1.49928 15.8638 1.49928 16.0608C1.49928 16.2578 1.53809 16.4529 1.6135 16.6349C1.6889 16.8169 1.79942 16.9823 1.93874 17.1216L6.87843 22.0603C7.01772 22.1997 7.1831 22.3102 7.36511 22.3856C7.54712 22.461 7.7422 22.4998 7.93921 22.4998C8.13622 22.4998 8.33131 22.461 8.51332 22.3856C8.69533 22.3102 8.8607 22.1997 8.99999 22.0603L22.0612 9.00002C22.2006 8.86073 22.3111 8.69535 22.3865 8.51334C22.4619 8.33133 22.5007 8.13625 22.5007 7.93924C22.5007 7.74222 22.4619 7.54714 22.3865 7.36513C22.3111 7.18312 22.2006 7.01775 22.0612 6.87846ZM7.93874 21L2.99999 16.0603L5.99999 13.0603L8.46937 15.5306C8.53905 15.6003 8.62178 15.6556 8.71282 15.6933C8.80387 15.731 8.90145 15.7504 8.99999 15.7504C9.09854 15.7504 9.19612 15.731 9.28717 15.6933C9.37821 15.6556 9.46094 15.6003 9.53062 15.5306C9.6003 15.461 9.65558 15.3782 9.69329 15.2872C9.731 15.1961 9.75041 15.0986 9.75041 15C9.75041 14.9015 9.731 14.8039 9.69329 14.7128C9.65558 14.6218 9.6003 14.5391 9.53062 14.4694L7.06031 12L8.99999 10.0603L11.4694 12.5306C11.6101 12.6714 11.801 12.7504 12 12.7504C12.199 12.7504 12.3899 12.6714 12.5306 12.5306C12.6714 12.3899 12.7504 12.199 12.7504 12C12.7504 11.801 12.6714 11.6101 12.5306 11.4694L10.0603 9.00002L12 7.06033L14.4694 9.53064C14.5391 9.60033 14.6218 9.6556 14.7128 9.69331C14.8039 9.73102 14.9014 9.75043 15 9.75043C15.0985 9.75043 15.1961 9.73102 15.2872 9.69331C15.3782 9.6556 15.4609 9.60033 15.5306 9.53064C15.6003 9.46096 15.6556 9.37823 15.6933 9.28719C15.731 9.19614 15.7504 9.09856 15.7504 9.00002C15.7504 8.90147 15.731 8.80389 15.6933 8.71285C15.6556 8.6218 15.6003 8.53907 15.5306 8.46939L13.0603 6.00002L16.0603 3.00002L21 7.93971L7.93874 21Z" fill="currentColor"/>
@@ -1057,12 +1331,20 @@ function App() {
                             '--reveal-progress': `${contentReveal}%`
                           } as React.CSSProperties}
                         >
-                          How I Work
+                          My Design Approach
                         </span>
                       </h2>
+                      <p 
+                        className="how-i-work-intro"
+                        style={{
+                          '--reveal-progress': `${contentReveal >= 55 ? Math.min(100, ((contentReveal - 55) / (100 - 55)) * 100) : 0}%`
+                        } as React.CSSProperties}
+                      >
+                        A super IC founding/solo designer owning product discovery, rapid prototyping, and delivery, tracing business outcomes back to early problem framing, first-principles decisions, and validation loops.
+                      </p>
                       <div className="how-i-work-list">
                         {howIWorkSteps.map((step, index) => {
-                          const stepStartPoint = 60 + (index * 8)
+                          const stepStartPoint = 50 + (index * 5)
                           const stepProgress = contentReveal >= stepStartPoint
                             ? Math.min(100, ((contentReveal - stepStartPoint) / (100 - stepStartPoint)) * 100)
                             : 0
@@ -1075,8 +1357,20 @@ function App() {
                               style={{
                                 '--reveal-progress': `${finalStepProgress}%`
                               } as React.CSSProperties}
+                              onMouseEnter={() => setHoveredHowIWorkStep(index)}
+                              onMouseLeave={() => setHoveredHowIWorkStep(null)}
                             >
-                              <div className="how-i-work-icon">{step.iconLine}</div>
+                              <div 
+                                className="how-i-work-icon"
+                                style={{
+                                  backgroundColor: hoveredHowIWorkStep === index ? (step as any).iconColor : 'transparent',
+                                  color: '#ffffff'
+                                } as React.CSSProperties}
+                              >
+                                {hoveredHowIWorkStep === index && (step as any).iconFill
+                                  ? (step as any).iconFill
+                                  : step.iconLine}
+                              </div>
                               <div className="how-i-work-text">
                                 <span className="how-i-work-title">{step.title}</span>
                                 <span className="how-i-work-description">{step.description}</span>
@@ -1086,16 +1380,6 @@ function App() {
                         })}
                       </div>
 
-                      <h2 className="content-title" style={{ marginTop: '2rem' }}>
-                        <span
-                          className="reveal-text"
-                          style={{
-                            '--reveal-progress': `${contentReveal}%`
-                          } as React.CSSProperties}
-                        >
-                          What kind of designer am I?
-                        </span>
-                      </h2>
                       <div className="working-style-list">
                         {workingStyleTraits.map((trait, index) => {
                           // First item starts when title is at 80% (contentReveal = 80)
@@ -1124,9 +1408,11 @@ function App() {
                                 '--reveal-progress': `${finalProgress}%`
                               } as React.CSSProperties}
                             >
-                              <div className="working-style-icon">
-                                {trait.icon}
-                              </div>
+                              {'icon' in trait && (trait as any).icon && (
+                                <div className="working-style-icon">
+                                  {(trait as any).icon}
+                                </div>
+                              )}
                               <div className="working-style-text">
                                 <h3 className="working-style-title">{trait.title}</h3>
                                 <p className="working-style-description">{trait.description}</p>
