@@ -1843,4 +1843,27 @@ a.action-button:focus .action-arrow {
   color: var(--bg-primary);
 }
 
+/* Carousel button icons - show black on hover */
+.robot-theme .carousel-button {
+  border: 1px solid var(--border-primary);
+  border-radius: 0;
+}
+
+.robot-theme .carousel-button:hover {
+  background-color: var(--text-primary);
+}
+
+.robot-theme .carousel-button svg,
+.robot-theme .carousel-button svg path {
+  fill: var(--text-primary);
+  stroke: var(--text-primary);
+}
+
+.robot-theme .carousel-button:hover svg,
+.robot-theme .carousel-button:hover svg path {
+  fill: var(--bg-primary) !important;
+  stroke: var(--bg-primary) !important;
+  color: var(--bg-primary) !important;
+}
+
 
