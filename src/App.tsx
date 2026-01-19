@@ -48,6 +48,10 @@ import ViewaboMobile from './assets/images/viewabo_mobile.png'
 import ViewaboDesktopMobile from './assets/images/viewabo_desktop-mobile.png'
 import ViewaboUICover from './assets/images/viewabo-ui-cover.png'
 
+// A Pure Person project images
+import PurePersonBanner from './assets/images/pureperson_banner.webp'
+import PurePersonSongs from './assets/images/pureperson_songs.webp'
+
 function App() {
   const [landingReveal, setLandingReveal] = useState(0)
   const [isDescComplete, setIsDescComplete] = useState(false)
@@ -1251,6 +1255,7 @@ function App() {
                 >
                   <h2 className="overlay-section-title">Role & Scope</h2>
                   <p>Web Development for A Pure Person album website. Designed and developed an interactive audio-visual website to accompany the release of the Lin Qiang & Guests album, featuring minimal design aligned with the album cover and audio-visual interactivity for each track.</p>
+                  <img src={PurePersonBanner} alt="A Pure Person Album Banner" className="overlay-image" />
                 </div>
 
                 <div 
@@ -1266,6 +1271,7 @@ function App() {
                     <li>A type of audio-visual interactivity for each track</li>
                   </ul>
                   <p>Inspirations included <em>Holodec.world</em>'s website by creative digital design and development agency Bureau Cool. The way the album was designed, however, begged a simpler design for the interactivity. Looking at the fairly minimal design, I proposed a type of audio visualization with the image associated with each track.</p>
+                  <img src={PurePersonSongs} alt="A Pure Person Song List" className="overlay-image" />
                 </div>
 
                 <div 
@@ -1290,7 +1296,18 @@ function App() {
                 >
                   <h2 className="overlay-section-title">The Site</h2>
                   <p>For the soft launch and teaser, the team requested that only certain tracks be available before October 15th, the hard launch of the album.</p>
-                  <p>The project is currently live at apureperson.com.</p>
+                  <p>The project is currently live at <a href="http://www.apureperson.com/" target="_blank" rel="noopener noreferrer">apureperson.com</a>.</p>
+                  <div className="overlay-video">
+                    <iframe
+                      width="100%"
+                      height="415"
+                      src="https://www.youtube.com/embed/fJgNTuNy7iQ"
+                      title="A Pure Person Website Demo"
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    ></iframe>
+                  </div>
                 </div>
 
                 <div 
@@ -1302,6 +1319,23 @@ function App() {
                   <h2 className="overlay-section-title">Skills & Tools</h2>
                   <p><strong>Skills:</strong> Product design, front-end development</p>
                   <p><strong>Tools:</strong> Javascript, HTML, CSS, Sass, GatsbyJS, CurtainsJS, Web Audio API</p>
+                </div>
+
+                <div 
+                  className="overlay-section"
+                  style={{ 
+                    '--reveal-progress': `${getOverlaySectionProgress(5, 6)}%`
+                  } as React.CSSProperties}
+                >
+                  <h2 className="overlay-section-title">Press</h2>
+                  <ul className="overlay-list">
+                    <li><a href="https://www.residentadvisor.net/news/73605" target="_blank" rel="noopener noreferrer">New compilation focuses on Lim Giong, the 'godfather of Taiwanese experimental electronic music' - Resident Advisor</a></li>
+                    <li><a href="https://far-near.media/A-Pure-Person" target="_blank" rel="noopener noreferrer">A Pure Person: Angela Lin in Conversation with Lim Giong - Far Near Media</a></li>
+                    <li><a href="https://mixmag.asia/read/godfather-of-taiwanese-experimental-electronic-music-lim-giong-local" target="_blank" rel="noopener noreferrer">"Godfather of Taiwanese Experimental Electronic Music" Lim Giong is Centered for a New Locally Focused Compilation - Mixmag Asia</a></li>
+                    <li><a href="https://www.electronicbeats.net/a-pure-person-millennium-mambo-is-reinterpreted/" target="_blank" rel="noopener noreferrer">Iconic Track "A Pure Person" From Cult Film Millennium Mambo Is Reinterpreted for Our Melancholic Times - Electronic Beats</a></li>
+                    <li><a href="https://asianpopweekly.com/front-page-banner/a-conversation-with-angela-lin-coming-full-circle-with-a-pure-person-%E5%96%AE%E7%B4%94%E7%9A%84%E4%BA%BA/" target="_blank" rel="noopener noreferrer">A Conversation with Angela Lin – Coming Full Circle With 'A Pure Person 單純的人' - Asian Pop Weekly</a></li>
+                    <li><a href="https://blow.streetvoice.com/51733/" target="_blank" rel="noopener noreferrer">合輯《單純的人》正式發行 許郁瑛、非/密閉空間等人翻玩《千禧曼波》經典旋律 - 吹音樂</a></li>
+                  </ul>
                 </div>
               </div>
             )}
