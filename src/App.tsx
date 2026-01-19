@@ -78,6 +78,7 @@ function App() {
   const [hoveredHowIWorkStep, setHoveredHowIWorkStep] = useState<number | null>(null)
   const [overlayContentReveal, setOverlayContentReveal] = useState(0)
   const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0)
+  const [isTestimonialTransitioning, setIsTestimonialTransitioning] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [theme, setTheme] = useState<'light' | 'dark' | 'robot'>('dark')
   const [showDarkModeTooltip, setShowDarkModeTooltip] = useState(false)
@@ -190,6 +191,34 @@ function App() {
     return 1 - Math.pow(1 - t, 3)
   }
 
+  // Calm, intentional scroll function
+  const smoothScrollToElement = (elementId: string) => {
+    const element = document.getElementById(elementId)
+    if (!element) return
+
+    const targetPosition = element.getBoundingClientRect().top + window.pageYOffset
+    const startPosition = window.pageYOffset
+    const distance = targetPosition - startPosition
+    const duration = 1200 // Longer duration for calm feel
+    const startTime = performance.now()
+
+    const scroll = (currentTime: number) => {
+      const elapsed = currentTime - startTime
+      const progress = Math.min(elapsed / duration, 1)
+      
+      // Use easeOutCubic for gentle deceleration
+      const eased = easeOutCubic(progress)
+      
+      window.scrollTo(0, startPosition + distance * eased)
+
+      if (progress < 1) {
+        requestAnimationFrame(scroll)
+      }
+    }
+
+    requestAnimationFrame(scroll)
+  }
+
   // Helper function to calculate overlay section reveal progress
   const getOverlaySectionProgress = (sectionIndex: number, totalSections: number, descriptionProgress: number = 20) => {
     const sectionStart = descriptionProgress + (sectionIndex * ((100 - descriptionProgress) / totalSections))
@@ -253,14 +282,14 @@ function App() {
       const scrollToContent = () => {
         const element = document.getElementById(`content-${actionId}`)
         if (element) {
-          element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          smoothScrollToElement(`content-${actionId}`)
         } else {
           // If element not found yet, try again after a short delay
           setTimeout(scrollToContent, 50)
         }
       }
       // Start scrolling after a brief delay to ensure DOM is updated
-      setTimeout(scrollToContent, 100)
+      setTimeout(scrollToContent, 200)
       
       // Start content reveal animation for this specific content
       const duration = 1500 // Calm, wellness-like animation
@@ -283,6 +312,22 @@ function App() {
       
       requestAnimationFrame(animate)
     }, 500) // Slightly longer delay for calmer flow
+  }
+
+  const handleTestimonialChange = (newIndex: number) => {
+    if (isTestimonialTransitioning) return // Prevent rapid clicking
+    
+    setIsTestimonialTransitioning(true)
+    
+    // After fade-out completes, change the index
+    setTimeout(() => {
+      setCurrentTestimonialIndex(newIndex)
+      
+      // After index changes, fade back in
+      setTimeout(() => {
+        setIsTestimonialTransitioning(false)
+      }, 350) // Half of transition duration for fade-in
+    }, 350) // Half of transition duration for fade-out
   }
 
   useEffect(() => {
@@ -412,11 +457,8 @@ function App() {
     if (activeContent.includes(item.id)) {
       // Content is already loaded, scroll to it
       setTimeout(() => {
-        const element = document.getElementById(`content-${item.id}`)
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-        }
-      }, 100) // Small delay to ensure menu closes first
+        smoothScrollToElement(`content-${item.id}`)
+      }, 200) // Small delay to ensure menu closes first
     } else {
       // Content not loaded, load it and then scroll
       handleActionClick(item.id)
@@ -425,14 +467,14 @@ function App() {
       const checkAndScroll = () => {
         const element = document.getElementById(`content-${item.id}`)
         if (element) {
-          element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          smoothScrollToElement(`content-${item.id}`)
         } else {
           // Check again after a short delay
           setTimeout(checkAndScroll, 100)
         }
       }
       // Start checking after loading animation begins
-      setTimeout(checkAndScroll, 300)
+      setTimeout(checkAndScroll, 400)
     }
   }
 
@@ -751,10 +793,10 @@ function App() {
                           setTimeout(() => {
                             const contactSection = document.getElementById('content-contact');
                             if (contactSection) {
-                              contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                              smoothScrollToElement('content-contact');
                             }
-                          }, 300);
-                        }, 100);
+                          }, 400);
+                        }, 200);
                       }}
                     >
                       Contact me
@@ -1904,7 +1946,10 @@ function App() {
                         >
                           <button
                             className="carousel-button prev"
-                            onClick={() => setCurrentTestimonialIndex((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1))}
+                            onClick={() => {
+                              const newIndex = currentTestimonialIndex === 0 ? testimonials.length - 1 : currentTestimonialIndex - 1
+                              handleTestimonialChange(newIndex)
+                            }}
                             aria-label="Previous testimonial"
                             style={{
                               opacity: contentReveal >= 60 ? 1 : 0,
@@ -1918,7 +1963,7 @@ function App() {
                           {testimonials.map((testimonial, index) => (
                             <div
                               key={index}
-                              className={`testimonial-card ${index === currentTestimonialIndex ? 'active' : ''}`}
+                              className={`testimonial-card ${index === currentTestimonialIndex ? 'active' : ''} ${isTestimonialTransitioning ? 'transitioning' : ''}`}
                               style={{
                                 '--reveal-progress': contentReveal >= 45 ? Math.min(100, ((contentReveal - 45) / (100 - 45)) * 100) : 0
                               } as React.CSSProperties}
@@ -1929,7 +1974,10 @@ function App() {
                           ))}
                           <button
                             className="carousel-button next"
-                            onClick={() => setCurrentTestimonialIndex((prev) => (prev === testimonials.length - 1 ? 0 : prev + 1))}
+                            onClick={() => {
+                              const newIndex = currentTestimonialIndex === testimonials.length - 1 ? 0 : currentTestimonialIndex + 1
+                              handleTestimonialChange(newIndex)
+                            }}
                             aria-label="Next testimonial"
                             style={{
                               opacity: contentReveal >= 60 ? 1 : 0,
@@ -1952,7 +2000,7 @@ function App() {
                             <button
                               key={index}
                               className={`carousel-indicator ${index === currentTestimonialIndex ? 'active' : ''}`}
-                              onClick={() => setCurrentTestimonialIndex(index)}
+                              onClick={() => handleTestimonialChange(index)}
                               aria-label={`Go to testimonial ${index + 1}`}
                             />
                           ))}
@@ -1988,15 +2036,13 @@ function App() {
             <div className="actions-list">
               {suggestedActions.map((action, index) => {
                     // Cascade buttons after description completes (at 70%)
-                    // Similar to experience tiles pattern
+                    // Show buttons instantly when landing reveal reaches their threshold
                     const buttonStartBase = 72
                     const buttonSpacing = 6 // Calm spacing between buttons
                     const buttonStartPoint = buttonStartBase + (index * buttonSpacing)
-                    const buttonDuration = 20 // Each button takes 20% to reveal
                     
-                    const buttonReveal = landingReveal >= buttonStartPoint
-                      ? Math.min(100, ((landingReveal - buttonStartPoint) / buttonDuration) * 100)
-                      : 0
+                    // Instant appearance - either 100 or 0, no gradient
+                    const buttonReveal = landingReveal >= buttonStartPoint ? 100 : 0
                     
                     if ('isLink' in action && action.isLink && 'href' in action && action.href) {
                       const linkAction = action as { id: string; icon: React.ReactElement; text: string; isLink: boolean; href: string }
