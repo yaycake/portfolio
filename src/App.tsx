@@ -65,7 +65,6 @@ import PurePersonSongs from './assets/images/pureperson_songs.webp'
 
 function App() {
   const [landingReveal, setLandingReveal] = useState(0)
-  const [isDescComplete, setIsDescComplete] = useState(false)
   const [activeContent, setActiveContent] = useState<string[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [contentReveals, setContentReveals] = useState<Record<string, number>>({})
@@ -334,7 +333,6 @@ function App() {
     // Smoothly reveal entire landing content as one unified gradient wipe
     const duration = 3000 // Calm, wellness-like reveal
     const startTime = Date.now()
-    let actionsShown = false
 
     const animate = () => {
       const elapsed = Date.now() - startTime
@@ -343,12 +341,6 @@ function App() {
       
       // Use single progress for entire landing content
       setLandingReveal(easedProgress)
-      
-      // Show suggested actions when landing is 70% complete for seamless flow
-      if (rawProgress >= 0.7 && !actionsShown) {
-        setIsDescComplete(true)
-        actionsShown = true
-      }
       
       if (rawProgress < 1) {
         requestAnimationFrame(animate)
