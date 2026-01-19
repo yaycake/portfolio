@@ -272,6 +272,19 @@ function App() {
     return () => clearTimeout(timer)
   }, [])
 
+  // Load theme from localStorage on mount
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | 'butterfly' | 'alien' | 'robot' | null
+    if (savedTheme) {
+      setTheme(savedTheme)
+    }
+  }, [])
+
+  // Save theme to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('theme', theme)
+  }, [theme])
+
   // Handle ESC key to close overlay
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
@@ -351,7 +364,7 @@ function App() {
   }
 
   return (
-    <div className="landing-page">
+    <div className={`landing-page ${theme}-theme`}>
       {/* Floating Menu Button */}
       <div className="floating-menu">
         <button
