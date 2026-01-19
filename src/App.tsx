@@ -29,6 +29,11 @@ import SunLine from './assets/icons/sun-line.svg?react'
 import SunFill from './assets/icons/sun-fill.svg?react'
 import RobotFill from './assets/icons/robot-fill.svg?react'
 import RobotLine from './assets/icons/robot-line.svg?react'
+import ResumeLine from './assets/icons/resume-line.svg?react'
+import ResumeSolid from './assets/icons/resume-solid.svg?react'
+
+// Resume PDF
+import ResumePDF from './assets/resume-2025.pdf'
 
 // Ubisoft project images
 import UbiBanner from './assets/images/ubibanner.png'
@@ -515,7 +520,8 @@ function App() {
     { id: 'working-style', label: 'Design Approach' },
     { id: 'contact', label: 'Contact Me' },
     { id: 'impact', label: 'My Impact' },
-    { id: 'linkedin', label: 'Visit LinkedIn', isLink: true, href: 'https://www.linkedin.com/in/ygrace/' }
+    { id: 'linkedin', label: 'Visit LinkedIn', isLink: true, href: 'https://www.linkedin.com/in/ygrace/' },
+    { id: 'resume', label: 'Download Resume', isLink: true, href: ResumePDF }
   ]
 
   const handleMenuClick = (item: typeof menuItems[0]) => {
