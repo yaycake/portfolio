@@ -333,10 +333,39 @@ function App() {
     }, 350) // Half of transition duration for fade-out
   }
 
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return emailRegex.test(email)
+  }
+
+  const handleEmailChange = (email: string) => {
+    setFormData({ ...formData, email })
+    
+    // Clear error when user starts typing
+    if (emailError) {
+      setEmailError('')
+    }
+  }
+
+  const handleEmailBlur = () => {
+    // Only validate if email has content
+    if (formData.email && !validateEmail(formData.email)) {
+      setEmailError('Please enter a valid email address')
+    }
+  }
+
   const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    // Validate email before submission
+    if (!validateEmail(formData.email)) {
+      setEmailError('Please enter a valid email address')
+      return
+    }
+
     setIsSubmitting(true)
     setSubmitStatus('idle')
+    setEmailError('')
 
     try {
       const response = await fetch('/api/contact', {
@@ -350,10 +379,7 @@ function App() {
       if (response.ok) {
         setSubmitStatus('success')
         setFormData({ email: '', message: '', interest: '' })
-        // After 4 seconds, show option to send another message
-        setTimeout(() => {
-          // Keep success status, user can click to reset
-        }, 4000)
+        setEmailError('')
       } else {
         setSubmitStatus('error')
         setTimeout(() => setSubmitStatus('idle'), 3000)
@@ -1940,7 +1966,10 @@ function App() {
                             Thanks for reaching out. I'll get back to you soon!
                           </p>
                           <button
-                            onClick={() => setSubmitStatus('idle')}
+                            onClick={() => {
+                              setSubmitStatus('idle')
+                              setEmailError('')
+                            }}
                             style={{
                               marginTop: '1rem',
                               padding: '0.75rem 1.5rem',
@@ -1979,12 +2008,23 @@ function App() {
                           </label>
                           <input
                             type="email"
-                            className="form-input"
+                            className={`form-input ${emailError ? 'form-input-error' : ''}`}
                             placeholder="Where should I follow up?"
                             value={formData.email}
-                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                            onChange={(e) => handleEmailChange(e.target.value)}
+                            onBlur={handleEmailBlur}
                             required
                           />
+                          {emailError && (
+                            <p style={{
+                              color: 'var(--accent-red)',
+                              fontSize: 'var(--font-size-caption)',
+                              marginTop: '0.5rem',
+                              marginBottom: 0
+                            }}>
+                              {emailError}
+                            </p>
+                          )}
                         </div>
                         <div className="form-field">
                           <label className="form-label">

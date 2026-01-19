@@ -1124,7 +1124,7 @@ a.action-button:focus .action-arrow {
   font-weight: var(--font-weight-normal);
   font-family: var(--font-primary);
   color: var(--text-primary);
-  transition: border-color 0.2s ease;
+  transition: border-color 0.3s ease-out;
 }
 
 .form-input:focus,
@@ -1132,6 +1132,14 @@ a.action-button:focus .action-arrow {
 .form-select:focus {
   outline: none;
   border-color: var(--text-tertiary);
+}
+
+.form-input-error {
+  border-color: var(--accent-red);
+}
+
+.form-input-error:focus {
+  border-color: var(--accent-red);
 }
 
 .form-input::placeholder,
@@ -1880,6 +1888,15 @@ a.action-button:focus .action-arrow {
 .robot-theme .form-select:focus {
   outline: 1px solid var(--text-primary);
   border-color: var(--text-primary);
+}
+
+.robot-theme .form-input-error {
+  border-color: var(--accent-red);
+}
+
+.robot-theme .form-input-error:focus {
+  outline: 1px solid var(--accent-red);
+  border-color: var(--accent-red);
 }
 
 
