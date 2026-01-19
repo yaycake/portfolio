@@ -221,6 +221,17 @@
   }
 }
 
+@keyframes dropdown-fade-in-mobile {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
 .menu-item {
   width: 100%;
   padding: 0.875rem 1.25rem;
@@ -609,6 +620,20 @@ a.action-button:focus .action-arrow {
     opacity: 0;
   }
   to {
+    opacity: 1;
+  }
+}
+
+@keyframes celebrate {
+  0% {
+    transform: scale(0) rotate(0deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2) rotate(180deg);
+  }
+  100% {
+    transform: scale(1) rotate(360deg);
     opacity: 1;
   }
 }
@@ -1099,7 +1124,7 @@ a.action-button:focus .action-arrow {
   font-weight: var(--font-weight-normal);
   font-family: var(--font-primary);
   color: var(--text-primary);
-  transition: border-color 0.2s ease;
+  transition: border-color 0.3s ease-out;
 }
 
 .form-input:focus,
@@ -1107,6 +1132,14 @@ a.action-button:focus .action-arrow {
 .form-select:focus {
   outline: none;
   border-color: var(--text-tertiary);
+}
+
+.form-input-error {
+  border-color: var(--accent-red);
+}
+
+.form-input-error:focus {
+  border-color: var(--accent-red);
 }
 
 .form-input::placeholder,
@@ -1160,15 +1193,20 @@ a.action-button:focus .action-arrow {
   font-weight: var(--font-weight-medium);
   font-family: var(--font-primary);
   cursor: pointer;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.3s ease-out;
 }
 
-.form-submit-button:hover {
+.form-submit-button:hover:not(:disabled) {
   opacity: 0.9;
 }
 
-.form-submit-button:active {
+.form-submit-button:active:not(:disabled) {
   opacity: 0.8;
+}
+
+.form-submit-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 @media (max-width: 768px) {
@@ -1489,10 +1527,14 @@ a.action-button:focus .action-arrow {
   }
 
   .menu-dropdown {
+    position: fixed;
+    top: 4.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    right: auto;
     width: calc(100vw - 2rem);
-    right: 1rem;
-    left: auto;
-    max-width: none;
+    max-width: 360px;
+    animation: dropdown-fade-in-mobile 0.2s ease;
   }
 
   .overlay-header {
@@ -1846,6 +1888,15 @@ a.action-button:focus .action-arrow {
 .robot-theme .form-select:focus {
   outline: 1px solid var(--text-primary);
   border-color: var(--text-primary);
+}
+
+.robot-theme .form-input-error {
+  border-color: var(--accent-red);
+}
+
+.robot-theme .form-input-error:focus {
+  outline: 1px solid var(--accent-red);
+  border-color: var(--accent-red);
 }
 
 

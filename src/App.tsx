@@ -82,6 +82,10 @@ function App() {
   const [theme, setTheme] = useState<'light' | 'dark' | 'robot'>('dark')
   const [showDarkModeTooltip, setShowDarkModeTooltip] = useState(false)
   const [hoveredTheme, setHoveredTheme] = useState<string | null>(null)
+  const [formData, setFormData] = useState({ email: '', message: '', interest: '' })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
+  const [emailError, setEmailError] = useState('')
 
   const title = "Hi, I'm Grace Yang"
   const description = <>Cross-functional product designer combining design and code to craft AI-driven, user-friendly products.<br /><br />I prototype rapidly, validate with real users, and achieve measurable results—leading to increased engagement, streamlined workflows, and sleek interfaces.</>
@@ -329,6 +333,66 @@ function App() {
     }, 350) // Half of transition duration for fade-out
   }
 
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return emailRegex.test(email)
+  }
+
+  const handleEmailChange = (email: string) => {
+    setFormData({ ...formData, email })
+    
+    // Clear error when user starts typing
+    if (emailError) {
+      setEmailError('')
+    }
+  }
+
+  const handleEmailBlur = () => {
+    // Only validate if email has content
+    if (formData.email && !validateEmail(formData.email)) {
+      setEmailError('Please enter a valid email address')
+    }
+  }
+
+  const handleContactSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    
+    // Validate email before submission
+    if (!validateEmail(formData.email)) {
+      setEmailError('Please enter a valid email address')
+      return
+    }
+
+    setIsSubmitting(true)
+    setSubmitStatus('idle')
+    setEmailError('')
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+
+      if (response.ok) {
+        setSubmitStatus('success')
+        setFormData({ email: '', message: '', interest: '' })
+        setEmailError('')
+      } else {
+        setSubmitStatus('error')
+        setTimeout(() => setSubmitStatus('idle'), 3000)
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error)
+      setSubmitStatus('error')
+      setTimeout(() => setSubmitStatus('idle'), 3000)
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
   useEffect(() => {
     // Smoothly reveal entire landing content as one unified gradient wipe
     const duration = 3000 // Calm, wellness-like reveal
@@ -424,6 +488,20 @@ function App() {
     if (isMenuOpen) {
       document.addEventListener('mousedown', handleClickOutside)
       return () => document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [isMenuOpen])
+
+  // Disable scroll when menu is open
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+
+    // Cleanup on unmount
+    return () => {
+      document.body.style.overflow = ''
     }
   }, [isMenuOpen])
 
@@ -1854,7 +1932,73 @@ function App() {
                           Contact Me
                         </span>
                       </h2>
-                      <form className="contact-form">
+                      {submitStatus === 'success' ? (
+                        <div style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          minHeight: '400px',
+                          gap: '2rem',
+                          opacity: 0,
+                          animation: 'fade-in 0.6s ease-out forwards'
+                        }}>
+                          <div style={{
+                            fontSize: '4rem',
+                            animation: 'celebrate 0.6s ease-out'
+                          }}>
+                            🎉
+                          </div>
+                          <h3 style={{
+                            fontSize: 'var(--font-size-h1)',
+                            fontWeight: 'var(--font-weight-bold)',
+                            color: 'var(--text-primary)',
+                            margin: 0
+                          }}>
+                            Message sent!
+                          </h3>
+                          <p style={{
+                            fontSize: 'var(--font-size-body)',
+                            color: 'var(--text-secondary)',
+                            margin: 0,
+                            textAlign: 'center'
+                          }}>
+                            Thanks for reaching out. I'll get back to you soon!
+                          </p>
+                          <button
+                            onClick={() => {
+                              setSubmitStatus('idle')
+                              setEmailError('')
+                            }}
+                            style={{
+                              marginTop: '1rem',
+                              padding: '0.75rem 1.5rem',
+                              background: 'transparent',
+                              border: '1px solid var(--border-primary)',
+                              color: 'var(--text-secondary)',
+                              fontSize: 'var(--font-size-body-small)',
+                              fontWeight: 'var(--font-weight-normal)',
+                              fontFamily: 'var(--font-primary)',
+                              borderRadius: '0.5rem',
+                              cursor: 'pointer',
+                              transition: 'all 0.3s ease-out'
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.background = 'var(--bg-secondary)'
+                              e.currentTarget.style.borderColor = 'var(--border-secondary)'
+                              e.currentTarget.style.color = 'var(--text-primary)'
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.background = 'transparent'
+                              e.currentTarget.style.borderColor = 'var(--border-primary)'
+                              e.currentTarget.style.color = 'var(--text-secondary)'
+                            }}
+                          >
+                            Send another message
+                          </button>
+                        </div>
+                      ) : (
+                        <form className="contact-form" onSubmit={handleContactSubmit}>
                         <div className="form-field">
                           <label className="form-label">
                             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1864,9 +2008,23 @@ function App() {
                           </label>
                           <input
                             type="email"
-                            className="form-input"
+                            className={`form-input ${emailError ? 'form-input-error' : ''}`}
                             placeholder="Where should I follow up?"
+                            value={formData.email}
+                            onChange={(e) => handleEmailChange(e.target.value)}
+                            onBlur={handleEmailBlur}
+                            required
                           />
+                          {emailError && (
+                            <p style={{
+                              color: 'var(--accent-red)',
+                              fontSize: 'var(--font-size-caption)',
+                              marginTop: '0.5rem',
+                              marginBottom: 0
+                            }}>
+                              {emailError}
+                            </p>
+                          )}
                         </div>
                         <div className="form-field">
                           <label className="form-label">
@@ -1879,6 +2037,9 @@ function App() {
                             className="form-textarea"
                             placeholder="What's up? Ask me anything"
                             rows={5}
+                            value={formData.message}
+                            onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                            required
                           />
                         </div>
                         <div className="form-field">
@@ -1890,7 +2051,11 @@ function App() {
                             How did you find me?
                           </label>
                           <div className="form-select-wrapper">
-                            <select className="form-select">
+                            <select 
+                              className="form-select"
+                              value={formData.interest}
+                              onChange={(e) => setFormData({ ...formData, interest: e.target.value })}
+                            >
                               <option value="">This would be helpful to know</option>
                               <option value="linkedin">LinkedIn</option>
                               <option value="twitter">Twitter</option>
@@ -1904,12 +2069,22 @@ function App() {
                             </svg>
                           </div>
                         </div>
+                        {submitStatus === 'error' && (
+                          <p style={{ color: 'var(--accent-red)', marginBottom: '1rem' }}>
+                            Failed to send message. Please try again.
+                          </p>
+                        )}
                         <div className="form-actions">
-                          <button type="submit" className="form-submit-button">
-                            Send
+                          <button 
+                            type="submit" 
+                            className="form-submit-button"
+                            disabled={isSubmitting}
+                          >
+                            {isSubmitting ? 'Sending...' : 'Send'}
                           </button>
                         </div>
                       </form>
+                      )}
                     </div>
                   </div>
                 )
