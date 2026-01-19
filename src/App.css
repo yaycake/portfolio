@@ -119,6 +119,7 @@
   display: flex;
   gap: 0.5rem;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .mode-button {
@@ -153,6 +154,36 @@
   background-color: #ffffff;
   border-color: #ffffff;
   color: #000000;
+}
+
+.mode-button svg {
+  color: #ffffff;
+}
+
+.mode-button svg path {
+  fill: #ffffff !important;
+  stroke: #ffffff !important;
+}
+
+.mode-button svg * {
+  fill: #ffffff !important;
+  stroke: #ffffff !important;
+  color: #ffffff !important;
+}
+
+.mode-button.active svg {
+  color: #000000;
+}
+
+.mode-button.active svg path {
+  fill: #000000 !important;
+  stroke: #000000 !important;
+}
+
+.mode-button.active svg * {
+  fill: #000000 !important;
+  stroke: #000000 !important;
+  color: #000000 !important;
 }
 
 .mode-tooltip {

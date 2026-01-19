@@ -26,7 +26,15 @@ import SparkleLine from './assets/icons/sparkle-line.svg?react'
 import SparkleSolid from './assets/icons/sparkle-solid.svg?react'
 import CaretDownLine from './assets/icons/caretdown-line.svg?react'
 import MoonStarsFill from './assets/icons/moon-stars-fill.svg?react'
+import MoonStarsLine from './assets/icons/moon-stars-line.svg?react'
 import SunLine from './assets/icons/sun-line.svg?react'
+import SunFill from './assets/icons/sun-fill.svg?react'
+import ButterflyFill from './assets/icons/butterfly-fill.svg?react'
+import ButterflyLine from './assets/icons/butterfly-line.svg?react'
+import AlienFill from './assets/icons/alien-fill.svg?react'
+import AlienLine from './assets/icons/alien-line.svg?react'
+import RobotFill from './assets/icons/robot-fill.svg?react'
+import RobotLine from './assets/icons/robot-line.svg?react'
 
 function App() {
   const [titleReveal, setTitleReveal] = useState(0)
@@ -47,8 +55,9 @@ function App() {
   const [overlayContentReveal, setOverlayContentReveal] = useState(0)
   const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [theme, setTheme] = useState<'light' | 'dark'>('dark')
+  const [theme, setTheme] = useState<'light' | 'dark' | 'butterfly' | 'alien' | 'robot'>('dark')
   const [showDarkModeTooltip, setShowDarkModeTooltip] = useState(false)
+  const [hoveredTheme, setHoveredTheme] = useState<string | null>(null)
 
   const title = "Hi, I'm Grace Yang"
   const description = <>Cross-functional product designer combining design and code to craft AI-driven, user-friendly products.<br /><br />I prototype rapidly, validate with real users, and achieve measurable results—leading to increased engagement, streamlined workflows, and sleek interfaces.</>
@@ -480,11 +489,21 @@ function App() {
                 <button
                   className={`mode-button ${theme === 'dark' ? 'active' : ''}`}
                   onClick={() => setTheme('dark')}
-                  onMouseEnter={() => setShowDarkModeTooltip(true)}
-                  onMouseLeave={() => setShowDarkModeTooltip(false)}
+                  onMouseEnter={() => {
+                    setHoveredTheme('dark')
+                    setShowDarkModeTooltip(true)
+                  }}
+                  onMouseLeave={() => {
+                    setHoveredTheme(null)
+                    setShowDarkModeTooltip(false)
+                  }}
                   aria-label="Dark mode"
                 >
-                  <MoonStarsFill width="16" height="16" fill="currentColor" />
+                  {(theme === 'dark' || hoveredTheme === 'dark') ? (
+                    <MoonStarsFill width="16" height="16" fill="currentColor" />
+                  ) : (
+                    <MoonStarsLine width="16" height="16" fill="currentColor" />
+                  )}
                   {showDarkModeTooltip && (
                     <div className="mode-tooltip">dark mode</div>
                   )}
@@ -492,9 +511,54 @@ function App() {
                 <button
                   className={`mode-button ${theme === 'light' ? 'active' : ''}`}
                   onClick={() => setTheme('light')}
+                  onMouseEnter={() => setHoveredTheme('light')}
+                  onMouseLeave={() => setHoveredTheme(null)}
                   aria-label="Light mode"
                 >
-                  <SunLine width="16" height="16" fill="currentColor" />
+                  {(theme === 'light' || hoveredTheme === 'light') ? (
+                    <SunFill width="16" height="16" fill="currentColor" />
+                  ) : (
+                    <SunLine width="16" height="16" fill="currentColor" />
+                  )}
+                </button>
+                <button
+                  className={`mode-button ${theme === 'butterfly' ? 'active' : ''}`}
+                  onClick={() => setTheme('butterfly')}
+                  onMouseEnter={() => setHoveredTheme('butterfly')}
+                  onMouseLeave={() => setHoveredTheme(null)}
+                  aria-label="Butterfly theme"
+                >
+                  {(theme === 'butterfly' || hoveredTheme === 'butterfly') ? (
+                    <ButterflyFill width="16" height="16" fill="currentColor" />
+                  ) : (
+                    <ButterflyLine width="16" height="16" fill="currentColor" />
+                  )}
+                </button>
+                <button
+                  className={`mode-button ${theme === 'alien' ? 'active' : ''}`}
+                  onClick={() => setTheme('alien')}
+                  onMouseEnter={() => setHoveredTheme('alien')}
+                  onMouseLeave={() => setHoveredTheme(null)}
+                  aria-label="Alien theme"
+                >
+                  {(theme === 'alien' || hoveredTheme === 'alien') ? (
+                    <AlienFill width="16" height="16" fill="currentColor" />
+                  ) : (
+                    <AlienLine width="16" height="16" fill="currentColor" />
+                  )}
+                </button>
+                <button
+                  className={`mode-button ${theme === 'robot' ? 'active' : ''}`}
+                  onClick={() => setTheme('robot')}
+                  onMouseEnter={() => setHoveredTheme('robot')}
+                  onMouseLeave={() => setHoveredTheme(null)}
+                  aria-label="Robot theme"
+                >
+                  {(theme === 'robot' || hoveredTheme === 'robot') ? (
+                    <RobotFill width="16" height="16" fill="currentColor" />
+                  ) : (
+                    <RobotLine width="16" height="16" fill="currentColor" />
+                  )}
                 </button>
               </div>
             </div>
