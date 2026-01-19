@@ -6,8 +6,6 @@ import VideocamLine from './assets/icons/videocam-line.svg?react'
 import VideocamSolid from './assets/icons/videocam-solid.svg?react'
 import AtomLine from './assets/icons/atom-line.svg?react'
 import AtomSolid from './assets/icons/atom-solid.svg?react'
-import FramecornersLine from './assets/icons/framecorners-line.svg?react'
-import FramecornersSolid from './assets/icons/framecorners-solid.svg?react'
 import BabyLine from './assets/icons/baby-line.svg?react'
 import BabySolid from './assets/icons/baby-solid.svg?react'
 import WechatLine from './assets/icons/wechat-line.svg?react'
@@ -31,6 +29,39 @@ import SunLine from './assets/icons/sun-line.svg?react'
 import SunFill from './assets/icons/sun-fill.svg?react'
 import RobotFill from './assets/icons/robot-fill.svg?react'
 import RobotLine from './assets/icons/robot-line.svg?react'
+
+// Ubisoft project images
+import UbiBanner from './assets/images/ubibanner.png'
+import UbiLucky from './assets/images/ubi_lucky.webp'
+import UbiUI from './assets/images/ubi_ui.webp'
+
+// Skyrock project images
+import SkyrockBanner from './assets/images/skyrock-banner.png'
+import SkyrockFlow from './assets/images/skyrock_flow.webp'
+import SkyrockSummerLaunch from './assets/images/skyrock_summer_launch.webp'
+import SkyrockDigiOps from './assets/images/skyrock-digiops.webp'
+
+// Patlytics project images
+import PatlyticsBanner from './assets/images/patlytics-banner.png'
+import PatlyticsDRGraphic from './assets/images/patlytics-dr-graphic.png'
+import PatlyticsTestimonial from './assets/images/patlytics-testimonial.png'
+import PatlyticsAIProcess from './assets/images/patlytics-ai-process.png'
+
+// Viewabo project images
+import ViewaboBanner from './assets/images/viewabo-banner.png'
+import ViewaboTestimonial from './assets/images/viewab-testimonial.png'
+import ViewaboMobile from './assets/images/viewabo_mobile.png'
+import ViewaboDesktopMobile from './assets/images/viewabo_desktop-mobile.png'
+import ViewaboUICover from './assets/images/viewabo-ui-cover.png'
+
+// ORM Fertility project images
+import OrmMobile from './assets/images/orm-mobile.webp'
+import OrmMockups from './assets/images/orm-mockups.webp'
+import OrmWebapp from './assets/images/orm-webapp.webp'
+
+// A Pure Person project images
+import PurePersonBanner from './assets/images/pureperson_banner.webp'
+import PurePersonSongs from './assets/images/pureperson_songs.webp'
 
 function App() {
   const [landingReveal, setLandingReveal] = useState(0)
@@ -82,15 +113,6 @@ function App() {
       description: "Manage digital operations for STEAM education and camps (& during COVID!)",
       company: "Skyrock",
       duration: "1.5 + years"
-    },
-    {
-      iconColor: '#f97316', // orange
-      icon: (color: string) => <FramecornersLine width="20" height="20" fill={color} />,
-      iconFill: (color: string) => <FramecornersSolid width="20" height="20" fill={color} />,
-      role: "Design & Code",
-      description: "Design & development for Ubisoft Shanghai, ORM Fertility, and more.",
-      company: "Freelance",
-      duration: "10 + years"
     },
     {
       iconColor: '#f472b6', // pink
@@ -606,6 +628,7 @@ function App() {
                 >
                   <h2 className="overlay-section-title">Role & Scope</h2>
                   <p>Zero-to-one design lead for an AI-driven patent platform. I owned the loop: customer discovery → rapid prototyping → ship. Designed role-based, multi-stakeholder workflows; set patterns and decision gates; used generative AI to cut time-to-insight. My focus: keep complexity from becoming clutter—and make the hard parts feel obvious.</p>
+                  <img src={PatlyticsBanner} alt="Patlytics Platform" className="overlay-image" />
                 </div>
 
                 <div 
@@ -646,6 +669,7 @@ function App() {
                     <li>Feasibility spikes with Engineering on ingestion, semantic comparison, and performance; aligned constraints early to de-risk builds.</li>
                     <li>Validation loops using real matters and edge cases; measured time-to-insight, reuse of outputs, and error rates to confirm direction.</li>
                   </ul>
+                  <img src={PatlyticsAIProcess} alt="Patlytics AI Process" className="overlay-image" />
                 </div>
 
                 <div className="overlay-section">
@@ -667,6 +691,7 @@ function App() {
                     <li>Structured, exportable outputs users can cite and reuse; guardrails to steer generative AI rather than accept black-box results.</li>
                     <li>Lightweight design system: components tuned for multi-stakeholder workflows and zero-to-one iteration speed.</li>
                   </ul>
+                  <img src={PatlyticsDRGraphic} alt="Patlytics Design Research" className="overlay-image" />
                 </div>
 
                 <div className="overlay-section">
@@ -679,6 +704,7 @@ function App() {
                     <li>Prompt design is product design; guardrails and interaction patterns matter as much as models.</li>
                     <li>Designing for reuse (structured outputs, exportability) compounds value across matters and teams. This is important for all stakeholders and how they collaborate within their team structures</li>
                   </ul>
+                  <img src={PatlyticsTestimonial} alt="Patlytics Customer Testimonial" className="overlay-image" />
 
                   <h3 className="overlay-subsection-title">Outcomes</h3>
                   <ul className="overlay-list">
@@ -688,6 +714,41 @@ function App() {
                     <li>"You know, it can take tasks that typically take, you know, days or weeks, and you know, make it take one day."</li>
                     <li>"Honestly, I'm looking at [ COMPETITOR ] as a competitor of yours... they say they do the same thing... I like your product better, it looks really well organized and it's a great UI".</li>
                   </ul>
+                </div>
+
+                <div className="overlay-section">
+                  <h2 className="overlay-section-title">See More Details</h2>
+                  <p>
+                    <a 
+                      href="#contact"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        // Close the overlay first
+                        if (document.startViewTransition) {
+                          document.startViewTransition(() => {
+                            setSelectedExperience(null);
+                            setOverlayContentReveal(0);
+                          });
+                        } else {
+                          setSelectedExperience(null);
+                          setOverlayContentReveal(0);
+                        }
+                        // Then navigate to contact after a brief delay to allow overlay to close
+                        setTimeout(() => {
+                          handleActionClick('contact');
+                          // Scroll to contact section after content loads
+                          setTimeout(() => {
+                            const contactSection = document.getElementById('content-contact');
+                            if (contactSection) {
+                              contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            }
+                          }, 300);
+                        }, 100);
+                      }}
+                    >
+                      Contact me
+                    </a> if you'd like additional information about my work at Patlytics.
+                  </p>
                 </div>
               </div>
             )}
@@ -733,7 +794,8 @@ function App() {
                   } as React.CSSProperties}
                 >
                   <h2 className="overlay-section-title">Role & Scope</h2>
-                  <p>Led end-to-end design for a real-time visual support platform and Zendesk integration. Shaped product strategy, defined the service blueprint, and built fast, reliable workflows for high-pressure support contexts. Partnered with engineering on WebRTC constraints, privacy-by-design guardrails, and low-bandwidth resiliency; collaborated with Sales/CS to align UX to measurable outcomes (resolution time, truck rolls, CSAT). Focus: turn messy field issues into clear, actionable evidence with minimal effort for non-technical users.</p>
+                  <p>Led the design of a real-time visual support platform integrated with Zendesk, focusing on the synchronous and asynchronous user experience across agent desktop web apps and end-user mobile devices. Developed product strategy, defined the service blueprint, and created efficient workflows for high-pressure support. Collaborated with engineering on WebRTC constraints and privacy measures, while aligning user experience with key metrics like resolution time and customer satisfaction (CSAT). Goal: simplify complex field issues into actionable insights for non-technical users.</p>
+                  <img src={ViewaboBanner} alt="Viewabo Platform Banner" className="overlay-image" />
                 </div>
 
                 <div 
@@ -744,6 +806,7 @@ function App() {
                 >
                   <h2 className="overlay-section-title">Problem</h2>
                   <p>Most support happens blind: text/email tickets, screenshots, and long back-and-forths. Agents can't see the issue, customers can't describe it, and resolution requires escalations or on-site visits. This drives slow ticket resolution, high operational cost, and frustrated customers—especially in hardware, home services, and field operations where context matters most.</p>
+                  <img src={ViewaboTestimonial} alt="Viewabo Customer Testimonials" className="overlay-image" />
                 </div>
 
                 <div 
@@ -774,6 +837,7 @@ function App() {
                     <li>Rapid hallway tests with agents/customers; time-to-diagnosis and error-rate instrumentation.</li>
                     <li>Service blueprinting across Support, CS, and Ops to align tooling and escalation paths.</li>
                   </ul>
+                  <img src={ViewaboMobile} alt="Viewabo Mobile Interface" className="overlay-image" />
                 </div>
 
                 <div 
@@ -799,6 +863,7 @@ function App() {
                     <li>Low-bandwidth modes: adaptive video quality, snapshot fallback, and resumable sessions.</li>
                     <li>Lightweight design system tuned for field use—robust, legible, and forgiving.</li>
                   </ul>
+                  <img src={ViewaboUICover} alt="Viewabo UI Design System" className="overlay-image" />
                 </div>
 
                 <div 
@@ -809,6 +874,7 @@ function App() {
                 >
                   <h2 className="overlay-section-title">Solution</h2>
                   <p>A streamlined, consent-forward visual support flow: agents send a secure link; customers join without installing an app, pass device checks, and share live video. The UI guides capture with overlays and prompts; agents annotate in real time, attach notes and parts, and generate a post-call summary. All artifacts land in a searchable case timeline that standardizes handoffs and accelerates repeat issues.</p>
+                  <img src={ViewaboDesktopMobile} alt="Viewabo Desktop and Mobile Views" className="overlay-image" />
                 </div>
 
                 <div 
@@ -838,6 +904,232 @@ function App() {
                     <li>"Overall, it takes out the guesswork on trying to figure out that the customer is trying to explain to us. We can literally see what there seeing in Realtime and not have to wait for emails to come in with pictures."</li>
                     <li>"Has helped many inexperienced customer locate components and troubleshoot their PCs"</li>
                   </ul>
+                </div>
+              </div>
+            )}
+
+            {selectedExperience === 2 && (
+              <div className="overlay-project">
+                <div 
+                  className="overlay-header"
+                  style={{ viewTransitionName: `experience-header-2` } as React.CSSProperties}
+                >
+                  <div className="overlay-header-left">
+                    <div 
+                      className="overlay-icon" 
+                      style={{ backgroundColor: experiences[2].iconColor }}
+                    >
+                      {(experiences[2].icon as any)(experiences[2].iconColor)}
+                    </div>
+                    <h1 
+                      className="overlay-title"
+                      style={{ viewTransitionName: `experience-title-2` } as React.CSSProperties}
+                    >
+                      {experiences[2].role}
+                    </h1>
+                  </div>
+                  <div className="overlay-header-right">
+                    <span className="overlay-company">@{experiences[2].company}</span>
+                    <span className="overlay-duration">{experiences[2].duration}</span>
+                  </div>
+                </div>
+                <p 
+                  className="overlay-description"
+                  style={{ 
+                    '--reveal-progress': `${Math.min(overlayContentReveal, 20)}%`
+                  } as React.CSSProperties}
+                >
+                  {experiences[2].description}
+                </p>
+                
+                <div 
+                  className="overlay-section"
+                  style={{ 
+                    '--reveal-progress': `${getOverlaySectionProgress(0, 5)}%`
+                  } as React.CSSProperties}
+                >
+                  <h2 className="overlay-section-title">Role & Scope</h2>
+                  <p>Led website architecture and end-to-end service design for a STEAM education program with a focus on conversion and smooth delivery. Own the funnel from marketing and sales through onboarding and attendance: crafted a high-converting website, mapped cross-functional workflows, and instrumented the digital infrastructure to reduce drop-off. During COVID, drove the pivot to a fully online summer camp experience—cohort scheduling, content packaging, and operational playbooks—so families could enroll and attend with confidence.</p>
+                  <img src={SkyrockBanner} alt="Skyrock Summer Camp Banner" className="overlay-image" />
+                </div>
+
+                <div 
+                  className="overlay-section"
+                  style={{ 
+                    '--reveal-progress': `${getOverlaySectionProgress(1, 5)}%`
+                  } as React.CSSProperties}
+                >
+                  <h2 className="overlay-section-title">Problem</h2>
+                  <p>Families struggled to understand offerings, compare camps, and complete enrollment across fragmented touchpoints (marketing site, forms, emails, payment). COVID also forced an abrupt shift to digital, introducing new friction: unclear schedules, tech setup, access links, and expectations. Without a cohesive funnel and service blueprint, conversion lagged, onboarding was error-prone, and class attendance suffered.</p>
+                  <img src={SkyrockFlow} alt="Skyrock User Flow" className="overlay-image" />
+                </div>
+
+                <div 
+                  className="overlay-section"
+                  style={{ 
+                    '--reveal-progress': `${getOverlaySectionProgress(2, 5)}%`
+                  } as React.CSSProperties}
+                >
+                  <h2 className="overlay-section-title">Discovery</h2>
+                  
+                  <h3 className="overlay-subsection-title">Hypothesis</h3>
+                  <p>If we simplify decision-making on the website (clear value, age/skill filters, transparent schedules) and design a coherent service journey (guided checkout → onboarding steps → class access), we'll increase conversion, reduce pre-class confusion, and improve attendance/engagement—even in a fully online format.</p>
+
+                  <h3 className="overlay-subsection-title">Stakeholders</h3>
+                  <ul className="overlay-list">
+                    <li>Parents/guardians: need clarity on curriculum, age fit, schedule, and price, plus simple enrollment and tech setup.</li>
+                    <li>Students: need a simple, repeatable path to join daily—one tap in, no link or sign‑in confusion, materials ready at the right time.</li>
+                    <li>Sales/Marketing: depend on a persuasive site, lead capture, and attribution to optimize spend.</li>
+                    <li>Operations/Academics: need predictable rosters, automated communications, and reliable class workflows.</li>
+                    <li>Instructors: benefit from standardized lesson kits, cohort info, and ready-to-run tech.</li>
+                  </ul>
+
+                  <h3 className="overlay-subsection-title">Prototyping & methods</h3>
+                  <ul className="overlay-list">
+                    <li>Conversion-focused site prototypes: value propositions, program comparison, filters, and clear CTAs; A/B tests on headlines and page structure.</li>
+                    <li>Funnel instrumentation: UTM tracking, form analytics, and drop-off analysis to prioritize fixes.</li>
+                    <li>Service blueprinting: mapped touchpoints from sign-up to attendance; identified failure points (links, time zones, materials).</li>
+                    <li>Onboarding experiments: automated email sequences, pre-class checklists, and calendar invites; measured open/click/attendance.</li>
+                    <li>Cohort scheduling trials: capacity planning, time-zone friendly slots, and load balancing across instructors.</li>
+                  </ul>
+                </div>
+
+                <div className="overlay-section">
+                  <h2 className="overlay-section-title">Design Craft</h2>
+                  
+                  <h3 className="overlay-subsection-title">Principles</h3>
+                  <ul className="overlay-list">
+                    <li>Make choices easy: clear program tiers, outcomes, and prerequisites.</li>
+                    <li>Reduce anxiety: visible schedules, transparent expectations, and tech readiness guidance.</li>
+                    <li>Consistency beats novelty: repeatable patterns across pages, emails, and class access.</li>
+                  </ul>
+
+                  <h3 className="overlay-subsection-title">Systems & decisions</h3>
+                  <ul className="overlay-list">
+                    <li>Website information architecture built around parent goals: browse by age/interest, compare camps, enroll in fewer clicks.</li>
+                    <li>Enrollment flow: simplified forms, progress indicators, payment clarity, immediate confirmation.</li>
+                    <li>Onboarding kit: automated sequences with calendar invites, access links, materials, and FAQs.</li>
+                    <li>Cohort and schedule system: reliable rosters, reminders, and rescheduling pathways.</li>
+                    <li>Instructor packets: standardized lesson plans, tech checks, and classroom norms.</li>
+                  </ul>
+                  <img src={SkyrockDigiOps} alt="Skyrock Digital Operations" className="overlay-image" />
+                </div>
+
+                <div className="overlay-section">
+                  <h2 className="overlay-section-title">Solution</h2>
+                  <p>A conversion-first website paired with a robust service blueprint. The site clarifies offerings, streamlines enrollment, and sets expectations. Post-purchase, families receive a guided onboarding sequence with calendar invites, tech setup instructions, access links, and materials. Cohorts are scheduled to maximize attendance; instructors receive standardized kits. The result is a coherent journey from discovery to attendance, with instrumentation to monitor and improve every step.</p>
+                  <img src={SkyrockSummerLaunch} alt="Skyrock Summer Camp Launch" className="overlay-image" />
+                </div>
+
+                <div className="overlay-section">
+                  <h2 className="overlay-section-title">Learnings</h2>
+                  <ul className="overlay-list">
+                    <li>Clarity converts: program comparison and transparent schedules outperform clever copy.</li>
+                    <li>Service design is product: onboarding and access flows determine perceived quality as much as curriculum.</li>
+                    <li>Automations need empathy: reminders and checklists should reduce stress, not add noise.</li>
+                    <li>Standardization scales: reusable packets and templates stabilize operations across cohorts and instructors.</li>
+                  </ul>
+                </div>
+
+                <div className="overlay-section">
+                  <h2 className="overlay-section-title">Outcomes</h2>
+                  <ul className="overlay-list">
+                    <li>Increased website conversion and reduced form drop-off with clearer IA and CTAs.</li>
+                    <li>Smooth operations through automated onboarding, calendar invites, and tech-readiness guidance.</li>
+                    <li>Fewer support tickets related to access links, schedules, and materials.</li>
+                    <li>Positive parent feedback on clarity of offerings and smooth pre-class experience.</li>
+                    <li>We successfully had the most early bird sign ups for summer camp in Skyrock history.</li>
+                  </ul>
+                </div>
+              </div>
+            )}
+
+            {selectedExperience === 3 && (
+              <div className="overlay-project">
+                <div 
+                  className="overlay-header"
+                  style={{ viewTransitionName: `experience-header-3` } as React.CSSProperties}
+                >
+                  <div className="overlay-header-left">
+                    <div 
+                      className="overlay-icon" 
+                      style={{ backgroundColor: experiences[3].iconColor }}
+                    >
+                      {(experiences[3].icon as any)(experiences[3].iconColor)}
+                    </div>
+                    <h1 
+                      className="overlay-title"
+                      style={{ viewTransitionName: `experience-title-3` } as React.CSSProperties}
+                    >
+                      {experiences[3].role}
+                    </h1>
+                  </div>
+                  <div className="overlay-header-right">
+                    <span className="overlay-company">@{experiences[3].company}</span>
+                    <span className="overlay-duration">{experiences[3].duration}</span>
+                  </div>
+                </div>
+                <p 
+                  className="overlay-description"
+                  style={{ 
+                    '--reveal-progress': `${Math.min(overlayContentReveal, 20)}%`
+                  } as React.CSSProperties}
+                >
+                  {experiences[3].description}
+                </p>
+                
+                <div 
+                  className="overlay-section"
+                  style={{ 
+                    '--reveal-progress': `${getOverlaySectionProgress(0, 5)}%`
+                  } as React.CSSProperties}
+                >
+                  <h2 className="overlay-section-title">Role & Scope</h2>
+                  <p>Mini Program + Web Development for ORM Fertility. Designed and developed a WeChat Mini Program to help ORM Fertility establish their marketing presence in Shanghai and take ownership over their community in the WeChat ecosystem.</p>
+                  <img src={OrmMobile} alt="ORM Fertility Mobile" className="overlay-image" />
+                </div>
+
+                <div 
+                  className="overlay-section"
+                  style={{ 
+                    '--reveal-progress': `${getOverlaySectionProgress(1, 5)}%`
+                  } as React.CSSProperties}
+                >
+                  <h2 className="overlay-section-title">Problem</h2>
+                  <p>ORM Fertility was laying down roots in Shanghai; as they looked to grow their marketing arm independent of local partners, they wanted a way to take ownership over their community. They needed a direct way to market their services in the WeChat ecosystem that would significantly decrease friction for people to share information on ORM as well as provide valuable insights and analytics.</p>
+                </div>
+
+                <div 
+                  className="overlay-section"
+                  style={{ 
+                    '--reveal-progress': `${getOverlaySectionProgress(2, 5)}%`
+                  } as React.CSSProperties}
+                >
+                  <h2 className="overlay-section-title">Product Design</h2>
+                  <p>ORM Fertility already had a WeChat Official Account, so I had to work with them to figure out how the mini program would fit in with their current marketing workflow and team resources. We went through a discovery phase, where I provided examples of different information-heavy mini programs and illustrated certain strengths and weaknesses of the mini program framework. We coasted through three user experience design rounds and user interaction design rounds.</p>
+                  <img src={OrmMockups} alt="ORM Fertility Mockups" className="overlay-image" />
+                </div>
+
+                <div 
+                  className="overlay-section"
+                  style={{ 
+                    '--reveal-progress': `${getOverlaySectionProgress(3, 5)}%`
+                  } as React.CSSProperties}
+                >
+                  <h2 className="overlay-section-title">Front End Development</h2>
+                  <p>One of the most exciting phases of the project is where I take my designs and step into the front-end developer role to bring them to life. Working in the WeChat IDE, the framework has evolved with "React" features, so I organized all the front-end code into functional and higher-order components.</p>
+                  <img src={OrmWebapp} alt="ORM Fertility Web App" className="overlay-image" />
+                </div>
+
+                <div 
+                  className="overlay-section"
+                  style={{ 
+                    '--reveal-progress': `${getOverlaySectionProgress(4, 5)}%`
+                  } as React.CSSProperties}
+                >
+                  <h2 className="overlay-section-title">Skills & Tools</h2>
+                  <p><strong>Skills:</strong> Product design, user interaction design, user experience design, WeChat development, front end development</p>
+                  <p><strong>Tools:</strong> WXML, WXSS, WeChat components, Ruby on Rails, HTML, CSS, Javascript</p>
                 </div>
               </div>
             )}
@@ -883,7 +1175,7 @@ function App() {
                   } as React.CSSProperties}
                 >
                   <h2 className="overlay-section-title">Role & Scope</h2>
-                  <p>Mini Program + Web Development for ORM Fertility. Designed and developed a WeChat Mini Program to help ORM Fertility establish their marketing presence in Shanghai and take ownership over their community in the WeChat ecosystem.</p>
+                  <p>Mini Program + Web Design for Ubisoft Shanghai's ChinaJoy Mini Program. Worked with the Ubisoft Shanghai creative, marketing, and mobile development teams to draft UX workflows, design UI elements, and provide front-end consulting for the WeChat framework.</p>
                 </div>
 
                 <div 
@@ -892,8 +1184,10 @@ function App() {
                     '--reveal-progress': `${getOverlaySectionProgress(1, 6)}%`
                   } as React.CSSProperties}
                 >
-                  <h2 className="overlay-section-title">Problem</h2>
-                  <p>ORM Fertility was laying down roots in Shanghai; as they looked to grow their marketing arm independent of local partners, they wanted a way to take ownership over their community. They needed a direct way to market their services in the WeChat ecosystem that would significantly decrease friction for people to share information on ORM as well as provide valuable insights and analytics.</p>
+                  <h2 className="overlay-section-title">Context</h2>
+                  <p>Ubisoft Shanghai is the second largest Chinese development studio, and Ubisoft's second largest studio behind Ubisoft Montreal. Held annually in Shanghai, China, ChinaJoy or China Digital Entertainment Expo & Conference is a digital entertainment expo and the largest gaming and digital entertainment exhibition held in China and Asia.</p>
+                  <p>ChinaJoy boasted 340,000+ visitors from all over the world. WeChat is the social, financial, and cultural infrastructure that everyday China relies on. With the advent of WeChat Mini Programs, Ubisoft Shanghai shared a vision of a community united through the excitement and passion of China Joy.</p>
+                  <img src={UbiBanner} alt="Ubisoft ChinaJoy Banner" className="overlay-image" />
                 </div>
 
                 <div 
@@ -902,8 +1196,16 @@ function App() {
                     '--reveal-progress': `${getOverlaySectionProgress(2, 6)}%`
                   } as React.CSSProperties}
                 >
-                  <h2 className="overlay-section-title">Product Design</h2>
-                  <p>ORM Fertility already had a WeChat Official Account, so I had to work with them to figure out how the mini program would fit in with their current marketing workflow and team resources. We went through a discovery phase, where I provided examples of different information-heavy mini programs and illustrated certain strengths and weaknesses of the mini program framework. We coasted through three user experience design rounds and user interaction design rounds.</p>
+                  <h2 className="overlay-section-title">The User Stories</h2>
+                  <p>Users would be able to:</p>
+                  <ul className="overlay-list">
+                    <li>Book demos</li>
+                    <li>Enter in lucky draw lotteries for limited edition prizes</li>
+                    <li>Share event posts</li>
+                    <li>Look up and stream scheduled live shows and other events</li>
+                  </ul>
+                  <p>As for Ubisoft Shanghai, they would be able to collect information on attendees, and be able to reach out and connect the China community to their official WeChat page.</p>
+                  <img src={UbiLucky} alt="Ubisoft Lucky Draw Feature" className="overlay-image" />
                 </div>
 
                 <div 
@@ -912,8 +1214,8 @@ function App() {
                     '--reveal-progress': `${getOverlaySectionProgress(3, 6)}%`
                   } as React.CSSProperties}
                 >
-                  <h2 className="overlay-section-title">Front End Development</h2>
-                  <p>One of the most exciting phases of the project is where I take my designs and step into the front-end developer role to bring them to life. Working in the WeChat IDE, the framework has evolved with "React" features, so I organized all the front-end code into functional and higher-order components.</p>
+                  <h2 className="overlay-section-title">The Process</h2>
+                  <p>I worked with the Ubisoft Shanghai creative, marketing, and mobile development teams to draft UX workflows, design UI elements, and provide some front-end consulting for the WeChat framework.</p>
                 </div>
 
                 <div 
@@ -922,9 +1224,9 @@ function App() {
                     '--reveal-progress': `${getOverlaySectionProgress(4, 6)}%`
                   } as React.CSSProperties}
                 >
-                  <h2 className="overlay-section-title">Skills & Tools</h2>
-                  <p><strong>Skills:</strong> Product design, user interaction design, user experience design, WeChat development, front end development</p>
-                  <p><strong>Tools:</strong> WXML, WXSS, WeChat components, Ruby on Rails, HTML, CSS, Javascript</p>
+                  <h2 className="overlay-section-title">The Deliverables</h2>
+                  <p>I provided a full PDF UX map with labelled Sketch artboards & 3 edit rounds. I also provided all UI components and unique graphics specific to the Mini Program (i.e. icons for each of Ubisoft's games, the lucky draw backdrop).</p>
+                  <img src={UbiUI} alt="Ubisoft UI Components" className="overlay-image" />
                 </div>
 
                 <div 
@@ -933,8 +1235,23 @@ function App() {
                     '--reveal-progress': `${getOverlaySectionProgress(5, 6)}%`
                   } as React.CSSProperties}
                 >
-                  <h2 className="overlay-section-title">Status</h2>
-                  <p>Currently, the project is in the process of being deployed onto Chinese servers beyond the Great Firewall.</p>
+                  <h2 className="overlay-section-title">Skills & Tools</h2>
+                  <p><strong>Skills:</strong> Product design, WeChat development</p>
+                  <p><strong>Tools:</strong> Sketch, Figma, WeChat IDE, HTML, CSS, Javascript</p>
+                </div>
+
+                <div 
+                  className="overlay-section"
+                  style={{ 
+                    '--reveal-progress': `${getOverlaySectionProgress(6, 7)}%`
+                  } as React.CSSProperties}
+                >
+                  <h2 className="overlay-section-title">Press Coverage</h2>
+                  <ul className="overlay-list">
+                    <li><a href="https://mp.weixin.qq.com/s/OhuxV5_XkIEuES5QgS2Vyg" target="_blank" rel="noopener noreferrer">Ubisoft Is Taking China Joy By Storm - WeChat Global</a></li>
+                    <li><a href="http://blog.ubi.com/en-GB/ubisoft-brings-exciting-line-chinajoy/" target="_blank" rel="noopener noreferrer">Ubisoft Brings Exciting Line Up To ChinaJoy</a></li>
+                    <li><a href="https://www.douyu.com/cms/new_list/201808/02/8373.shtml" target="_blank" rel="noopener noreferrer">Betta × Ubisoft ChinaJoy: Fish Le Direct Leads You To The New World Of Games</a></li>
+                  </ul>
                 </div>
               </div>
             )}
@@ -976,130 +1293,12 @@ function App() {
                 <div 
                   className="overlay-section"
                   style={{ 
-                    '--reveal-progress': `${getOverlaySectionProgress(0, 6)}%`
-                  } as React.CSSProperties}
-                >
-                  <h2 className="overlay-section-title">Role & Scope</h2>
-                  <p>Mini Program + Web Design for Ubisoft Shanghai's ChinaJoy Mini Program. Worked with the Ubisoft Shanghai creative, marketing, and mobile development teams to draft UX workflows, design UI elements, and provide front-end consulting for the WeChat framework.</p>
-                </div>
-
-                <div 
-                  className="overlay-section"
-                  style={{ 
-                    '--reveal-progress': `${getOverlaySectionProgress(1, 6)}%`
-                  } as React.CSSProperties}
-                >
-                  <h2 className="overlay-section-title">Context</h2>
-                  <p>Ubisoft Shanghai is the second largest Chinese development studio, and Ubisoft's second largest studio behind Ubisoft Montreal. Held annually in Shanghai, China, ChinaJoy or China Digital Entertainment Expo & Conference is a digital entertainment expo and the largest gaming and digital entertainment exhibition held in China and Asia.</p>
-                  <p>ChinaJoy boasted 340,000+ visitors from all over the world. WeChat is the social, financial, and cultural infrastructure that everyday China relies on. With the advent of WeChat Mini Programs, Ubisoft Shanghai shared a vision of a community united through the excitement and passion of China Joy.</p>
-                </div>
-
-                <div 
-                  className="overlay-section"
-                  style={{ 
-                    '--reveal-progress': `${getOverlaySectionProgress(2, 6)}%`
-                  } as React.CSSProperties}
-                >
-                  <h2 className="overlay-section-title">The User Stories</h2>
-                  <p>Users would be able to:</p>
-                  <ul className="overlay-list">
-                    <li>Book demos</li>
-                    <li>Enter in lucky draw lotteries for limited edition prizes</li>
-                    <li>Share event posts</li>
-                    <li>Look up and stream scheduled live shows and other events</li>
-                  </ul>
-                  <p>As for Ubisoft Shanghai, they would be able to collect information on attendees, and be able to reach out and connect the China community to their official WeChat page.</p>
-                </div>
-
-                <div 
-                  className="overlay-section"
-                  style={{ 
-                    '--reveal-progress': `${getOverlaySectionProgress(3, 6)}%`
-                  } as React.CSSProperties}
-                >
-                  <h2 className="overlay-section-title">The Process</h2>
-                  <p>I worked with the Ubisoft Shanghai creative, marketing, and mobile development teams to draft UX workflows, design UI elements, and provide some front-end consulting for the WeChat framework.</p>
-                </div>
-
-                <div 
-                  className="overlay-section"
-                  style={{ 
-                    '--reveal-progress': `${getOverlaySectionProgress(4, 6)}%`
-                  } as React.CSSProperties}
-                >
-                  <h2 className="overlay-section-title">The Deliverables</h2>
-                  <p>I provided a full PDF UX map with labelled Sketch artboards & 3 edit rounds. I also provided all UI components and unique graphics specific to the Mini Program (i.e. icons for each of Ubisoft's games, the lucky draw backdrop).</p>
-                </div>
-
-                <div 
-                  className="overlay-section"
-                  style={{ 
-                    '--reveal-progress': `${getOverlaySectionProgress(5, 6)}%`
-                  } as React.CSSProperties}
-                >
-                  <h2 className="overlay-section-title">Skills & Tools</h2>
-                  <p><strong>Skills:</strong> Product design, WeChat development</p>
-                  <p><strong>Tools:</strong> Sketch, Figma, WeChat IDE, HTML, CSS, Javascript</p>
-                </div>
-
-                <div 
-                  className="overlay-section"
-                  style={{ 
-                    '--reveal-progress': `${getOverlaySectionProgress(6, 7)}%`
-                  } as React.CSSProperties}
-                >
-                  <h2 className="overlay-section-title">Coverage</h2>
-                  <ul className="overlay-list">
-                    <li>Ubisoft Is Taking China Joy By Storm-- WeChat Global</li>
-                    <li>Ubisoft Brings Exciting Line Up To Chinajoy</li>
-                    <li>Betta X Ubisoft China Joy Fish Le Zhi Leads You To The New World Of Games</li>
-                  </ul>
-                </div>
-              </div>
-            )}
-
-            {selectedExperience === 6 && (
-              <div className="overlay-project">
-                <div 
-                  className="overlay-header"
-                  style={{ viewTransitionName: `experience-header-6` } as React.CSSProperties}
-                >
-                  <div className="overlay-header-left">
-                    <div 
-                      className="overlay-icon" 
-                      style={{ backgroundColor: experiences[6].iconColor }}
-                    >
-                      {(experiences[6].icon as any)(experiences[6].iconColor)}
-                    </div>
-                    <h1 
-                      className="overlay-title"
-                      style={{ viewTransitionName: `experience-title-6` } as React.CSSProperties}
-                    >
-                      {experiences[6].role}
-                    </h1>
-                  </div>
-                  <div className="overlay-header-right">
-                    <span className="overlay-company">@{experiences[6].company}</span>
-                    <span className="overlay-duration">{experiences[6].duration}</span>
-                  </div>
-                </div>
-                <p 
-                  className="overlay-description"
-                  style={{ 
-                    '--reveal-progress': `${Math.min(overlayContentReveal, 20)}%`
-                  } as React.CSSProperties}
-                >
-                  {experiences[6].description}
-                </p>
-                
-                <div 
-                  className="overlay-section"
-                  style={{ 
                     '--reveal-progress': `${getOverlaySectionProgress(0, 4)}%`
                   } as React.CSSProperties}
                 >
                   <h2 className="overlay-section-title">Role & Scope</h2>
                   <p>Web Development for A Pure Person album website. Designed and developed an interactive audio-visual website to accompany the release of the Lin Qiang & Guests album, featuring minimal design aligned with the album cover and audio-visual interactivity for each track.</p>
+                  <img src={PurePersonBanner} alt="A Pure Person Album Banner" className="overlay-image" />
                 </div>
 
                 <div 
@@ -1115,6 +1314,7 @@ function App() {
                     <li>A type of audio-visual interactivity for each track</li>
                   </ul>
                   <p>Inspirations included <em>Holodec.world</em>'s website by creative digital design and development agency Bureau Cool. The way the album was designed, however, begged a simpler design for the interactivity. Looking at the fairly minimal design, I proposed a type of audio visualization with the image associated with each track.</p>
+                  <img src={PurePersonSongs} alt="A Pure Person Song List" className="overlay-image" />
                 </div>
 
                 <div 
@@ -1139,7 +1339,18 @@ function App() {
                 >
                   <h2 className="overlay-section-title">The Site</h2>
                   <p>For the soft launch and teaser, the team requested that only certain tracks be available before October 15th, the hard launch of the album.</p>
-                  <p>The project is currently live at apureperson.com.</p>
+                  <p>The project is currently live at <a href="http://www.apureperson.com/" target="_blank" rel="noopener noreferrer">apureperson.com</a>.</p>
+                  <div className="overlay-video">
+                    <iframe
+                      width="100%"
+                      height="415"
+                      src="https://www.youtube.com/embed/fJgNTuNy7iQ"
+                      title="A Pure Person Website Demo"
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    ></iframe>
+                  </div>
                 </div>
 
                 <div 
@@ -1151,6 +1362,23 @@ function App() {
                   <h2 className="overlay-section-title">Skills & Tools</h2>
                   <p><strong>Skills:</strong> Product design, front-end development</p>
                   <p><strong>Tools:</strong> Javascript, HTML, CSS, Sass, GatsbyJS, CurtainsJS, Web Audio API</p>
+                </div>
+
+                <div 
+                  className="overlay-section"
+                  style={{ 
+                    '--reveal-progress': `${getOverlaySectionProgress(5, 6)}%`
+                  } as React.CSSProperties}
+                >
+                  <h2 className="overlay-section-title">Press</h2>
+                  <ul className="overlay-list">
+                    <li><a href="https://www.residentadvisor.net/news/73605" target="_blank" rel="noopener noreferrer">New compilation focuses on Lim Giong, the 'godfather of Taiwanese experimental electronic music' - Resident Advisor</a></li>
+                    <li><a href="https://far-near.media/A-Pure-Person" target="_blank" rel="noopener noreferrer">A Pure Person: Angela Lin in Conversation with Lim Giong - Far Near Media</a></li>
+                    <li><a href="https://mixmag.asia/read/godfather-of-taiwanese-experimental-electronic-music-lim-giong-local" target="_blank" rel="noopener noreferrer">"Godfather of Taiwanese Experimental Electronic Music" Lim Giong is Centered for a New Locally Focused Compilation - Mixmag Asia</a></li>
+                    <li><a href="https://www.electronicbeats.net/a-pure-person-millennium-mambo-is-reinterpreted/" target="_blank" rel="noopener noreferrer">Iconic Track "A Pure Person" From Cult Film Millennium Mambo Is Reinterpreted for Our Melancholic Times - Electronic Beats</a></li>
+                    <li><a href="https://asianpopweekly.com/front-page-banner/a-conversation-with-angela-lin-coming-full-circle-with-a-pure-person-%E5%96%AE%E7%B4%94%E7%9A%84%E4%BA%BA/" target="_blank" rel="noopener noreferrer">A Conversation with Angela Lin – Coming Full Circle With 'A Pure Person 單純的人' - Asian Pop Weekly</a></li>
+                    <li><a href="https://blow.streetvoice.com/51733/" target="_blank" rel="noopener noreferrer">合輯《單純的人》正式發行 許郁瑛、非/密閉空間等人翻玩《千禧曼波》經典旋律 - 吹音樂</a></li>
+                  </ul>
                 </div>
               </div>
             )}
@@ -1702,55 +1930,57 @@ function App() {
             </div>
           </div>
         )}
-        <div className={`suggested-actions ${isDescComplete && clickedActions.length === 0 ? 'visible' : 'hidden'}`}>
-          <div className="actions-list">
-            {suggestedActions.map((action) => {
-                  if ('isLink' in action && action.isLink && 'href' in action && action.href) {
-                    const linkAction = action as { id: string; icon: React.ReactElement; text: string; isLink: boolean; href: string }
+        {isDescComplete && clickedActions.length === 0 && (
+          <div className="suggested-actions visible">
+            <div className="actions-list">
+              {suggestedActions.map((action) => {
+                    if ('isLink' in action && action.isLink && 'href' in action && action.href) {
+                      const linkAction = action as { id: string; icon: React.ReactElement; text: string; isLink: boolean; href: string }
+                      return (
+                        <a
+                          key={action.id}
+                          href={linkAction.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="action-button"
+                          onClick={(e) => {
+                            e.preventDefault()
+                            handleActionClick(action.id, linkAction.isLink, linkAction.href)
+                          }}
+                          onMouseEnter={() => setHoveredAction(action.id)}
+                          onMouseLeave={() => setHoveredAction(null)}
+                        >
+                          <span className="action-icon">
+                            {(hoveredAction === action.id && 'iconFill' in action && (action as any).iconFill) 
+                              ? (action as any).iconFill 
+                              : action.icon}
+                          </span>
+                          <span className="action-text">{action.text}</span>
+                          <span className="action-arrow">→</span>
+                        </a>
+                      )
+                    }
                     return (
-                      <a
+                      <button
                         key={action.id}
-                        href={linkAction.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
                         className="action-button"
-                        onClick={(e) => {
-                          e.preventDefault()
-                          handleActionClick(action.id, linkAction.isLink, linkAction.href)
-                        }}
+                        onClick={() => handleActionClick(action.id)}
                         onMouseEnter={() => setHoveredAction(action.id)}
                         onMouseLeave={() => setHoveredAction(null)}
                       >
                         <span className="action-icon">
-                          {(hoveredAction === action.id && 'iconFill' in action && (action as any).iconFill) 
-                            ? (action as any).iconFill 
+                          {(hoveredAction === action.id && 'iconFill' in action && action.iconFill) 
+                            ? action.iconFill 
                             : action.icon}
                         </span>
                         <span className="action-text">{action.text}</span>
                         <span className="action-arrow">→</span>
-                      </a>
+                      </button>
                     )
-                  }
-                  return (
-                    <button
-                      key={action.id}
-                      className="action-button"
-                      onClick={() => handleActionClick(action.id)}
-                      onMouseEnter={() => setHoveredAction(action.id)}
-                      onMouseLeave={() => setHoveredAction(null)}
-                    >
-                      <span className="action-icon">
-                        {(hoveredAction === action.id && 'iconFill' in action && action.iconFill) 
-                          ? action.iconFill 
-                          : action.icon}
-                      </span>
-                      <span className="action-text">{action.text}</span>
-                      <span className="action-arrow">→</span>
-                    </button>
-                  )
-                })}
+                  })}
+            </div>
           </div>
-        </div>
+        )}
         {clickedActions.length > 0 && availableActions.length > 0 && activeContent.length > 0 && !isLoading && (
           <div className="suggested-actions-bottom">
             <div className="actions-list">
