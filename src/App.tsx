@@ -85,6 +85,7 @@ function App() {
   const [formData, setFormData] = useState({ email: '', message: '', interest: '' })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
+  const [emailError, setEmailError] = useState('')
 
   const title = "Hi, I'm Grace Yang"
   const description = <>Cross-functional product designer combining design and code to craft AI-driven, user-friendly products.<br /><br />I prototype rapidly, validate with real users, and achieve measurable results—leading to increased engagement, streamlined workflows, and sleek interfaces.</>
@@ -349,13 +350,18 @@ function App() {
       if (response.ok) {
         setSubmitStatus('success')
         setFormData({ email: '', message: '', interest: '' })
-        setTimeout(() => setSubmitStatus('idle'), 5000)
+        // After 4 seconds, show option to send another message
+        setTimeout(() => {
+          // Keep success status, user can click to reset
+        }, 4000)
       } else {
         setSubmitStatus('error')
+        setTimeout(() => setSubmitStatus('idle'), 3000)
       }
     } catch (error) {
       console.error('Error submitting form:', error)
       setSubmitStatus('error')
+      setTimeout(() => setSubmitStatus('idle'), 3000)
     } finally {
       setIsSubmitting(false)
     }
@@ -1900,7 +1906,70 @@ function App() {
                           Contact Me
                         </span>
                       </h2>
-                      <form className="contact-form" onSubmit={handleContactSubmit}>
+                      {submitStatus === 'success' ? (
+                        <div style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          minHeight: '400px',
+                          gap: '2rem',
+                          opacity: 0,
+                          animation: 'fade-in 0.6s ease-out forwards'
+                        }}>
+                          <div style={{
+                            fontSize: '4rem',
+                            animation: 'celebrate 0.6s ease-out'
+                          }}>
+                            🎉
+                          </div>
+                          <h3 style={{
+                            fontSize: 'var(--font-size-h1)',
+                            fontWeight: 'var(--font-weight-bold)',
+                            color: 'var(--text-primary)',
+                            margin: 0
+                          }}>
+                            Message sent!
+                          </h3>
+                          <p style={{
+                            fontSize: 'var(--font-size-body)',
+                            color: 'var(--text-secondary)',
+                            margin: 0,
+                            textAlign: 'center'
+                          }}>
+                            Thanks for reaching out. I'll get back to you soon!
+                          </p>
+                          <button
+                            onClick={() => setSubmitStatus('idle')}
+                            style={{
+                              marginTop: '1rem',
+                              padding: '0.75rem 1.5rem',
+                              background: 'transparent',
+                              border: '1px solid var(--border-primary)',
+                              color: 'var(--text-secondary)',
+                              fontSize: 'var(--font-size-body-small)',
+                              fontWeight: 'var(--font-weight-normal)',
+                              fontFamily: 'var(--font-primary)',
+                              borderRadius: '0.5rem',
+                              cursor: 'pointer',
+                              transition: 'all 0.3s ease-out'
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.background = 'var(--bg-secondary)'
+                              e.currentTarget.style.borderColor = 'var(--border-secondary)'
+                              e.currentTarget.style.color = 'var(--text-primary)'
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.background = 'transparent'
+                              e.currentTarget.style.borderColor = 'var(--border-primary)'
+                              e.currentTarget.style.color = 'var(--text-secondary)'
+                            }}
+                          >
+                            Send another message
+                          </button>
+                        </div>
+                      ) : (
+                        <form className="contact-form" onSubmit={handleContactSubmit}>
                         <div className="form-field">
                           <label className="form-label">
                             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1960,11 +2029,6 @@ function App() {
                             </svg>
                           </div>
                         </div>
-                        {submitStatus === 'success' && (
-                          <p style={{ color: 'var(--accent-green)', marginBottom: '1rem' }}>
-                            Message sent! I'll get back to you soon.
-                          </p>
-                        )}
                         {submitStatus === 'error' && (
                           <p style={{ color: 'var(--accent-red)', marginBottom: '1rem' }}>
                             Failed to send message. Please try again.
@@ -1980,6 +2044,7 @@ function App() {
                           </button>
                         </div>
                       </form>
+                      )}
                     </div>
                   </div>
                 )
