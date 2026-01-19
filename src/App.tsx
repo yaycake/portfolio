@@ -37,16 +37,11 @@ import RobotFill from './assets/icons/robot-fill.svg?react'
 import RobotLine from './assets/icons/robot-line.svg?react'
 
 function App() {
-  const [titleReveal, setTitleReveal] = useState(0)
-  const [descReveal, setDescReveal] = useState(0)
-  const [buttonReveals, setButtonReveals] = useState([0, 0, 0, 0])
-  const [isTitleComplete, setIsTitleComplete] = useState(false)
   const [isDescComplete, setIsDescComplete] = useState(false)
   const [activeContent, setActiveContent] = useState<string[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [contentReveals, setContentReveals] = useState<Record<string, number>>({})
   const [clickedActions, setClickedActions] = useState<string[]>([])
-  const [bottomButtonReveals, setBottomButtonReveals] = useState<number[]>([])
   const [selectedExperience, setSelectedExperience] = useState<number | null>(null)
   const [showMoreExperiences, setShowMoreExperiences] = useState(false)
   const [hoveredExperience, setHoveredExperience] = useState<number | null>(null)
@@ -216,9 +211,6 @@ function App() {
     // Add to clicked actions (removes it from available actions list)
     setClickedActions(prev => [...prev, actionId])
     
-    // Reset bottom section states for re-animation
-    setBottomButtonReveals([])
-    
     // Add content block immediately to reserve space and prevent layout shift
     setActiveContent(prev => [...prev, actionId])
     
@@ -271,122 +263,14 @@ function App() {
   }
 
   useEffect(() => {
-    // Smoothly reveal the title from top to bottom
-    const duration = 1800 // 1.8 seconds
-    const startTime = Date.now()
+    // Fade in landing content with CSS transition
+    // Just trigger the loaded state after a short delay
+    const timer = setTimeout(() => {
+      setIsDescComplete(true)
+    }, 100)
 
-    const animate = () => {
-      const elapsed = Date.now() - startTime
-      const rawProgress = Math.min(elapsed / duration, 1)
-      const easedProgress = easeOutCubic(rawProgress) * 100
-      
-      setTitleReveal(easedProgress)
-      
-      if (rawProgress < 1) {
-        requestAnimationFrame(animate)
-      } else {
-        setIsTitleComplete(true)
-      }
-    }
-
-    requestAnimationFrame(animate)
+    return () => clearTimeout(timer)
   }, [])
-
-  useEffect(() => {
-    // Smoothly reveal the description after title is complete
-    if (!isTitleComplete) return
-
-    const duration = 2500 // 2.5 seconds
-    const startTime = Date.now()
-
-    const animate = () => {
-      const elapsed = Date.now() - startTime
-      const rawProgress = Math.min(elapsed / duration, 1)
-      const easedProgress = easeOutCubic(rawProgress) * 100
-      
-      setDescReveal(easedProgress)
-      
-      if (rawProgress < 1) {
-        requestAnimationFrame(animate)
-      } else {
-        setIsDescComplete(true)
-      }
-    }
-
-    requestAnimationFrame(animate)
-  }, [isTitleComplete])
-
-  useEffect(() => {
-    // Cascade the buttons after description is complete
-    if (!isDescComplete) return
-
-    const buttonDuration = 1200 // 1.2 seconds per button
-    const delayBetweenButtons = 300 // 0.3s delay between each button
-
-    suggestedActions.forEach((_, index) => {
-      const delay = index * delayBetweenButtons
-      
-      setTimeout(() => {
-        const startTime = Date.now()
-        
-        const animate = () => {
-          const elapsed = Date.now() - startTime
-          const rawProgress = Math.min(elapsed / buttonDuration, 1)
-          const easedProgress = easeOutCubic(rawProgress) * 100
-          
-          setButtonReveals(prev => {
-            const newReveals = [...prev]
-            newReveals[index] = easedProgress
-            return newReveals
-          })
-          
-          if (rawProgress < 1) {
-            requestAnimationFrame(animate)
-          }
-        }
-
-        requestAnimationFrame(animate)
-      }, delay)
-    })
-  }, [isDescComplete])
-
-  useEffect(() => {
-    // Cascade bottom buttons when content is loaded and there are available actions
-    if (activeContent.length === 0 || availableActions.length === 0 || isLoading) return
-
-    // Initialize button reveals array
-    setBottomButtonReveals(new Array(availableActions.length).fill(0))
-
-    const buttonDuration = 1200
-    const delayBetweenButtons = 300
-
-    // Small delay before starting bottom buttons animation
-    setTimeout(() => {
-      availableActions.forEach((_, index) => {
-        setTimeout(() => {
-          const startTime = Date.now()
-          
-          const animate = () => {
-            const elapsed = Date.now() - startTime
-            const rawProgress = Math.min(elapsed / buttonDuration, 1)
-            const easedProgress = easeOutCubic(rawProgress) * 100
-            
-            setBottomButtonReveals(prev => {
-              const newReveals = [...prev]
-              newReveals[index] = easedProgress
-              return newReveals
-            })
-            
-            if (rawProgress < 1) {
-              requestAnimationFrame(animate)
-            }
-          }
-
-          requestAnimationFrame(animate)
-        }, index * delayBetweenButtons)
-      })
-    }, 500) // Small delay after content starts loading
-  }, [activeContent, availableActions.length, isLoading])
 
   // Handle ESC key to close overlay
   useEffect(() => {
@@ -1246,112 +1130,38 @@ function App() {
           </div>
         </div>
       )}
-      <div className="content">
+      <div 
+        className={`content ${isDescComplete ? 'loaded' : ''}`}
+      >
         <h1 className="title">
-          <span 
-            className="reveal-text"
-            style={{ 
-              '--reveal-progress': `${titleReveal}%`
-            } as React.CSSProperties}
-          >
-            {title}
-          </span>
+          {title}
         </h1>
-        {isTitleComplete && (
-          <p className="description">
-            <span 
-              className="reveal-text"
-              style={{ 
-                '--reveal-progress': `${descReveal}%`
-              } as React.CSSProperties}
-            >
-              {description}
-            </span>
-          </p>
-        )}
+        <p className="description">
+          {description}
+        </p>
         {activeContent.map((contentId) => {
               const contentReveal = contentReveals[contentId] || 0
               
               if (contentId === 'experiences') {
                 return (
-                  <div key={contentId} id={`content-${contentId}`} className="content-block">
+                  <div key={contentId} id={`content-${contentId}`} className={`content-block ${contentReveal > 0 ? 'loaded' : ''}`}>
                     <div className="experiences-content">
                       <h2 className="content-title">
-                        <span 
-                          className="reveal-text"
-                          style={{ 
-                            '--reveal-progress': `${Math.max(0, Math.min(100, (contentReveal / 25) * 100))}%`
-                          } as React.CSSProperties}
-                        >
-                          What have I helped build lately?
-                        </span>
+                        What have I helped build lately?
                       </h2>
                       <p className="content-subtitle">
-                        <span 
-                          className="reveal-text"
-                          style={{ 
-                            '--reveal-progress': `${Math.max(0, Math.min(100, ((contentReveal - 25) / 25) * 100))}%`
-                          } as React.CSSProperties}
-                        >
-                          Here's a quick preview of my latest experiences:
-                        </span>
+                        Here's a quick preview of my latest experiences:
                       </p>
                       <div className="experiences-list">
                         {(showMoreExperiences ? experiences : experiences.slice(0, 4)).map((exp, index) => {
-                          // If showing more experiences and this is one of the newly added items (index >= 4),
-                          // show immediately since content is already loaded
-                          const isNewItem = showMoreExperiences && index >= 4
-                          const shouldShowImmediately = isNewItem
-                          
-                          // Title: 0-25% of contentReveal (completes when contentReveal = 25)
-                          // Description: 25-50% of contentReveal (starts at 25, completes at 50)
-                          // First tile starts at 50% of contentReveal
-                          // Each subsequent tile starts after previous completes
-                          // We'll allocate remaining 50% of contentReveal for all tiles
-                          const numTiles = showMoreExperiences ? experiences.length : 4
-                          const tilesRange = 50 // Remaining 50% of contentReveal for all tiles
-                          const tileProgressRange = tilesRange / numTiles // Progress range per tile
-                          const itemStartPoint = 50 + (index * tileProgressRange)
-                          
-                          // Calculate item progress - each tile gets its own slice of the progress
-                          const itemProgress = shouldShowImmediately 
-                            ? 100 
-                            : contentReveal >= itemStartPoint
-                            ? Math.min(100, ((contentReveal - itemStartPoint) / tileProgressRange) * 100)
-                            : 0
-                          
-                          // Ensure items complete when contentReveal reaches 100%
-                          const finalProgress = shouldShowImmediately || (contentReveal >= 100 && itemProgress > 0)
-                            ? 100 
-                            : itemProgress
-                          
-                          // Calculate cascading progress for elements within this experience item
-                          // Icon starts first, then role at 80%, description at 80% of role, etc.
-                          const iconProgress = finalProgress
-                          const roleStartPoint = 80
-                          const roleProgress = iconProgress >= roleStartPoint
-                            ? Math.min(100, ((iconProgress - roleStartPoint) / (100 - roleStartPoint)) * 100)
-                            : 0
-                          const descStartPoint = 80
-                          const descProgress = roleProgress >= descStartPoint
-                            ? Math.min(100, ((roleProgress - descStartPoint) / (100 - descStartPoint)) * 100)
-                            : 0
-                          const companyStartPoint = 80
-                          const companyProgress = descProgress >= companyStartPoint
-                            ? Math.min(100, ((descProgress - companyStartPoint) / (100 - companyStartPoint)) * 100)
-                            : 0
-                          const durationStartPoint = 80
-                          const durationProgress = companyProgress >= durationStartPoint
-                            ? Math.min(100, ((companyProgress - durationStartPoint) / (100 - durationStartPoint)) * 100)
-                            : 0
-                          
-                          // Ensure all elements complete when item completes
-                          const ensureComplete = (progress: number) => finalProgress >= 100 && progress > 0 ? 100 : progress
-                          
+                          // Show all items, they will fade in with CSS transitions
                           return (
                             <div 
                               key={index}
-                              className="experience-item"
+                              className={`experience-item ${contentReveal > 0 ? 'loaded' : ''}`}
+                              style={{
+                                transitionDelay: `${index * 0.1}s`
+                              } as React.CSSProperties}
                               onClick={() => {
                                 if (document.startViewTransition) {
                                   document.startViewTransition(() => {
@@ -1382,10 +1192,9 @@ function App() {
                               onMouseLeave={() => setHoveredExperience(null)}
                             >
                               <div 
-                                className={`experience-icon ${ensureComplete(iconProgress) >= 100 ? 'fully-revealed' : ''}`}
+                                className="experience-icon"
                                 style={{ 
-                                  backgroundColor: exp.iconColor,
-                                  '--reveal-progress': `${ensureComplete(iconProgress)}%`
+                                  backgroundColor: exp.iconColor
                                 } as React.CSSProperties}
                               >
                                 {(hoveredExperience === index && (exp as any).iconFill) 
@@ -1400,7 +1209,6 @@ function App() {
                                   <h3 
                                     className="experience-role"
                                     style={{ 
-                                      '--reveal-progress': `${ensureComplete(roleProgress)}%`,
                                       viewTransitionName: `experience-title-${index}`
                                     } as React.CSSProperties}
                                   >
@@ -1408,9 +1216,6 @@ function App() {
                                   </h3>
                                   <p 
                                     className="experience-description"
-                                    style={{ 
-                                      '--reveal-progress': `${ensureComplete(descProgress)}%`
-                                    } as React.CSSProperties}
                                   >
                                     {exp.description}
                                   </p>
@@ -1418,17 +1223,11 @@ function App() {
                                 <div className="experience-meta">
                                   <span 
                                     className="experience-company"
-                                    style={{ 
-                                      '--reveal-progress': `${ensureComplete(companyProgress)}%`
-                                    } as React.CSSProperties}
                                   >
                                     {exp.company}
                                   </span>
                                   <span 
                                     className="experience-duration"
-                                    style={{ 
-                                      '--reveal-progress': `${ensureComplete(durationProgress)}%`
-                                    } as React.CSSProperties}
                                   >
                                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                                       <circle cx="7" cy="7" r="6" stroke="currentColor" strokeWidth="1.5"/>
@@ -1542,17 +1341,10 @@ function App() {
                 ]
 
                 return (
-                  <div key={contentId} id={`content-${contentId}`} className="content-block">
+                  <div key={contentId} id={`content-${contentId}`} className={`content-block ${contentReveal > 0 ? 'loaded' : ''}`}>
                     <div className="working-style-content">
                       <h2 className="content-title">
-                        <span
-                          className="reveal-text"
-                          style={{
-                            '--reveal-progress': `${contentReveal}%`
-                          } as React.CSSProperties}
-                        >
-                          My Design Approach
-                        </span>
+                        My Design Approach
                       </h2>
                       <p 
                         className="how-i-work-intro"
@@ -1648,17 +1440,10 @@ function App() {
               
               if (contentId === 'contact') {
                 return (
-                  <div key={contentId} id={`content-${contentId}`} className="content-block">
+                  <div key={contentId} id={`content-${contentId}`} className={`content-block ${contentReveal > 0 ? 'loaded' : ''}`}>
                     <div className="contact-content">
                       <h2 className="content-title">
-                        <span 
-                          className="reveal-text"
-                          style={{ 
-                            '--reveal-progress': `${contentReveal}%`
-                          } as React.CSSProperties}
-                        >
-                          Contact Me
-                        </span>
+                        Contact Me
                       </h2>
                       <form className="contact-form">
                         <div className="form-field">
@@ -1723,17 +1508,10 @@ function App() {
 
               if (contentId === 'impact') {
                 return (
-                  <div key={contentId} id={`content-${contentId}`} className="content-block">
+                  <div key={contentId} id={`content-${contentId}`} className={`content-block ${contentReveal > 0 ? 'loaded' : ''}`}>
                     <div className="impact-content">
                       <h2 className="content-title">
-                        <span 
-                          className="reveal-text"
-                          style={{ 
-                            '--reveal-progress': `${contentReveal}%`
-                          } as React.CSSProperties}
-                        >
-                          My Impact
-                        </span>
+                        My Impact
                       </h2>
                       <div className="testimonial-carousel">
                         <div className="testimonial-cards-wrapper">
@@ -1797,10 +1575,9 @@ function App() {
             </div>
           </div>
         )}
-        {isDescComplete && clickedActions.length === 0 && (
-          <div className="suggested-actions">
-            <div className="actions-list">
-                {suggestedActions.map((action, index) => {
+        <div className={`suggested-actions ${isDescComplete && clickedActions.length === 0 ? 'visible' : 'hidden'}`}>
+          <div className="actions-list">
+            {suggestedActions.map((action) => {
                   if ('isLink' in action && action.isLink && 'href' in action && action.href) {
                     const linkAction = action as { id: string; icon: React.ReactElement; text: string; isLink: boolean; href: string }
                     return (
@@ -1816,9 +1593,6 @@ function App() {
                         }}
                         onMouseEnter={() => setHoveredAction(action.id)}
                         onMouseLeave={() => setHoveredAction(null)}
-                        style={{ 
-                          '--reveal-progress': `${buttonReveals[index]}%`
-                        } as React.CSSProperties}
                       >
                         <span className="action-icon">
                           {(hoveredAction === action.id && 'iconFill' in action && (action as any).iconFill) 
@@ -1837,9 +1611,6 @@ function App() {
                       onClick={() => handleActionClick(action.id)}
                       onMouseEnter={() => setHoveredAction(action.id)}
                       onMouseLeave={() => setHoveredAction(null)}
-                      style={{ 
-                        '--reveal-progress': `${buttonReveals[index]}%`
-                      } as React.CSSProperties}
                     >
                       <span className="action-icon">
                         {(hoveredAction === action.id && 'iconFill' in action && action.iconFill) 
@@ -1851,13 +1622,12 @@ function App() {
                     </button>
                   )
                 })}
-              </div>
           </div>
-        )}
+        </div>
         {clickedActions.length > 0 && availableActions.length > 0 && activeContent.length > 0 && !isLoading && (
           <div className="suggested-actions-bottom">
             <div className="actions-list">
-                {availableActions.filter(action => action.id !== 'linkedin').map((action, index) => {
+                {availableActions.filter(action => action.id !== 'linkedin').map((action) => {
                   if ('isLink' in action && action.isLink && 'href' in action && action.href) {
                     const linkAction = action as { id: string; icon: React.ReactElement; text: string; isLink: boolean; href: string }
                     return (
@@ -1873,9 +1643,6 @@ function App() {
                         }}
                         onMouseEnter={() => setHoveredAction(action.id)}
                         onMouseLeave={() => setHoveredAction(null)}
-                        style={{ 
-                          '--reveal-progress': `${bottomButtonReveals[index] || 0}%`
-                        } as React.CSSProperties}
                       >
                         <span className="action-icon">
                           {(hoveredAction === action.id && 'iconFill' in action && (action as any).iconFill) 
@@ -1894,9 +1661,6 @@ function App() {
                       onClick={() => handleActionClick(action.id)}
                       onMouseEnter={() => setHoveredAction(action.id)}
                       onMouseLeave={() => setHoveredAction(null)}
-                      style={{ 
-                        '--reveal-progress': `${bottomButtonReveals[index] || 0}%`
-                      } as React.CSSProperties}
                     >
                       <span className="action-icon">
                         {(hoveredAction === action.id && 'iconFill' in action && action.iconFill) 

@@ -248,6 +248,12 @@
   padding: 2rem;
   text-align: left;
   color: #ffffff;
+  opacity: 0;
+  transition: opacity 1.2s ease-out;
+}
+
+.content.loaded {
+  opacity: 1;
 }
 
 .title {
@@ -262,7 +268,7 @@
   font-size: 1.125rem;
   font-weight: 400;
   line-height: 1.6;
-  margin: 0 0 2rem 0;
+  margin: 0;
   color: #ffffff;
 }
 
@@ -272,10 +278,28 @@
   padding-bottom: 1.5rem;
   border-top: 1px solid #1f1f1f;
   border-bottom: 1px solid #1f1f1f;
+  contain: layout style;
+  transition: opacity 0.8s ease-out;
+}
+
+.suggested-actions.hidden {
+  display: none;
+}
+
+.suggested-actions.visible {
+  display: block;
+  opacity: 0;
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
 }
 
 .suggested-actions-bottom {
-  margin-top: 4rem;
+  margin-top: 1.5rem;
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
   border-top: 1px solid #1f1f1f;
@@ -311,33 +335,6 @@
   border-radius: 0.5rem;
   transition: all 0.2s ease;
   position: relative;
-  --reveal-edge: var(--reveal-progress);
-  --fade-distance: 25%;
-  mask-image: linear-gradient(
-    to bottom right,
-    black 0%,
-    black calc(var(--reveal-edge) - var(--fade-distance)),
-    rgba(0, 0, 0, 0.9) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.9)),
-    rgba(0, 0, 0, 0.7) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.7)),
-    rgba(0, 0, 0, 0.5) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.5)),
-    rgba(0, 0, 0, 0.3) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.3)),
-    rgba(0, 0, 0, 0.1) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.1)),
-    transparent var(--reveal-edge),
-    transparent 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    to bottom right,
-    black 0%,
-    black calc(var(--reveal-edge) - var(--fade-distance)),
-    rgba(0, 0, 0, 0.9) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.9)),
-    rgba(0, 0, 0, 0.7) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.7)),
-    rgba(0, 0, 0, 0.5) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.5)),
-    rgba(0, 0, 0, 0.3) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.3)),
-    rgba(0, 0, 0, 0.1) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.1)),
-    transparent var(--reveal-edge),
-    transparent 100%
-  );
-  will-change: mask-image, -webkit-mask-image;
 }
 
 .action-icon {
@@ -406,33 +403,6 @@ a.action-button {
   border-radius: 0.5rem;
   transition: all 0.2s ease;
   position: relative;
-  --reveal-edge: var(--reveal-progress);
-  --fade-distance: 25%;
-  mask-image: linear-gradient(
-    to bottom right,
-    black 0%,
-    black calc(var(--reveal-edge) - var(--fade-distance)),
-    rgba(0, 0, 0, 0.9) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.9)),
-    rgba(0, 0, 0, 0.7) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.7)),
-    rgba(0, 0, 0, 0.5) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.5)),
-    rgba(0, 0, 0, 0.3) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.3)),
-    rgba(0, 0, 0, 0.1) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.1)),
-    transparent var(--reveal-edge),
-    transparent 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    to bottom right,
-    black 0%,
-    black calc(var(--reveal-edge) - var(--fade-distance)),
-    rgba(0, 0, 0, 0.9) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.9)),
-    rgba(0, 0, 0, 0.7) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.7)),
-    rgba(0, 0, 0, 0.5) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.5)),
-    rgba(0, 0, 0, 0.3) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.3)),
-    rgba(0, 0, 0, 0.1) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.1)),
-    transparent var(--reveal-edge),
-    transparent 100%
-  );
-  will-change: mask-image, -webkit-mask-image;
 }
 
 a.action-button:hover {
@@ -457,41 +427,19 @@ a.action-button:focus .action-arrow {
   display: inline-block;
   position: relative;
   color: #ffffff;
-  --reveal-edge: var(--reveal-progress);
-  --fade-distance: 25%;
-  mask-image: linear-gradient(
-    to bottom right,
-    black 0%,
-    black calc(var(--reveal-edge) - var(--fade-distance)),
-    rgba(0, 0, 0, 0.9) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.9)),
-    rgba(0, 0, 0, 0.7) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.7)),
-    rgba(0, 0, 0, 0.5) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.5)),
-    rgba(0, 0, 0, 0.3) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.3)),
-    rgba(0, 0, 0, 0.1) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.1)),
-    transparent var(--reveal-edge),
-    transparent 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    to bottom right,
-    black 0%,
-    black calc(var(--reveal-edge) - var(--fade-distance)),
-    rgba(0, 0, 0, 0.9) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.9)),
-    rgba(0, 0, 0, 0.7) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.7)),
-    rgba(0, 0, 0, 0.5) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.5)),
-    rgba(0, 0, 0, 0.3) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.3)),
-    rgba(0, 0, 0, 0.1) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.1)),
-    transparent var(--reveal-edge),
-    transparent 100%
-  );
-  will-change: mask-image, -webkit-mask-image;
 }
 
 .content-block {
   margin-top: 3rem;
   padding-top: 2rem;
   border-top: 1px solid #1f1f1f;
-  min-height: 200px;
   contain: layout;
+  opacity: 0;
+  transition: opacity 0.8s ease-out;
+}
+
+.content-block.loaded {
+  opacity: 1;
 }
 
 .loading-state {
@@ -592,8 +540,13 @@ a.action-button:focus .action-arrow {
   padding: 1rem;
   border-radius: 0.5rem;
   background-color: transparent;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.2s ease, opacity 0.6s ease-out;
   cursor: pointer;
+  opacity: 0;
+}
+
+.experience-item.loaded {
+  opacity: 1;
 }
 
 .experience-item:hover {
@@ -610,38 +563,6 @@ a.action-button:focus .action-arrow {
   justify-content: center;
   flex-shrink: 0;
   position: relative;
-  --reveal-edge: var(--reveal-progress);
-  --fade-distance: 25%;
-  --full-opaque-end: calc(var(--reveal-edge) + var(--fade-distance));
-  mask-image: linear-gradient(
-    to bottom right,
-    black 0%,
-    black calc(var(--reveal-edge) - var(--fade-distance)),
-    rgba(0, 0, 0, 0.9) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.9)),
-    rgba(0, 0, 0, 0.7) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.7)),
-    rgba(0, 0, 0, 0.5) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.5)),
-    rgba(0, 0, 0, 0.3) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.3)),
-    rgba(0, 0, 0, 0.1) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.1)),
-    transparent var(--reveal-edge),
-    transparent var(--full-opaque-end),
-    black var(--full-opaque-end),
-    black 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    to bottom right,
-    black 0%,
-    black calc(var(--reveal-edge) - var(--fade-distance)),
-    rgba(0, 0, 0, 0.9) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.9)),
-    rgba(0, 0, 0, 0.7) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.7)),
-    rgba(0, 0, 0, 0.5) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.5)),
-    rgba(0, 0, 0, 0.3) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.3)),
-    rgba(0, 0, 0, 0.1) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.1)),
-    transparent var(--reveal-edge),
-    transparent var(--full-opaque-end),
-    black var(--full-opaque-end),
-    black 100%
-  );
-  will-change: mask-image, -webkit-mask-image;
 }
 
 .experience-icon svg {
@@ -678,33 +599,6 @@ a.action-button:focus .action-arrow {
   margin: 0 0 0.5rem 0;
   color: #ffffff;
   position: relative;
-  --reveal-edge: var(--reveal-progress);
-  --fade-distance: 25%;
-  mask-image: linear-gradient(
-    to bottom right,
-    black 0%,
-    black calc(var(--reveal-edge) - var(--fade-distance)),
-    rgba(0, 0, 0, 0.9) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.9)),
-    rgba(0, 0, 0, 0.7) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.7)),
-    rgba(0, 0, 0, 0.5) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.5)),
-    rgba(0, 0, 0, 0.3) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.3)),
-    rgba(0, 0, 0, 0.1) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.1)),
-    transparent var(--reveal-edge),
-    transparent 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    to bottom right,
-    black 0%,
-    black calc(var(--reveal-edge) - var(--fade-distance)),
-    rgba(0, 0, 0, 0.9) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.9)),
-    rgba(0, 0, 0, 0.7) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.7)),
-    rgba(0, 0, 0, 0.5) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.5)),
-    rgba(0, 0, 0, 0.3) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.3)),
-    rgba(0, 0, 0, 0.1) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.1)),
-    transparent var(--reveal-edge),
-    transparent 100%
-  );
-  will-change: mask-image, -webkit-mask-image;
 }
 
 .experience-description {
@@ -714,33 +608,6 @@ a.action-button:focus .action-arrow {
   margin: 0;
   color: #ffffff;
   position: relative;
-  --reveal-edge: var(--reveal-progress);
-  --fade-distance: 25%;
-  mask-image: linear-gradient(
-    to bottom right,
-    black 0%,
-    black calc(var(--reveal-edge) - var(--fade-distance)),
-    rgba(0, 0, 0, 0.9) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.9)),
-    rgba(0, 0, 0, 0.7) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.7)),
-    rgba(0, 0, 0, 0.5) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.5)),
-    rgba(0, 0, 0, 0.3) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.3)),
-    rgba(0, 0, 0, 0.1) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.1)),
-    transparent var(--reveal-edge),
-    transparent 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    to bottom right,
-    black 0%,
-    black calc(var(--reveal-edge) - var(--fade-distance)),
-    rgba(0, 0, 0, 0.9) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.9)),
-    rgba(0, 0, 0, 0.7) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.7)),
-    rgba(0, 0, 0, 0.5) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.5)),
-    rgba(0, 0, 0, 0.3) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.3)),
-    rgba(0, 0, 0, 0.1) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.1)),
-    transparent var(--reveal-edge),
-    transparent 100%
-  );
-  will-change: mask-image, -webkit-mask-image;
 }
 
 .experience-meta {
@@ -757,33 +624,6 @@ a.action-button:focus .action-arrow {
   font-weight: 400;
   color: #9ca3af;
   position: relative;
-  --reveal-edge: var(--reveal-progress);
-  --fade-distance: 25%;
-  mask-image: linear-gradient(
-    to bottom right,
-    black 0%,
-    black calc(var(--reveal-edge) - var(--fade-distance)),
-    rgba(0, 0, 0, 0.9) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.9)),
-    rgba(0, 0, 0, 0.7) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.7)),
-    rgba(0, 0, 0, 0.5) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.5)),
-    rgba(0, 0, 0, 0.3) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.3)),
-    rgba(0, 0, 0, 0.1) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.1)),
-    transparent var(--reveal-edge),
-    transparent 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    to bottom right,
-    black 0%,
-    black calc(var(--reveal-edge) - var(--fade-distance)),
-    rgba(0, 0, 0, 0.9) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.9)),
-    rgba(0, 0, 0, 0.7) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.7)),
-    rgba(0, 0, 0, 0.5) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.5)),
-    rgba(0, 0, 0, 0.3) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.3)),
-    rgba(0, 0, 0, 0.1) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.1)),
-    transparent var(--reveal-edge),
-    transparent 100%
-  );
-  will-change: mask-image, -webkit-mask-image;
 }
 
 .experience-duration {
@@ -794,33 +634,6 @@ a.action-button:focus .action-arrow {
   font-weight: 400;
   color: #9ca3af;
   position: relative;
-  --reveal-edge: var(--reveal-progress);
-  --fade-distance: 25%;
-  mask-image: linear-gradient(
-    to bottom right,
-    black 0%,
-    black calc(var(--reveal-edge) - var(--fade-distance)),
-    rgba(0, 0, 0, 0.9) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.9)),
-    rgba(0, 0, 0, 0.7) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.7)),
-    rgba(0, 0, 0, 0.5) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.5)),
-    rgba(0, 0, 0, 0.3) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.3)),
-    rgba(0, 0, 0, 0.1) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.1)),
-    transparent var(--reveal-edge),
-    transparent 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    to bottom right,
-    black 0%,
-    black calc(var(--reveal-edge) - var(--fade-distance)),
-    rgba(0, 0, 0, 0.9) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.9)),
-    rgba(0, 0, 0, 0.7) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.7)),
-    rgba(0, 0, 0, 0.5) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.5)),
-    rgba(0, 0, 0, 0.3) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.3)),
-    rgba(0, 0, 0, 0.1) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.1)),
-    transparent var(--reveal-edge),
-    transparent 100%
-  );
-  will-change: mask-image, -webkit-mask-image;
 }
 
 .experience-duration svg {
@@ -838,36 +651,6 @@ a.action-button:focus .action-arrow {
   margin-top: 1rem;
   margin-bottom: 1.5rem;
   position: relative;
-  --reveal-edge: var(--reveal-progress);
-  --fade-distance: 30%;
-  --full-opaque-end: calc(var(--reveal-edge) + 15%);
-  mask-image: linear-gradient(
-    to bottom right,
-    black 0%,
-    black var(--full-opaque-end),
-    rgba(0, 0, 0, 0.95) calc(var(--full-opaque-end) + 3%),
-    rgba(0, 0, 0, 0.85) calc(var(--full-opaque-end) + 6%),
-    rgba(0, 0, 0, 0.7) calc(var(--full-opaque-end) + 10%),
-    rgba(0, 0, 0, 0.5) calc(var(--full-opaque-end) + 15%),
-    rgba(0, 0, 0, 0.3) calc(var(--full-opaque-end) + 20%),
-    rgba(0, 0, 0, 0.1) calc(var(--full-opaque-end) + 28%),
-    transparent calc(var(--full-opaque-end) + 40%),
-    transparent 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    to bottom right,
-    black 0%,
-    black var(--full-opaque-end),
-    rgba(0, 0, 0, 0.95) calc(var(--full-opaque-end) + 3%),
-    rgba(0, 0, 0, 0.85) calc(var(--full-opaque-end) + 6%),
-    rgba(0, 0, 0, 0.7) calc(var(--full-opaque-end) + 10%),
-    rgba(0, 0, 0, 0.5) calc(var(--full-opaque-end) + 15%),
-    rgba(0, 0, 0, 0.3) calc(var(--full-opaque-end) + 20%),
-    rgba(0, 0, 0, 0.1) calc(var(--full-opaque-end) + 28%),
-    transparent calc(var(--full-opaque-end) + 40%),
-    transparent 100%
-  );
-  will-change: mask-image, -webkit-mask-image;
 }
 
 .how-i-work-list {
@@ -885,40 +668,10 @@ a.action-button:focus .action-arrow {
   padding: 1.25rem;
   border-radius: 0;
   cursor: default;
-  --reveal-edge: var(--reveal-progress);
-  --fade-distance: 30%;
-  --full-opaque-end: calc(var(--reveal-edge) + 15%);
   /* Vertical lines between columns */
   border-right: 1px solid #1f1f1f;
   /* Horizontal lines between rows */
   border-bottom: 1px solid #1f1f1f;
-  mask-image: linear-gradient(
-    to bottom right,
-    black 0%,
-    black var(--full-opaque-end),
-    rgba(0, 0, 0, 0.95) calc(var(--full-opaque-end) + 3%),
-    rgba(0, 0, 0, 0.85) calc(var(--full-opaque-end) + 6%),
-    rgba(0, 0, 0, 0.7) calc(var(--full-opaque-end) + 10%),
-    rgba(0, 0, 0, 0.5) calc(var(--full-opaque-end) + 15%),
-    rgba(0, 0, 0, 0.3) calc(var(--full-opaque-end) + 20%),
-    rgba(0, 0, 0, 0.1) calc(var(--full-opaque-end) + 28%),
-    transparent calc(var(--full-opaque-end) + 40%),
-    transparent 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    to bottom right,
-    black 0%,
-    black var(--full-opaque-end),
-    rgba(0, 0, 0, 0.95) calc(var(--full-opaque-end) + 3%),
-    rgba(0, 0, 0, 0.85) calc(var(--full-opaque-end) + 6%),
-    rgba(0, 0, 0, 0.7) calc(var(--full-opaque-end) + 10%),
-    rgba(0, 0, 0, 0.5) calc(var(--full-opaque-end) + 15%),
-    rgba(0, 0, 0, 0.3) calc(var(--full-opaque-end) + 20%),
-    rgba(0, 0, 0, 0.1) calc(var(--full-opaque-end) + 28%),
-    transparent calc(var(--full-opaque-end) + 40%),
-    transparent 100%
-  );
-  will-change: mask-image, -webkit-mask-image;
 }
 
 /* Remove right border from last column */
@@ -1003,36 +756,6 @@ a.action-button:focus .action-arrow {
   gap: 1rem;
   align-items: flex-start;
   position: relative;
-  --reveal-edge: var(--reveal-progress);
-  --fade-distance: 30%;
-  --full-opaque-end: calc(var(--reveal-edge) + 15%);
-  mask-image: linear-gradient(
-    to bottom right,
-    black 0%,
-    black var(--full-opaque-end),
-    rgba(0, 0, 0, 0.95) calc(var(--full-opaque-end) + 3%),
-    rgba(0, 0, 0, 0.85) calc(var(--full-opaque-end) + 6%),
-    rgba(0, 0, 0, 0.7) calc(var(--full-opaque-end) + 10%),
-    rgba(0, 0, 0, 0.5) calc(var(--full-opaque-end) + 15%),
-    rgba(0, 0, 0, 0.3) calc(var(--full-opaque-end) + 20%),
-    rgba(0, 0, 0, 0.1) calc(var(--full-opaque-end) + 28%),
-    transparent calc(var(--full-opaque-end) + 40%),
-    transparent 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    to bottom right,
-    black 0%,
-    black var(--full-opaque-end),
-    rgba(0, 0, 0, 0.95) calc(var(--full-opaque-end) + 3%),
-    rgba(0, 0, 0, 0.85) calc(var(--full-opaque-end) + 6%),
-    rgba(0, 0, 0, 0.7) calc(var(--full-opaque-end) + 10%),
-    rgba(0, 0, 0, 0.5) calc(var(--full-opaque-end) + 15%),
-    rgba(0, 0, 0, 0.3) calc(var(--full-opaque-end) + 20%),
-    rgba(0, 0, 0, 0.1) calc(var(--full-opaque-end) + 28%),
-    transparent calc(var(--full-opaque-end) + 40%),
-    transparent 100%
-  );
-  will-change: mask-image, -webkit-mask-image;
 }
 
 .working-style-item:not(:last-child) {
@@ -1100,36 +823,6 @@ a.action-button:focus .action-arrow {
   transition: opacity 0.4s ease, transform 0.4s ease;
   pointer-events: none;
   padding: 0 3rem;
-  --reveal-edge: var(--reveal-progress);
-  --fade-distance: 30%;
-  --full-opaque-end: calc(var(--reveal-edge) + 15%);
-  mask-image: linear-gradient(
-    to bottom right,
-    black 0%,
-    black var(--full-opaque-end),
-    rgba(0, 0, 0, 0.95) calc(var(--full-opaque-end) + 3%),
-    rgba(0, 0, 0, 0.85) calc(var(--full-opaque-end) + 6%),
-    rgba(0, 0, 0, 0.7) calc(var(--full-opaque-end) + 10%),
-    rgba(0, 0, 0, 0.5) calc(var(--full-opaque-end) + 15%),
-    rgba(0, 0, 0, 0.3) calc(var(--full-opaque-end) + 20%),
-    rgba(0, 0, 0, 0.1) calc(var(--full-opaque-end) + 28%),
-    transparent calc(var(--full-opaque-end) + 40%),
-    transparent 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    to bottom right,
-    black 0%,
-    black var(--full-opaque-end),
-    rgba(0, 0, 0, 0.95) calc(var(--full-opaque-end) + 3%),
-    rgba(0, 0, 0, 0.85) calc(var(--full-opaque-end) + 6%),
-    rgba(0, 0, 0, 0.7) calc(var(--full-opaque-end) + 10%),
-    rgba(0, 0, 0, 0.5) calc(var(--full-opaque-end) + 15%),
-    rgba(0, 0, 0, 0.3) calc(var(--full-opaque-end) + 20%),
-    rgba(0, 0, 0, 0.1) calc(var(--full-opaque-end) + 28%),
-    transparent calc(var(--full-opaque-end) + 40%),
-    transparent 100%
-  );
-  will-change: mask-image, -webkit-mask-image;
 }
 
 .testimonial-card.active {
