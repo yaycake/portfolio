@@ -82,6 +82,9 @@ function App() {
   const [theme, setTheme] = useState<'light' | 'dark' | 'robot'>('dark')
   const [showDarkModeTooltip, setShowDarkModeTooltip] = useState(false)
   const [hoveredTheme, setHoveredTheme] = useState<string | null>(null)
+  const [formData, setFormData] = useState({ email: '', message: '', interest: '' })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
 
   const title = "Hi, I'm Grace Yang"
   const description = <>Cross-functional product designer combining design and code to craft AI-driven, user-friendly products.<br /><br />I prototype rapidly, validate with real users, and achieve measurable results—leading to increased engagement, streamlined workflows, and sleek interfaces.</>
@@ -329,6 +332,35 @@ function App() {
     }, 350) // Half of transition duration for fade-out
   }
 
+  const handleContactSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+    setSubmitStatus('idle')
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+
+      if (response.ok) {
+        setSubmitStatus('success')
+        setFormData({ email: '', message: '', interest: '' })
+        setTimeout(() => setSubmitStatus('idle'), 5000)
+      } else {
+        setSubmitStatus('error')
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error)
+      setSubmitStatus('error')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
   useEffect(() => {
     // Smoothly reveal entire landing content as one unified gradient wipe
     const duration = 3000 // Calm, wellness-like reveal
@@ -424,6 +456,20 @@ function App() {
     if (isMenuOpen) {
       document.addEventListener('mousedown', handleClickOutside)
       return () => document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [isMenuOpen])
+
+  // Disable scroll when menu is open
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+
+    // Cleanup on unmount
+    return () => {
+      document.body.style.overflow = ''
     }
   }, [isMenuOpen])
 
@@ -1854,7 +1900,7 @@ function App() {
                           Contact Me
                         </span>
                       </h2>
-                      <form className="contact-form">
+                      <form className="contact-form" onSubmit={handleContactSubmit}>
                         <div className="form-field">
                           <label className="form-label">
                             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1866,6 +1912,9 @@ function App() {
                             type="email"
                             className="form-input"
                             placeholder="Where should I follow up?"
+                            value={formData.email}
+                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                            required
                           />
                         </div>
                         <div className="form-field">
@@ -1879,6 +1928,9 @@ function App() {
                             className="form-textarea"
                             placeholder="What's up? Ask me anything"
                             rows={5}
+                            value={formData.message}
+                            onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                            required
                           />
                         </div>
                         <div className="form-field">
@@ -1890,7 +1942,11 @@ function App() {
                             How did you find me?
                           </label>
                           <div className="form-select-wrapper">
-                            <select className="form-select">
+                            <select 
+                              className="form-select"
+                              value={formData.interest}
+                              onChange={(e) => setFormData({ ...formData, interest: e.target.value })}
+                            >
                               <option value="">This would be helpful to know</option>
                               <option value="linkedin">LinkedIn</option>
                               <option value="twitter">Twitter</option>
@@ -1904,9 +1960,23 @@ function App() {
                             </svg>
                           </div>
                         </div>
+                        {submitStatus === 'success' && (
+                          <p style={{ color: 'var(--accent-green)', marginBottom: '1rem' }}>
+                            Message sent! I'll get back to you soon.
+                          </p>
+                        )}
+                        {submitStatus === 'error' && (
+                          <p style={{ color: 'var(--accent-red)', marginBottom: '1rem' }}>
+                            Failed to send message. Please try again.
+                          </p>
+                        )}
                         <div className="form-actions">
-                          <button type="submit" className="form-submit-button">
-                            Send
+                          <button 
+                            type="submit" 
+                            className="form-submit-button"
+                            disabled={isSubmitting}
+                          >
+                            {isSubmitting ? 'Sending...' : 'Send'}
                           </button>
                         </div>
                       </form>
