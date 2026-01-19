@@ -230,14 +230,33 @@ function App() {
     // Reset bottom section states for re-animation
     setBottomButtonReveals([])
     
+    // Add content block immediately to reserve space and prevent layout shift
+    setActiveContent(prev => [...prev, actionId])
+    
+    // Set initial reveal to 0 (content will be hidden initially)
+    setContentReveals(prev => ({
+      ...prev,
+      [actionId]: 0
+    }))
+    
     setIsLoading(true)
     
     // Simulate loading delay
     setTimeout(() => {
       setIsLoading(false)
-      // Append to active content array - this allows multiple content blocks
-      // to be displayed in the order they were clicked (e.g., working-style before experiences)
-      setActiveContent(prev => [...prev, actionId])
+      
+      // Scroll to the content block smoothly
+      const scrollToContent = () => {
+        const element = document.getElementById(`content-${actionId}`)
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        } else {
+          // If element not found yet, try again after a short delay
+          setTimeout(scrollToContent, 50)
+        }
+      }
+      // Start scrolling after a brief delay to ensure DOM is updated
+      setTimeout(scrollToContent, 100)
       
       // Start content reveal animation for this specific content
       const duration = 2000
@@ -1781,7 +1800,7 @@ function App() {
               
               return null
             })}
-        {isLoading && (
+        {isLoading && activeContent.length === 0 && (
           <div className="content-block">
             <div className="loading-state">
               <div className="loading-dots">
