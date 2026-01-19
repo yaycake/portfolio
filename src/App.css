@@ -98,6 +98,71 @@
   --shadow-medium: rgba(0, 0, 0, 0.1);
 }
 
+/* Theme Variables - Robot/Terminal Mode */
+.robot-theme {
+  /* Background colors - classic terminal black */
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #121212;
+  --bg-tertiary: #0d0d0d;
+  
+  /* Border colors - minimal terminal borders */
+  --border-primary: #00ff00;
+  --border-secondary: #00cc00;
+  
+  /* Text colors - classic terminal green */
+  --text-primary: #00ff00;
+  --text-secondary: #00cc00;
+  --text-tertiary: #00aa00;
+  --text-muted: #008800;
+  
+  /* Accent colors - terminal color palette */
+  --accent-green: #00ff00;
+  --accent-blue: #00ffff;
+  --accent-red: #ff0000;
+  --accent-orange: #ffaa00;
+  --accent-pink: #ff00ff;
+  
+  /* Overlay colors */
+  --overlay-bg: rgba(10, 10, 10, 0.98);
+  --overlay-border: rgba(0, 255, 0, 0.3);
+  
+  /* Shadow colors */
+  --shadow-dark: rgba(0, 255, 0, 0.2);
+  --shadow-medium: rgba(0, 255, 0, 0.1);
+  
+  /* Typography - Monospace fonts for terminal look */
+  --font-primary: 'Courier New', 'Monaco', 'Menlo', 'Consolas', monospace;
+  
+  /* Font sizes - slightly adjusted for monospace readability */
+  --font-size-hero: 2.25rem;
+  --font-size-h1: 1.4rem;
+  --font-size-h2: 1.2rem;
+  --font-size-h3: 1.1rem;
+  --font-size-body: 0.95rem;
+  --font-size-body-large: 1.05rem;
+  --font-size-body-small: 0.9rem;
+  --font-size-caption: 0.85rem;
+  --font-size-tiny: 0.75rem;
+  
+  /* Font weights - terminals typically don't have varied weights */
+  --font-weight-bold: 700;
+  --font-weight-semibold: 700;
+  --font-weight-medium: 400;
+  --font-weight-normal: 400;
+  
+  /* Line heights - tighter for terminal feel */
+  --line-height-tight: 1.3;
+  --line-height-snug: 1.4;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.6;
+  --line-height-loose: 1.7;
+  
+  /* Letter spacing - monospace needs slightly wider spacing */
+  --letter-spacing-tight: 0;
+  --letter-spacing-normal: 0.02em;
+  --letter-spacing-wide: 0.08em;
+}
+
 .landing-page {
   width: 100%;
   min-height: 100vh;
@@ -1564,6 +1629,218 @@ a.action-button:focus .action-arrow {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Robot/Terminal Theme Overrides */
+.robot-theme {
+  /* Remove all rounded corners for terminal aesthetic */
+  border-radius: 0 !important;
+}
+
+.robot-theme * {
+  border-radius: 0 !important;
+}
+
+/* White body text for legibility in robot theme */
+.robot-theme .description,
+.robot-theme .experience-description,
+.robot-theme .experience-company,
+.robot-theme .experience-duration,
+.robot-theme .overlay-description,
+.robot-theme .overlay-section p,
+.robot-theme .overlay-list li,
+.robot-theme .content-subtitle,
+.robot-theme .working-style-description,
+.robot-theme .how-i-work-description,
+.robot-theme .how-i-work-intro,
+.robot-theme .testimonial-text,
+.robot-theme .testimonial-author,
+.robot-theme .overlay-company,
+.robot-theme .overlay-duration {
+  color: #ffffff !important;
+}
+
+/* Terminal-style buttons */
+.robot-theme .action-button,
+.robot-theme a.action-button,
+.robot-theme .menu-button,
+.robot-theme .mode-button,
+.robot-theme .see-more-button,
+.robot-theme .form-submit-button,
+.robot-theme .nav-link {
+  border-radius: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Minimal hover effects for terminal feel */
+.robot-theme .action-button:hover,
+.robot-theme a.action-button:hover {
+  background: transparent;
+  border-color: var(--border-primary);
+  text-decoration: none;
+}
+
+.robot-theme .menu-item:hover {
+  background: transparent;
+  color: var(--text-primary);
+  text-decoration: underline;
+}
+
+/* Remove shadows in terminal mode */
+.robot-theme .floating-menu,
+.robot-theme .menu-dropdown,
+.robot-theme .experience-overlay {
+  box-shadow: none;
+}
+
+/* Terminal-style borders - removed for cleaner aesthetic */
+
+/* Experience items: no border by default, show on hover */
+.robot-theme .experience-item {
+  border: 1px solid transparent;
+  border-radius: 0;
+  transition: border-color 0.2s ease;
+}
+
+.robot-theme .experience-item:hover {
+  border: 1px solid var(--border-primary);
+}
+
+/* Add terminal prompt indicators */
+.robot-theme .title::before {
+  content: '> ';
+  color: var(--text-primary);
+}
+
+.robot-theme .content-title::before {
+  content: '$ ';
+  color: var(--text-secondary);
+}
+
+.robot-theme .overlay-title::before {
+  content: '# ';
+  color: var(--text-primary);
+}
+
+/* Terminal cursor blink animation */
+@keyframes terminal-blink {
+  0%, 49% {
+    opacity: 1;
+  }
+  50%, 100% {
+    opacity: 0;
+  }
+}
+
+.robot-theme .title::after {
+  content: '▊';
+  animation: terminal-blink 1s infinite;
+  margin-left: 0.25rem;
+}
+
+/* Make form inputs look like terminal input */
+.robot-theme .form-input,
+.robot-theme .form-textarea,
+.robot-theme .form-select {
+  border: 1px solid var(--border-primary);
+  border-radius: 0;
+  background: var(--bg-secondary);
+}
+
+.robot-theme .form-input:focus,
+.robot-theme .form-textarea:focus,
+.robot-theme .form-select:focus {
+  outline: 1px solid var(--text-primary);
+  border-color: var(--text-primary);
+}
+
+/* Terminal-style experience icons - strip colors to theme green */
+.robot-theme .experience-icon {
+  border: 1px solid var(--border-primary);
+  border-radius: 0;
+  background: var(--text-primary) !important;
+}
+
+/* Force icon SVGs to be black in robot theme */
+.robot-theme .experience-icon svg,
+.robot-theme .experience-icon svg path {
+  fill: var(--bg-primary) !important;
+  mix-blend-mode: normal !important;
+}
+
+/* Overlay icons also use theme green */
+.robot-theme .overlay-icon {
+  background: var(--text-primary) !important;
+  border: 1px solid var(--border-primary);
+  border-radius: 0;
+}
+
+.robot-theme .overlay-icon svg,
+.robot-theme .overlay-icon svg path {
+  fill: var(--bg-primary) !important;
+  mix-blend-mode: normal !important;
+}
+
+/* How I Work icons always show background in robot theme */
+.robot-theme .how-i-work-icon {
+  background: var(--text-primary) !important;
+  border: 1px solid var(--border-primary);
+  border-radius: 0;
+}
+
+.robot-theme .how-i-work-icon svg,
+.robot-theme .how-i-work-icon svg path {
+  fill: var(--bg-primary) !important;
+  stroke: var(--bg-primary) !important;
+  color: var(--bg-primary) !important;
+}
+
+/* Ensure icons stay black on hover in robot theme */
+.robot-theme .how-i-work-item:hover .how-i-work-icon svg,
+.robot-theme .how-i-work-item:hover .how-i-work-icon svg path {
+  fill: var(--bg-primary) !important;
+  stroke: var(--bg-primary) !important;
+  color: var(--bg-primary) !important;
+}
+
+/* Working style icons also use theme green */
+.robot-theme .working-style-icon {
+  background: var(--text-primary) !important;
+  border: 1px solid var(--border-primary);
+  border-radius: 0;
+}
+
+.robot-theme .working-style-icon svg,
+.robot-theme .working-style-icon svg path {
+  fill: var(--bg-primary) !important;
+  stroke: var(--bg-primary) !important;
+}
+
+/* Menu in terminal style */
+.robot-theme .menu-dropdown {
+  border: 2px solid var(--border-primary);
+  border-radius: 0;
+}
+
+.robot-theme .menu-mode-switcher {
+  border-top: 1px solid var(--border-primary);
+  border-bottom: 1px solid var(--border-primary);
+}
+
+.robot-theme .menu-footer {
+  border-top: 1px solid var(--border-primary);
+}
+
+/* Overlay terminal style - minimal borders */
+.robot-theme .overlay-navigation {
+  border-bottom: 1px solid var(--border-primary);
+}
+
+/* Text selection in terminal green */
+.robot-theme ::selection {
+  background: var(--text-primary);
+  color: var(--bg-primary);
 }
 
 
