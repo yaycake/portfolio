@@ -1,12 +1,187 @@
+/* Theme Variables - Dark Mode (Default) */
+:root,
+.dark-theme {
+  /* Background colors */
+  --bg-primary: #000000;
+  --bg-secondary: #1a1a1a;
+  --bg-tertiary: #0f0f0f;
+  
+  /* Border colors */
+  --border-primary: #1f1f1f;
+  --border-secondary: #2f2f2f;
+  
+  /* Text colors */
+  --text-primary: #ffffff;
+  --text-secondary: #d1d5db;
+  --text-tertiary: #9ca3af;
+  --text-muted: #6b7280;
+  
+  /* Accent colors */
+  --accent-green: #10b981;
+  --accent-blue: #3b82f6;
+  --accent-red: #ef4444;
+  --accent-orange: #f97316;
+  --accent-pink: #f472b6;
+  
+  /* Overlay colors */
+  --overlay-bg: rgba(0, 0, 0, 0.9);
+  --overlay-border: rgba(255, 255, 255, 0.05);
+  
+  /* Shadow colors */
+  --shadow-dark: rgba(0, 0, 0, 0.5);
+  --shadow-medium: rgba(0, 0, 0, 0.3);
+  
+  /* Typography */
+  /* Font families */
+  --font-primary: 'Inter', sans-serif;
+  
+  /* Font sizes */
+  --font-size-hero: 2.5rem;
+  --font-size-h1: 1.5rem;
+  --font-size-h2: 1.25rem;
+  --font-size-h3: 1.125rem;
+  --font-size-body: 1rem;
+  --font-size-body-large: 1.125rem;
+  --font-size-body-small: 0.9375rem;
+  --font-size-caption: 0.875rem;
+  --font-size-tiny: 0.75rem;
+  
+  /* Font weights */
+  --font-weight-bold: 700;
+  --font-weight-semibold: 600;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  
+  /* Line heights */
+  --line-height-tight: 1.2;
+  --line-height-snug: 1.4;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.6;
+  --line-height-loose: 1.7;
+  
+  /* Letter spacing */
+  --letter-spacing-tight: -0.02em;
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide: 0.05em;
+}
+
+/* Theme Variables - Light Mode */
+.light-theme {
+  /* Background colors */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f5f5f5;
+  --bg-tertiary: #fafafa;
+  
+  /* Border colors */
+  --border-primary: #e5e5e5;
+  --border-secondary: #d4d4d4;
+  
+  /* Text colors */
+  --text-primary: #0a0a0a;
+  --text-secondary: #404040;
+  --text-tertiary: #525252;
+  --text-muted: #737373;
+  
+  /* Accent colors - slightly adjusted for better light mode visibility */
+  --accent-green: #059669;
+  --accent-blue: #2563eb;
+  --accent-red: #dc2626;
+  --accent-orange: #ea580c;
+  --accent-pink: #ec4899;
+  
+  /* Overlay colors */
+  --overlay-bg: rgba(255, 255, 255, 0.95);
+  --overlay-border: rgba(0, 0, 0, 0.1);
+  
+  /* Shadow colors */
+  --shadow-dark: rgba(0, 0, 0, 0.15);
+  --shadow-medium: rgba(0, 0, 0, 0.1);
+}
+
+/* Theme Variables - Robot/Terminal Mode */
+.robot-theme {
+  /* Background colors - classic terminal black */
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #121212;
+  --bg-tertiary: #0d0d0d;
+  
+  /* Border colors - minimal terminal borders */
+  --border-primary: #00ff00;
+  --border-secondary: #00cc00;
+  
+  /* Text colors - classic terminal green */
+  --text-primary: #00ff00;
+  --text-secondary: #00cc00;
+  --text-tertiary: #00aa00;
+  --text-muted: #008800;
+  
+  /* Accent colors - terminal color palette */
+  --accent-green: #00ff00;
+  --accent-blue: #00ffff;
+  --accent-red: #ff0000;
+  --accent-orange: #ffaa00;
+  --accent-pink: #ff00ff;
+  
+  /* Overlay colors */
+  --overlay-bg: rgba(10, 10, 10, 0.98);
+  --overlay-border: rgba(0, 255, 0, 0.3);
+  
+  /* Shadow colors */
+  --shadow-dark: rgba(0, 255, 0, 0.2);
+  --shadow-medium: rgba(0, 255, 0, 0.1);
+  
+  /* Typography - Monospace fonts for terminal look */
+  --font-primary: 'Courier New', 'Monaco', 'Menlo', 'Consolas', monospace;
+  
+  /* Font sizes - slightly adjusted for monospace readability */
+  --font-size-hero: 2.25rem;
+  --font-size-h1: 1.4rem;
+  --font-size-h2: 1.2rem;
+  --font-size-h3: 1.1rem;
+  --font-size-body: 0.95rem;
+  --font-size-body-large: 1.05rem;
+  --font-size-body-small: 0.9rem;
+  --font-size-caption: 0.85rem;
+  --font-size-tiny: 0.75rem;
+  
+  /* Font weights - terminals typically don't have varied weights */
+  --font-weight-bold: 700;
+  --font-weight-semibold: 700;
+  --font-weight-medium: 400;
+  --font-weight-normal: 400;
+  
+  /* Line heights - tighter for terminal feel */
+  --line-height-tight: 1.3;
+  --line-height-snug: 1.4;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.6;
+  --line-height-loose: 1.7;
+  
+  /* Letter spacing - monospace needs slightly wider spacing */
+  --letter-spacing-tight: 0;
+  --letter-spacing-normal: 0.02em;
+  --letter-spacing-wide: 0.08em;
+}
+
 .landing-page {
   width: 100%;
   min-height: 100vh;
-  background-color: #000000;
+  background-color: var(--bg-primary);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-primary);
   position: relative;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Smooth theme transitions for all themed elements */
+.landing-page *,
+.landing-page *::before,
+.landing-page *::after {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-duration: 0.3s;
+  transition-timing-function: ease;
 }
 
 .floating-menu {
@@ -20,35 +195,35 @@
   width: 3rem;
   height: 3rem;
   border-radius: 50%;
-  background-color: #000000;
-  border: 1px solid #1f1f1f;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-primary);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: #ffffff;
+  color: var(--text-primary);
   transition: all 0.2s ease;
   padding: 0;
 }
 
 .menu-button svg {
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 .menu-button svg path {
-  fill: #ffffff !important;
-  stroke: #ffffff !important;
+  fill: var(--text-primary) !important;
+  stroke: var(--text-primary) !important;
 }
 
 .menu-button svg * {
-  fill: #ffffff !important;
-  stroke: #ffffff !important;
-  color: #ffffff !important;
+  fill: var(--text-primary) !important;
+  stroke: var(--text-primary) !important;
+  color: var(--text-primary) !important;
 }
 
 .menu-button:hover {
-  background-color: #1a1a1a;
-  border-color: #2f2f2f;
+  background-color: var(--bg-secondary);
+  border-color: var(--border-secondary);
 }
 
 .menu-button:active {
@@ -67,11 +242,11 @@
   position: absolute;
   top: calc(100% + 0.5rem);
   right: 0;
-  background-color: #000000;
-  border: 1px solid #1f1f1f;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-primary);
   border-radius: 0.5rem;
   width: 300px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 12px var(--shadow-dark);
   overflow: hidden;
   animation: dropdown-fade-in 0.2s ease;
 }
@@ -93,24 +268,24 @@
   background: transparent;
   border: none;
   text-align: left;
-  color: #ffffff;
-  font-size: 0.9375rem;
-  font-weight: 400;
-  font-family: 'Inter', sans-serif;
+  color: var(--text-primary);
+  font-size: var(--font-size-body-small);
+  font-weight: var(--font-weight-normal);
+  font-family: var(--font-primary);
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
 
 .menu-item:hover {
-  background-color: #1a1a1a;
+  background-color: var(--bg-secondary);
 }
 
 .menu-item:active {
-  background-color: #0f0f0f;
+  background-color: var(--bg-tertiary);
 }
 
 .menu-mode-switcher {
-  border-top: 1px solid #1f1f1f;
+  border-top: 1px solid var(--border-primary);
   padding: 0.875rem 1.25rem;
   margin-top: 0.5rem;
 }
@@ -127,63 +302,63 @@
   height: 2.25rem;
   border-radius: 0.375rem;
   background-color: transparent;
-  border: 1px solid #1f1f1f;
+  border: 1px solid var(--border-primary);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: #6b7280;
+  color: var(--text-muted);
   transition: all 0.2s ease;
   padding: 0;
   position: relative;
 }
 
 .mode-button:hover {
-  background-color: #1a1a1a;
-  border-color: #2f2f2f;
-  color: #ffffff;
+  background-color: var(--bg-secondary);
+  border-color: var(--border-secondary);
+  color: var(--text-primary);
 }
 
 .mode-button.active {
-  background-color: #ffffff;
-  border-color: #ffffff;
-  color: #000000;
+  background-color: var(--text-primary);
+  border-color: var(--text-primary);
+  color: var(--bg-primary);
 }
 
 .mode-button.active:hover {
-  background-color: #ffffff;
-  border-color: #ffffff;
-  color: #000000;
+  background-color: var(--text-primary);
+  border-color: var(--text-primary);
+  color: var(--bg-primary);
 }
 
 .mode-button svg {
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 .mode-button svg path {
-  fill: #ffffff !important;
-  stroke: #ffffff !important;
+  fill: var(--text-primary) !important;
+  stroke: var(--text-primary) !important;
 }
 
 .mode-button svg * {
-  fill: #ffffff !important;
-  stroke: #ffffff !important;
-  color: #ffffff !important;
+  fill: var(--text-primary) !important;
+  stroke: var(--text-primary) !important;
+  color: var(--text-primary) !important;
 }
 
 .mode-button.active svg {
-  color: #000000;
+  color: var(--bg-primary);
 }
 
 .mode-button.active svg path {
-  fill: #000000 !important;
-  stroke: #000000 !important;
+  fill: var(--bg-primary) !important;
+  stroke: var(--bg-primary) !important;
 }
 
 .mode-button.active svg * {
-  fill: #000000 !important;
-  stroke: #000000 !important;
-  color: #000000 !important;
+  fill: var(--bg-primary) !important;
+  stroke: var(--bg-primary) !important;
+  color: var(--bg-primary) !important;
 }
 
 .mode-tooltip {
@@ -191,15 +366,15 @@
   bottom: calc(100% + 0.5rem);
   left: 50%;
   transform: translateX(-50%);
-  background-color: #1a1a1a;
-  color: #ffffff;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
   padding: 0.375rem 0.625rem;
   border-radius: 0.25rem;
-  font-size: 0.75rem;
-  font-weight: 400;
-  font-family: 'Inter', sans-serif;
+  font-size: var(--font-size-tiny);
+  font-weight: var(--font-weight-normal);
+  font-family: var(--font-primary);
   white-space: nowrap;
-  border: 1px solid #2f2f2f;
+  border: 1px solid var(--border-secondary);
   pointer-events: none;
   z-index: 1001;
 }
@@ -211,11 +386,11 @@
   left: 50%;
   transform: translateX(-50%);
   border: 4px solid transparent;
-  border-top-color: #1a1a1a;
+  border-top-color: var(--bg-secondary);
 }
 
 .menu-footer {
-  border-top: 1px solid #1f1f1f;
+  border-top: 1px solid var(--border-primary);
   padding: 0.875rem 1.25rem;
   margin-top: 0;
 }
@@ -227,18 +402,18 @@
 }
 
 .menu-footer-text {
-  color: #6b7280;
-  font-size: 0.75rem;
-  font-weight: 400;
-  font-family: 'Inter', sans-serif;
-  line-height: 1.4;
+  color: var(--text-muted);
+  font-size: var(--font-size-tiny);
+  font-weight: var(--font-weight-normal);
+  font-family: var(--font-primary);
+  line-height: var(--line-height-snug);
   display: flex;
   align-items: center;
   gap: 0.25rem;
 }
 
 .menu-footer-text .copyright-icon {
-  color: #6b7280;
+  color: var(--text-muted);
   flex-shrink: 0;
 }
 
@@ -247,7 +422,7 @@
   width: 100%;
   padding: 2rem;
   text-align: left;
-  color: #ffffff;
+  color: var(--text-primary);
   opacity: 0;
   transition: opacity 1.2s ease-out;
 }
@@ -257,27 +432,27 @@
 }
 
 .title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  line-height: 1.2;
+  font-size: var(--font-size-hero);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
   margin: 0 0 1.5rem 0;
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 .description {
-  font-size: 1.125rem;
-  font-weight: 400;
-  line-height: 1.6;
+  font-size: var(--font-size-body-large);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-relaxed);
   margin: 0;
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 .suggested-actions {
   margin-top: 2rem;
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
-  border-top: 1px solid #1f1f1f;
-  border-bottom: 1px solid #1f1f1f;
+  border-top: 1px solid var(--border-primary);
+  border-bottom: 1px solid var(--border-primary);
   contain: layout style;
   transition: opacity 0.8s ease-out;
 }
@@ -302,15 +477,15 @@
   margin-top: 1.5rem;
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
-  border-top: 1px solid #1f1f1f;
-  border-bottom: 1px solid #1f1f1f;
+  border-top: 1px solid var(--border-primary);
+  border-bottom: 1px solid var(--border-primary);
 }
 
 .actions-heading {
-  font-size: 1.125rem;
-  font-weight: 400;
+  font-size: var(--font-size-h3);
+  font-weight: var(--font-weight-normal);
   margin: 0 0 1rem 0;
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 .actions-list {
@@ -326,10 +501,10 @@
   padding: 0.75rem 1rem;
   background: transparent;
   border: 1px solid transparent;
-  color: #d1d5db;
-  font-size: 0.9375rem;
-  font-weight: 400;
-  font-family: 'Inter', sans-serif;
+  color: var(--text-secondary);
+  font-size: var(--font-size-body-small);
+  font-weight: var(--font-weight-normal);
+  font-family: var(--font-primary);
   text-align: left;
   cursor: pointer;
   border-radius: 0.5rem;
@@ -340,7 +515,7 @@
 .action-icon {
   display: flex;
   align-items: center;
-  color: #d1d5db;
+  color: var(--text-secondary);
   flex-shrink: 0;
 }
 
@@ -350,24 +525,24 @@
 }
 
 .action-icon svg path {
-  fill: white !important;
+  fill: var(--text-primary) !important;
 }
 
 .action-text {
   flex: 1;
-  color: #d1d5db;
+  color: var(--text-secondary);
 }
 
 .action-arrow {
   opacity: 0;
   transition: opacity 0.2s ease;
-  color: #d1d5db;
+  color: var(--text-secondary);
   font-size: 1rem;
 }
 
 /* Hover state */
 .action-button:hover {
-  background: #1f1f1f;
+  background: var(--border-primary);
 }
 
 .action-button:hover .action-arrow {
@@ -378,7 +553,7 @@
 .action-button:focus {
   outline: none;
   background: transparent;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--text-secondary);
 }
 
 .action-button:focus .action-arrow {
@@ -394,10 +569,10 @@ a.action-button {
   padding: 0.75rem 1rem;
   background: transparent;
   border: 1px solid transparent;
-  color: #d1d5db;
-  font-size: 0.9375rem;
-  font-weight: 400;
-  font-family: 'Inter', sans-serif;
+  color: var(--text-secondary);
+  font-size: var(--font-size-body-small);
+  font-weight: var(--font-weight-normal);
+  font-family: var(--font-primary);
   text-align: left;
   cursor: pointer;
   border-radius: 0.5rem;
@@ -406,7 +581,7 @@ a.action-button {
 }
 
 a.action-button:hover {
-  background: #1f1f1f;
+  background: var(--border-primary);
 }
 
 a.action-button:hover .action-arrow {
@@ -416,7 +591,7 @@ a.action-button:hover .action-arrow {
 a.action-button:focus {
   outline: none;
   background: transparent;
-  border: 1px solid #d1d5db;
+  border: 1px solid var(--text-secondary);
 }
 
 a.action-button:focus .action-arrow {
@@ -426,13 +601,13 @@ a.action-button:focus .action-arrow {
 .reveal-text {
   display: inline-block;
   position: relative;
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 .content-block {
   margin-top: 3rem;
   padding-top: 2rem;
-  border-top: 1px solid #1f1f1f;
+  border-top: 1px solid var(--border-primary);
   contain: layout;
   opacity: 0;
   transition: opacity 0.8s ease-out;
@@ -460,7 +635,7 @@ a.action-button:focus .action-arrow {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background-color: #d1d5db;
+  background-color: var(--text-secondary);
   animation: loadingDot 1.4s ease-in-out infinite;
 }
 
@@ -492,17 +667,17 @@ a.action-button:focus .action-arrow {
 }
 
 .content-title {
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-bold);
   margin: 0 0 0.75rem 0;
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 .content-subtitle {
-  font-size: 1rem;
-  font-weight: 400;
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-normal);
   margin: 0 0 2rem 0;
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 .experiences-list {
@@ -515,11 +690,11 @@ a.action-button:focus .action-arrow {
   margin-top: 2rem;
   padding: 0.75rem 1.5rem;
   background: transparent;
-  border: 1px solid #1f1f1f;
-  color: #d1d5db;
-  font-size: 0.9375rem;
-  font-weight: 400;
-  font-family: 'Inter', sans-serif;
+  border: 1px solid var(--border-primary);
+  color: var(--text-secondary);
+  font-size: var(--font-size-body-small);
+  font-weight: var(--font-weight-normal);
+  font-family: var(--font-primary);
   border-radius: 0.5rem;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -527,9 +702,9 @@ a.action-button:focus .action-arrow {
 }
 
 .see-more-button:hover {
-  background: #1a1a1a;
-  border-color: #2f2f2f;
-  color: #ffffff;
+  background: var(--bg-secondary);
+  border-color: var(--border-secondary);
+  color: var(--text-primary);
 }
 
 .experience-item {
@@ -550,7 +725,7 @@ a.action-button:focus .action-arrow {
 }
 
 .experience-item:hover {
-  background-color: #1a1a1a;
+  background-color: var(--bg-secondary);
 }
 
 
@@ -594,19 +769,19 @@ a.action-button:focus .action-arrow {
 }
 
 .experience-role {
-  font-size: 1rem;
-  font-weight: 700;
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-bold);
   margin: 0 0 0.5rem 0;
-  color: #ffffff;
+  color: var(--text-primary);
   position: relative;
 }
 
 .experience-description {
-  font-size: 0.9375rem;
-  font-weight: 400;
-  line-height: 1.5;
+  font-size: var(--font-size-body-small);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-normal);
   margin: 0;
-  color: #ffffff;
+  color: var(--text-primary);
   position: relative;
 }
 
@@ -620,9 +795,9 @@ a.action-button:focus .action-arrow {
 }
 
 .experience-company {
-  font-size: 0.875rem;
-  font-weight: 400;
-  color: #9ca3af;
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-normal);
+  color: var(--text-tertiary);
   position: relative;
 }
 
@@ -630,9 +805,9 @@ a.action-button:focus .action-arrow {
   display: flex;
   align-items: center;
   gap: 0.375rem;
-  font-size: 0.875rem;
-  font-weight: 400;
-  color: #9ca3af;
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-normal);
+  color: var(--text-tertiary);
   position: relative;
 }
 
@@ -645,9 +820,9 @@ a.action-button:focus .action-arrow {
 }
 
 .how-i-work-intro {
-  color: #9ca3af;
-  font-size: 1rem;
-  line-height: 1.6;
+  color: var(--text-tertiary);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-relaxed);
   margin-top: 1rem;
   margin-bottom: 1.5rem;
   position: relative;
@@ -669,9 +844,9 @@ a.action-button:focus .action-arrow {
   border-radius: 0;
   cursor: default;
   /* Vertical lines between columns */
-  border-right: 1px solid #1f1f1f;
+  border-right: 1px solid var(--border-primary);
   /* Horizontal lines between rows */
-  border-bottom: 1px solid #1f1f1f;
+  border-bottom: 1px solid var(--border-primary);
 }
 
 /* Remove right border from last column */
@@ -691,7 +866,7 @@ a.action-button:focus .action-arrow {
   width: 2rem;
   height: 2rem;
   border-radius: 0.5rem;
-  color: #ffffff;
+  color: var(--text-primary);
   flex-shrink: 0;
   transition: background-color 0.2s ease;
 }
@@ -699,23 +874,23 @@ a.action-button:focus .action-arrow {
 .how-i-work-icon svg {
   width: 1.25rem;
   height: 1.25rem;
-  fill: #ffffff;
-  color: #ffffff;
+  fill: var(--text-primary);
+  color: var(--text-primary);
   transition: fill 0.2s ease;
 }
 
 .how-i-work-icon svg path {
-  fill: #ffffff !important;
-  stroke: #ffffff;
+  fill: var(--text-primary) !important;
+  stroke: var(--text-primary);
   transition: fill 0.2s ease;
 }
 
 /* On hover, keep icon white even with colored background */
 .how-i-work-item:hover .how-i-work-icon svg,
 .how-i-work-item:hover .how-i-work-icon svg path {
-  fill: #ffffff !important;
-  color: #ffffff;
-  stroke: #ffffff;
+  fill: var(--text-primary) !important;
+  color: var(--text-primary);
+  stroke: var(--text-primary);
 }
 
 .how-i-work-text {
@@ -727,18 +902,18 @@ a.action-button:focus .action-arrow {
 }
 
 .how-i-work-title {
-  color: #ffffff;
-  font-weight: 600;
-  font-size: 0.9375rem;
-  line-height: 1.4;
+  color: var(--text-primary);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-body-small);
+  line-height: var(--line-height-snug);
   cursor: default;
   user-select: none;
 }
 
 .how-i-work-description {
-  color: #9ca3af;
-  font-size: 0.875rem;
-  line-height: 1.5;
+  color: var(--text-tertiary);
+  font-size: var(--font-size-caption);
+  line-height: var(--line-height-normal);
   cursor: default;
   user-select: none;
 }
@@ -759,12 +934,12 @@ a.action-button:focus .action-arrow {
 }
 
 .working-style-item:not(:last-child) {
-  border-bottom: 1px solid #1f1f1f;
+  border-bottom: 1px solid var(--border-primary);
   padding-bottom: 2rem;
 }
 
 .working-style-icon {
-  color: #ffffff;
+  color: var(--text-primary);
   display: flex;
   align-items: flex-start;
   flex-shrink: 0;
@@ -778,18 +953,18 @@ a.action-button:focus .action-arrow {
 }
 
 .working-style-title {
-  font-size: 1rem;
-  font-weight: 700;
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-bold);
   margin: 0;
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 .working-style-description {
-  font-size: 0.9375rem;
-  font-weight: 400;
-  line-height: 1.5;
+  font-size: var(--font-size-body-small);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-normal);
   margin: 0;
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 .contact-content {
@@ -834,22 +1009,22 @@ a.action-button:focus .action-arrow {
 }
 
 .testimonial-text {
-  color: #ffffff;
-  font-size: 1.125rem;
-  line-height: 1.7;
+  color: var(--text-primary);
+  font-size: var(--font-size-h3);
+  line-height: var(--line-height-loose);
   margin-bottom: 1.5rem;
   font-style: italic;
 }
 
 .testimonial-author {
-  color: #9ca3af;
-  font-size: 0.9375rem;
-  line-height: 1.5;
+  color: var(--text-tertiary);
+  font-size: var(--font-size-body-small);
+  line-height: var(--line-height-normal);
 }
 
 .carousel-button {
   background: transparent;
-  border: 1px solid #1f1f1f;
+  border: 1px solid var(--border-primary);
   border-radius: 0.375rem;
   width: 2.5rem;
   height: 2.5rem;
@@ -857,7 +1032,7 @@ a.action-button:focus .action-arrow {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: #ffffff;
+  color: var(--text-primary);
   transition: all 0.2s ease;
   padding: 0;
   flex-shrink: 0;
@@ -865,8 +1040,8 @@ a.action-button:focus .action-arrow {
 }
 
 .carousel-button:hover {
-  background-color: #1f1f1f;
-  border-color: #2f2f2f;
+  background-color: var(--border-primary);
+  border-color: var(--border-secondary);
 }
 
 .carousel-button:active {
@@ -885,7 +1060,7 @@ a.action-button:focus .action-arrow {
   width: 0.5rem;
   height: 0.5rem;
   border-radius: 50%;
-  background-color: #1f1f1f;
+  background-color: var(--border-primary);
   border: none;
   cursor: pointer;
   padding: 0;
@@ -893,11 +1068,11 @@ a.action-button:focus .action-arrow {
 }
 
 .carousel-indicator:hover {
-  background-color: #2f2f2f;
+  background-color: var(--border-secondary);
 }
 
 .carousel-indicator.active {
-  background-color: #ffffff;
+  background-color: var(--text-primary);
   width: 1.5rem;
   border-radius: 0.25rem;
 }
@@ -919,14 +1094,14 @@ a.action-button:focus .action-arrow {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 1rem;
-  font-weight: 400;
-  color: #ffffff;
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-normal);
+  color: var(--text-primary);
 }
 
 .form-label svg {
   flex-shrink: 0;
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 .form-input,
@@ -935,12 +1110,12 @@ a.action-button:focus .action-arrow {
   width: 100%;
   padding: 0.875rem 1rem;
   background: transparent;
-  border: 1px solid #4b5563;
+  border: 1px solid var(--border-secondary);
   border-radius: 0.5rem;
-  font-size: 0.9375rem;
-  font-weight: 400;
-  font-family: 'Inter', sans-serif;
-  color: #ffffff;
+  font-size: var(--font-size-body-small);
+  font-weight: var(--font-weight-normal);
+  font-family: var(--font-primary);
+  color: var(--text-primary);
   transition: border-color 0.2s ease;
 }
 
@@ -948,12 +1123,12 @@ a.action-button:focus .action-arrow {
 .form-textarea:focus,
 .form-select:focus {
   outline: none;
-  border-color: #9ca3af;
+  border-color: var(--text-tertiary);
 }
 
 .form-input::placeholder,
 .form-textarea::placeholder {
-  color: #9ca3af;
+  color: var(--text-tertiary);
   font-style: italic;
 }
 
@@ -973,8 +1148,8 @@ a.action-button:focus .action-arrow {
 }
 
 .form-select option {
-  background: #000000;
-  color: #ffffff;
+  background: var(--bg-primary);
+  color: var(--text-primary);
 }
 
 .select-arrow {
@@ -983,7 +1158,7 @@ a.action-button:focus .action-arrow {
   top: 50%;
   transform: translateY(-50%);
   pointer-events: none;
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 .form-actions {
@@ -994,13 +1169,13 @@ a.action-button:focus .action-arrow {
 
 .form-submit-button {
   padding: 0.75rem 2rem;
-  background: #ffffff;
-  color: #000000;
+  background: var(--text-primary);
+  color: var(--bg-primary);
   border: none;
   border-radius: 0.5rem;
-  font-size: 0.9375rem;
-  font-weight: 500;
-  font-family: 'Inter', sans-serif;
+  font-size: var(--font-size-body-small);
+  font-weight: var(--font-weight-medium);
+  font-family: var(--font-primary);
   cursor: pointer;
   transition: opacity 0.2s ease;
 }
@@ -1023,7 +1198,7 @@ a.action-button:focus .action-arrow {
   }
   
   .description {
-    font-size: 1rem;
+    font-size: var(--font-size-body);
   }
 
   .experience-content {
@@ -1054,17 +1229,17 @@ a.action-button:focus .action-arrow {
 
   .how-i-work-item {
     padding: 1rem;
-    border-right: 1px solid #1f1f1f;
-    border-bottom: 1px solid #1f1f1f;
+    border-right: 1px solid var(--border-primary);
+    border-bottom: 1px solid var(--border-primary);
   }
 
   /* Reset desktop 3-column border rules */
   .how-i-work-item:nth-child(3n) {
-    border-right: 1px solid #1f1f1f;
+    border-right: 1px solid var(--border-primary);
   }
 
   .how-i-work-item:nth-last-child(-n+3) {
-    border-bottom: 1px solid #1f1f1f;
+    border-bottom: 1px solid var(--border-primary);
   }
 
   /* Apply 2-column border rules */
@@ -1092,7 +1267,7 @@ a.action-button:focus .action-arrow {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.9);
+  background-color: var(--overlay-bg);
   z-index: 1000;
   display: flex;
   justify-content: center;
@@ -1104,15 +1279,15 @@ a.action-button:focus .action-arrow {
   max-width: 800px;
   width: 100%;
   height: calc(100vh - 128px);
-  background-color: #000000;
-  color: #ffffff;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
   padding: 2rem;
-  border: 1px solid #1f1f1f;
+  border: 1px solid var(--border-primary);
   border-radius: 0.5rem;
   position: relative;
   overflow-y: auto;
   overflow-x: hidden;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  box-shadow: 0 20px 60px var(--shadow-dark), 0 0 0 1px var(--overlay-border);
 }
 
 .overlay-close {
@@ -1121,7 +1296,7 @@ a.action-button:focus .action-arrow {
   right: 1.5rem;
   background: transparent;
   border: none;
-  color: #d1d5db;
+  color: var(--text-secondary);
   cursor: pointer;
   padding: 0.5rem;
   display: flex;
@@ -1132,7 +1307,7 @@ a.action-button:focus .action-arrow {
 }
 
 .overlay-close:hover {
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 .overlay-navigation {
@@ -1141,7 +1316,7 @@ a.action-button:focus .action-arrow {
   align-items: center;
   margin-bottom: 3rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid #1f1f1f;
+  border-bottom: 1px solid var(--border-primary);
 }
 
 .nav-link {
@@ -1150,16 +1325,16 @@ a.action-button:focus .action-arrow {
   gap: 0.5rem;
   background: transparent;
   border: none;
-  color: #d1d5db;
-  font-size: 0.875rem;
-  font-family: 'Inter', sans-serif;
+  color: var(--text-secondary);
+  font-size: var(--font-size-caption);
+  font-family: var(--font-primary);
   cursor: pointer;
   padding: 0.5rem 0;
   transition: color 0.2s ease;
 }
 
 .nav-link:hover {
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 .nav-back {
@@ -1212,10 +1387,10 @@ a.action-button:focus .action-arrow {
 }
 
 .overlay-title {
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-bold);
   margin: 0;
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 .overlay-header-right {
@@ -1226,19 +1401,19 @@ a.action-button:focus .action-arrow {
 }
 
 .overlay-company {
-  font-size: 0.9375rem;
-  color: #d1d5db;
+  font-size: var(--font-size-body-small);
+  color: var(--text-secondary);
 }
 
 .overlay-duration {
-  font-size: 0.875rem;
-  color: #9ca3af;
+  font-size: var(--font-size-caption);
+  color: var(--text-tertiary);
 }
 
 .overlay-description {
-  font-size: 1rem;
-  line-height: 1.6;
-  color: #d1d5db;
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-relaxed);
+  color: var(--text-secondary);
   margin: 0;
 }
 
@@ -1247,19 +1422,19 @@ a.action-button:focus .action-arrow {
 }
 
 .overlay-section-title {
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-bold);
   margin: 0 0 1rem 0;
-  color: #ffffff;
+  color: var(--text-primary);
 }
 
 .overlay-subsection-title {
-  font-size: 1rem;
-  font-weight: 700;
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-bold);
   margin: 1.5rem 0 0.75rem 0;
-  color: #ffffff;
+  color: var(--text-primary);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: var(--letter-spacing-wide);
   padding-left: 1.5rem;
 }
 
@@ -1269,9 +1444,9 @@ a.action-button:focus .action-arrow {
 }
 
 .overlay-section p {
-  font-size: 1rem;
-  line-height: 1.6;
-  color: #d1d5db;
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-relaxed);
+  color: var(--text-secondary);
   margin: 0 0 1rem 0;
 }
 
@@ -1282,9 +1457,9 @@ a.action-button:focus .action-arrow {
 }
 
 .overlay-list li {
-  font-size: 1rem;
-  line-height: 1.6;
-  color: #d1d5db;
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-relaxed);
+  color: var(--text-secondary);
   margin: 0 0 0.75rem 0;
   padding-left: 1.5rem;
   position: relative;
@@ -1294,7 +1469,7 @@ a.action-button:focus .action-arrow {
   content: "•";
   position: absolute;
   left: 0;
-  color: #10b981;
+  color: var(--accent-green);
 }
 
 @media (max-width: 768px) {
@@ -1362,7 +1537,7 @@ a.action-button:focus .action-arrow {
 
   .overlay-header-right {
     align-items: flex-start;
-    border-bottom: 1px solid #1f1f1f;
+    border-bottom: 1px solid var(--border-primary);
     padding-right: 0;
     padding-bottom: 2rem;
   }
@@ -1372,7 +1547,7 @@ a.action-button:focus .action-arrow {
   }
 
   .testimonial-text {
-    font-size: 1rem;
+    font-size: var(--font-size-body);
   }
 
   .testimonial-card {
@@ -1419,7 +1594,7 @@ a.action-button:focus .action-arrow {
 /* Ensure overlay background fades in smoothly after header transition */
 .experience-overlay {
   animation: overlay-fade-in 0.5s ease-out 0.3s forwards;
-  background-color: rgba(0, 0, 0, 0);
+  background-color: transparent;
 }
 
 /* Hide overlay content initially to prevent overlap during transition */
@@ -1438,10 +1613,10 @@ a.action-button:focus .action-arrow {
 
 @keyframes overlay-fade-in {
   from {
-    background-color: rgba(0, 0, 0, 0);
+    background-color: transparent;
   }
   to {
-    background-color: rgba(0, 0, 0, 0.9);
+    background-color: var(--overlay-bg);
   }
 }
 
@@ -1454,6 +1629,241 @@ a.action-button:focus .action-arrow {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Robot/Terminal Theme Overrides */
+.robot-theme {
+  /* Remove all rounded corners for terminal aesthetic */
+  border-radius: 0 !important;
+}
+
+.robot-theme * {
+  border-radius: 0 !important;
+}
+
+/* White body text for legibility in robot theme */
+.robot-theme .description,
+.robot-theme .experience-description,
+.robot-theme .experience-company,
+.robot-theme .experience-duration,
+.robot-theme .overlay-description,
+.robot-theme .overlay-section p,
+.robot-theme .overlay-list li,
+.robot-theme .content-subtitle,
+.robot-theme .working-style-description,
+.robot-theme .how-i-work-description,
+.robot-theme .how-i-work-intro,
+.robot-theme .testimonial-text,
+.robot-theme .testimonial-author,
+.robot-theme .overlay-company,
+.robot-theme .overlay-duration {
+  color: #ffffff !important;
+}
+
+/* Terminal-style buttons */
+.robot-theme .action-button,
+.robot-theme a.action-button,
+.robot-theme .menu-button,
+.robot-theme .mode-button,
+.robot-theme .see-more-button,
+.robot-theme .form-submit-button,
+.robot-theme .nav-link {
+  border-radius: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Minimal hover effects for terminal feel */
+.robot-theme .action-button:hover,
+.robot-theme a.action-button:hover {
+  background: transparent;
+  border-color: var(--border-primary);
+  text-decoration: none;
+}
+
+.robot-theme .menu-item:hover {
+  background: transparent;
+  color: var(--text-primary);
+  text-decoration: underline;
+}
+
+/* Remove shadows in terminal mode */
+.robot-theme .floating-menu,
+.robot-theme .menu-dropdown,
+.robot-theme .experience-overlay {
+  box-shadow: none;
+}
+
+/* Terminal-style borders - removed for cleaner aesthetic */
+
+/* Experience items: no border by default, show on hover */
+.robot-theme .experience-item {
+  border: 1px solid transparent;
+  border-radius: 0;
+  transition: border-color 0.2s ease;
+}
+
+.robot-theme .experience-item:hover {
+  border: 1px solid var(--border-primary);
+}
+
+/* Add terminal prompt indicators */
+.robot-theme .title::before {
+  content: '> ';
+  color: var(--text-primary);
+}
+
+.robot-theme .content-title::before {
+  content: '$ ';
+  color: var(--text-secondary);
+}
+
+.robot-theme .overlay-title::before {
+  content: '# ';
+  color: var(--text-primary);
+}
+
+/* Terminal cursor blink animation */
+@keyframes terminal-blink {
+  0%, 49% {
+    opacity: 1;
+  }
+  50%, 100% {
+    opacity: 0;
+  }
+}
+
+.robot-theme .title::after {
+  content: '▊';
+  animation: terminal-blink 1s infinite;
+  margin-left: 0.25rem;
+}
+
+/* Make form inputs look like terminal input */
+.robot-theme .form-input,
+.robot-theme .form-textarea,
+.robot-theme .form-select {
+  border: 1px solid var(--border-primary);
+  border-radius: 0;
+  background: var(--bg-secondary);
+}
+
+.robot-theme .form-input:focus,
+.robot-theme .form-textarea:focus,
+.robot-theme .form-select:focus {
+  outline: 1px solid var(--text-primary);
+  border-color: var(--text-primary);
+}
+
+/* Terminal-style experience icons - strip colors to theme green */
+.robot-theme .experience-icon {
+  border: 1px solid var(--border-primary);
+  border-radius: 0;
+  background: var(--text-primary) !important;
+}
+
+/* Force icon SVGs to be black in robot theme */
+.robot-theme .experience-icon svg,
+.robot-theme .experience-icon svg path {
+  fill: var(--bg-primary) !important;
+  mix-blend-mode: normal !important;
+}
+
+/* Overlay icons also use theme green */
+.robot-theme .overlay-icon {
+  background: var(--text-primary) !important;
+  border: 1px solid var(--border-primary);
+  border-radius: 0;
+}
+
+.robot-theme .overlay-icon svg,
+.robot-theme .overlay-icon svg path {
+  fill: var(--bg-primary) !important;
+  mix-blend-mode: normal !important;
+}
+
+/* How I Work icons always show background in robot theme */
+.robot-theme .how-i-work-icon {
+  background: var(--text-primary) !important;
+  border: 1px solid var(--border-primary);
+  border-radius: 0;
+}
+
+.robot-theme .how-i-work-icon svg,
+.robot-theme .how-i-work-icon svg path {
+  fill: var(--bg-primary) !important;
+  stroke: var(--bg-primary) !important;
+  color: var(--bg-primary) !important;
+}
+
+/* Ensure icons stay black on hover in robot theme */
+.robot-theme .how-i-work-item:hover .how-i-work-icon svg,
+.robot-theme .how-i-work-item:hover .how-i-work-icon svg path {
+  fill: var(--bg-primary) !important;
+  stroke: var(--bg-primary) !important;
+  color: var(--bg-primary) !important;
+}
+
+/* Working style icons also use theme green */
+.robot-theme .working-style-icon {
+  background: var(--text-primary) !important;
+  border: 1px solid var(--border-primary);
+  border-radius: 0;
+}
+
+.robot-theme .working-style-icon svg,
+.robot-theme .working-style-icon svg path {
+  fill: var(--bg-primary) !important;
+  stroke: var(--bg-primary) !important;
+}
+
+/* Menu in terminal style */
+.robot-theme .menu-dropdown {
+  border: 2px solid var(--border-primary);
+  border-radius: 0;
+}
+
+.robot-theme .menu-mode-switcher {
+  border-top: 1px solid var(--border-primary);
+  border-bottom: 1px solid var(--border-primary);
+}
+
+.robot-theme .menu-footer {
+  border-top: 1px solid var(--border-primary);
+}
+
+/* Overlay terminal style - minimal borders */
+.robot-theme .overlay-navigation {
+  border-bottom: 1px solid var(--border-primary);
+}
+
+/* Text selection in terminal green */
+.robot-theme ::selection {
+  background: var(--text-primary);
+  color: var(--bg-primary);
+}
+
+/* Carousel button icons - show black on hover */
+.robot-theme .carousel-button {
+  border: 1px solid var(--border-primary);
+  border-radius: 0;
+}
+
+.robot-theme .carousel-button:hover {
+  background-color: var(--text-primary);
+}
+
+.robot-theme .carousel-button svg,
+.robot-theme .carousel-button svg path {
+  fill: var(--text-primary);
+  stroke: var(--text-primary);
+}
+
+.robot-theme .carousel-button:hover svg,
+.robot-theme .carousel-button:hover svg path {
+  fill: var(--bg-primary) !important;
+  stroke: var(--bg-primary) !important;
+  color: var(--bg-primary) !important;
 }
 
 

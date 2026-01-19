@@ -29,8 +29,6 @@ import MoonStarsFill from './assets/icons/moon-stars-fill.svg?react'
 import MoonStarsLine from './assets/icons/moon-stars-line.svg?react'
 import SunLine from './assets/icons/sun-line.svg?react'
 import SunFill from './assets/icons/sun-fill.svg?react'
-import ButterflyFill from './assets/icons/butterfly-fill.svg?react'
-import ButterflyLine from './assets/icons/butterfly-line.svg?react'
 import AlienFill from './assets/icons/alien-fill.svg?react'
 import AlienLine from './assets/icons/alien-line.svg?react'
 import RobotFill from './assets/icons/robot-fill.svg?react'
@@ -50,7 +48,7 @@ function App() {
   const [overlayContentReveal, setOverlayContentReveal] = useState(0)
   const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [theme, setTheme] = useState<'light' | 'dark' | 'butterfly' | 'alien' | 'robot'>('dark')
+  const [theme, setTheme] = useState<'light' | 'dark' | 'alien' | 'robot'>('dark')
   const [showDarkModeTooltip, setShowDarkModeTooltip] = useState(false)
   const [hoveredTheme, setHoveredTheme] = useState<string | null>(null)
 
@@ -272,6 +270,28 @@ function App() {
     return () => clearTimeout(timer)
   }, [])
 
+  // Load theme from localStorage on mount, or detect system preference
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | 'alien' | 'robot' | null
+    
+    if (savedTheme) {
+      // User has a saved preference, use it
+      setTheme(savedTheme)
+    } else {
+      // No saved preference, detect system preference
+      const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+      const detectedTheme = systemPrefersDark ? 'dark' : 'light'
+      setTheme(detectedTheme)
+      // Save the detected preference
+      localStorage.setItem('theme', detectedTheme)
+    }
+  }, [])
+
+  // Save theme to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('theme', theme)
+  }, [theme])
+
   // Handle ESC key to close overlay
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
@@ -351,7 +371,7 @@ function App() {
   }
 
   return (
-    <div className="landing-page">
+    <div className={`landing-page ${theme}-theme`}>
       {/* Floating Menu Button */}
       <div className="floating-menu">
         <button
@@ -408,19 +428,6 @@ function App() {
                     <SunFill width="16" height="16" fill="currentColor" />
                   ) : (
                     <SunLine width="16" height="16" fill="currentColor" />
-                  )}
-                </button>
-                <button
-                  className={`mode-button ${theme === 'butterfly' ? 'active' : ''}`}
-                  onClick={() => setTheme('butterfly')}
-                  onMouseEnter={() => setHoveredTheme('butterfly')}
-                  onMouseLeave={() => setHoveredTheme(null)}
-                  aria-label="Butterfly theme"
-                >
-                  {(theme === 'butterfly' || hoveredTheme === 'butterfly') ? (
-                    <ButterflyFill width="16" height="16" fill="currentColor" />
-                  ) : (
-                    <ButterflyLine width="16" height="16" fill="currentColor" />
                   )}
                 </button>
                 <button
