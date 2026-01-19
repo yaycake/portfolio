@@ -78,6 +78,7 @@ function App() {
   const [hoveredHowIWorkStep, setHoveredHowIWorkStep] = useState<number | null>(null)
   const [overlayContentReveal, setOverlayContentReveal] = useState(0)
   const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0)
+  const [isTestimonialTransitioning, setIsTestimonialTransitioning] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [theme, setTheme] = useState<'light' | 'dark' | 'robot'>('dark')
   const [showDarkModeTooltip, setShowDarkModeTooltip] = useState(false)
@@ -190,6 +191,34 @@ function App() {
     return 1 - Math.pow(1 - t, 3)
   }
 
+  // Calm, intentional scroll function
+  const smoothScrollToElement = (elementId: string) => {
+    const element = document.getElementById(elementId)
+    if (!element) return
+
+    const targetPosition = element.getBoundingClientRect().top + window.pageYOffset
+    const startPosition = window.pageYOffset
+    const distance = targetPosition - startPosition
+    const duration = 1200 // Longer duration for calm feel
+    const startTime = performance.now()
+
+    const scroll = (currentTime: number) => {
+      const elapsed = currentTime - startTime
+      const progress = Math.min(elapsed / duration, 1)
+      
+      // Use easeOutCubic for gentle deceleration
+      const eased = easeOutCubic(progress)
+      
+      window.scrollTo(0, startPosition + distance * eased)
+
+      if (progress < 1) {
+        requestAnimationFrame(scroll)
+      }
+    }
+
+    requestAnimationFrame(scroll)
+  }
+
   // Helper function to calculate overlay section reveal progress
   const getOverlaySectionProgress = (sectionIndex: number, totalSections: number, descriptionProgress: number = 20) => {
     const sectionStart = descriptionProgress + (sectionIndex * ((100 - descriptionProgress) / totalSections))
@@ -253,17 +282,17 @@ function App() {
       const scrollToContent = () => {
         const element = document.getElementById(`content-${actionId}`)
         if (element) {
-          element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          smoothScrollToElement(`content-${actionId}`)
         } else {
           // If element not found yet, try again after a short delay
           setTimeout(scrollToContent, 50)
         }
       }
       // Start scrolling after a brief delay to ensure DOM is updated
-      setTimeout(scrollToContent, 100)
+      setTimeout(scrollToContent, 200)
       
       // Start content reveal animation for this specific content
-      const duration = 2000
+      const duration = 1500 // Calm, wellness-like animation
       const startTime = Date.now()
       
       const animate = () => {
@@ -282,13 +311,30 @@ function App() {
       }
       
       requestAnimationFrame(animate)
-    }, 800) // 0.8s loading delay
+    }, 500) // Slightly longer delay for calmer flow
+  }
+
+  const handleTestimonialChange = (newIndex: number) => {
+    if (isTestimonialTransitioning) return // Prevent rapid clicking
+    
+    setIsTestimonialTransitioning(true)
+    
+    // After fade-out completes, change the index
+    setTimeout(() => {
+      setCurrentTestimonialIndex(newIndex)
+      
+      // After index changes, fade back in
+      setTimeout(() => {
+        setIsTestimonialTransitioning(false)
+      }, 350) // Half of transition duration for fade-in
+    }, 350) // Half of transition duration for fade-out
   }
 
   useEffect(() => {
     // Smoothly reveal entire landing content as one unified gradient wipe
-    const duration = 3200 // 3.2 seconds for everything (slightly slower)
+    const duration = 3000 // Calm, wellness-like reveal
     const startTime = Date.now()
+    let actionsShown = false
 
     const animate = () => {
       const elapsed = Date.now() - startTime
@@ -298,11 +344,14 @@ function App() {
       // Use single progress for entire landing content
       setLandingReveal(easedProgress)
       
+      // Show suggested actions when landing is 70% complete for seamless flow
+      if (rawProgress >= 0.7 && !actionsShown) {
+        setIsDescComplete(true)
+        actionsShown = true
+      }
+      
       if (rawProgress < 1) {
         requestAnimationFrame(animate)
-      } else {
-        // Mark as complete so suggested actions can show
-        setIsDescComplete(true)
       }
     }
 
@@ -310,14 +359,21 @@ function App() {
   }, [])
 
   useEffect(() => {
-    // Cascade bottom buttons when content is loaded and there are available actions
+    // Cascade bottom buttons seamlessly after experience tiles for the "experiences" content
     if (activeContent.length === 0 || availableActions.length === 0 || isLoading) return
+    
+    // Only animate bottom buttons for the experiences section
+    if (!activeContent.includes('experiences')) {
+      // For other sections, show buttons immediately with simple fade
+      setBottomButtonReveals(new Array(availableActions.length).fill(100))
+      return
+    }
 
     // Initialize button reveals array
     setBottomButtonReveals(new Array(availableActions.length).fill(0))
 
-    const buttonDuration = 1200
-    const delayBetweenButtons = 300
+    const buttonDuration = 1500 // Slower, more calming reveal
+    const delayBetweenButtons = 350 // Slightly longer delay for gentler cascade
 
     // Small delay before starting bottom buttons animation
     setTimeout(() => {
@@ -401,11 +457,8 @@ function App() {
     if (activeContent.includes(item.id)) {
       // Content is already loaded, scroll to it
       setTimeout(() => {
-        const element = document.getElementById(`content-${item.id}`)
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-        }
-      }, 100) // Small delay to ensure menu closes first
+        smoothScrollToElement(`content-${item.id}`)
+      }, 200) // Small delay to ensure menu closes first
     } else {
       // Content not loaded, load it and then scroll
       handleActionClick(item.id)
@@ -414,14 +467,14 @@ function App() {
       const checkAndScroll = () => {
         const element = document.getElementById(`content-${item.id}`)
         if (element) {
-          element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          smoothScrollToElement(`content-${item.id}`)
         } else {
           // Check again after a short delay
           setTimeout(checkAndScroll, 100)
         }
       }
       // Start checking after loading animation begins
-      setTimeout(checkAndScroll, 300)
+      setTimeout(checkAndScroll, 400)
     }
   }
 
@@ -614,7 +667,7 @@ function App() {
                 <p 
                   className="overlay-description"
                   style={{ 
-                    '--reveal-progress': `${Math.min(overlayContentReveal, 20)}%`
+                    '--reveal-progress': Math.min(overlayContentReveal, 20)
                   } as React.CSSProperties}
                 >
                   {experiences[0].description}
@@ -623,7 +676,7 @@ function App() {
                 <div 
                   className="overlay-section"
                   style={{ 
-                    '--reveal-progress': `${getOverlaySectionProgress(0, 5)}%`
+                    '--reveal-progress': getOverlaySectionProgress(0, 5)
                   } as React.CSSProperties}
                 >
                   <h2 className="overlay-section-title">Role & Scope</h2>
@@ -634,7 +687,7 @@ function App() {
                 <div 
                   className="overlay-section"
                   style={{ 
-                    '--reveal-progress': `${getOverlaySectionProgress(1, 5)}%`
+                    '--reveal-progress': getOverlaySectionProgress(1, 5)
                   } as React.CSSProperties}
                 >
                   <h2 className="overlay-section-title">Problem</h2>
@@ -644,7 +697,7 @@ function App() {
                 <div 
                   className="overlay-section"
                   style={{ 
-                    '--reveal-progress': `${getOverlaySectionProgress(2, 5)}%`
+                    '--reveal-progress': getOverlaySectionProgress(2, 5)
                   } as React.CSSProperties}
                 >
                   <h2 className="overlay-section-title">Discovery</h2>
@@ -740,10 +793,10 @@ function App() {
                           setTimeout(() => {
                             const contactSection = document.getElementById('content-contact');
                             if (contactSection) {
-                              contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                              smoothScrollToElement('content-contact');
                             }
-                          }, 300);
-                        }, 100);
+                          }, 400);
+                        }, 200);
                       }}
                     >
                       Contact me
@@ -781,7 +834,7 @@ function App() {
                 <p 
                   className="overlay-description"
                   style={{ 
-                    '--reveal-progress': `${Math.min(overlayContentReveal, 20)}%`
+                    '--reveal-progress': Math.min(overlayContentReveal, 20)
                   } as React.CSSProperties}
                 >
                   {experiences[1].description}
@@ -790,7 +843,7 @@ function App() {
                 <div 
                   className="overlay-section"
                   style={{ 
-                    '--reveal-progress': `${getOverlaySectionProgress(0, 5)}%`
+                    '--reveal-progress': getOverlaySectionProgress(0, 5)
                   } as React.CSSProperties}
                 >
                   <h2 className="overlay-section-title">Role & Scope</h2>
@@ -801,7 +854,7 @@ function App() {
                 <div 
                   className="overlay-section"
                   style={{ 
-                    '--reveal-progress': `${getOverlaySectionProgress(1, 5)}%`
+                    '--reveal-progress': getOverlaySectionProgress(1, 5)
                   } as React.CSSProperties}
                 >
                   <h2 className="overlay-section-title">Problem</h2>
@@ -812,7 +865,7 @@ function App() {
                 <div 
                   className="overlay-section"
                   style={{ 
-                    '--reveal-progress': `${getOverlaySectionProgress(2, 5)}%`
+                    '--reveal-progress': getOverlaySectionProgress(2, 5)
                   } as React.CSSProperties}
                 >
                   <h2 className="overlay-section-title">Discovery</h2>
@@ -843,7 +896,7 @@ function App() {
                 <div 
                   className="overlay-section"
                   style={{ 
-                    '--reveal-progress': `${getOverlaySectionProgress(3, 5)}%`
+                    '--reveal-progress': getOverlaySectionProgress(3, 5)
                   } as React.CSSProperties}
                 >
                   <h2 className="overlay-section-title">Design Craft</h2>
@@ -869,7 +922,7 @@ function App() {
                 <div 
                   className="overlay-section"
                   style={{ 
-                    '--reveal-progress': `${getOverlaySectionProgress(4, 7)}%`
+                    '--reveal-progress': getOverlaySectionProgress(4, 7)
                   } as React.CSSProperties}
                 >
                   <h2 className="overlay-section-title">Solution</h2>
@@ -880,7 +933,7 @@ function App() {
                 <div 
                   className="overlay-section"
                   style={{ 
-                    '--reveal-progress': `${getOverlaySectionProgress(5, 7)}%`
+                    '--reveal-progress': getOverlaySectionProgress(5, 7)
                   } as React.CSSProperties}
                 >
                   <h2 className="overlay-section-title">Learnings</h2>
@@ -895,7 +948,7 @@ function App() {
                 <div 
                   className="overlay-section"
                   style={{ 
-                    '--reveal-progress': `${getOverlaySectionProgress(6, 7)}%`
+                    '--reveal-progress': getOverlaySectionProgress(6, 7)
                   } as React.CSSProperties}
                 >
                   <h2 className="overlay-section-title">Outcomes</h2>
@@ -936,7 +989,7 @@ function App() {
                 <p 
                   className="overlay-description"
                   style={{ 
-                    '--reveal-progress': `${Math.min(overlayContentReveal, 20)}%`
+                    '--reveal-progress': Math.min(overlayContentReveal, 20)
                   } as React.CSSProperties}
                 >
                   {experiences[2].description}
@@ -945,7 +998,7 @@ function App() {
                 <div 
                   className="overlay-section"
                   style={{ 
-                    '--reveal-progress': `${getOverlaySectionProgress(0, 5)}%`
+                    '--reveal-progress': getOverlaySectionProgress(0, 5)
                   } as React.CSSProperties}
                 >
                   <h2 className="overlay-section-title">Role & Scope</h2>
@@ -956,7 +1009,7 @@ function App() {
                 <div 
                   className="overlay-section"
                   style={{ 
-                    '--reveal-progress': `${getOverlaySectionProgress(1, 5)}%`
+                    '--reveal-progress': getOverlaySectionProgress(1, 5)
                   } as React.CSSProperties}
                 >
                   <h2 className="overlay-section-title">Problem</h2>
@@ -967,7 +1020,7 @@ function App() {
                 <div 
                   className="overlay-section"
                   style={{ 
-                    '--reveal-progress': `${getOverlaySectionProgress(2, 5)}%`
+                    '--reveal-progress': getOverlaySectionProgress(2, 5)
                   } as React.CSSProperties}
                 >
                   <h2 className="overlay-section-title">Discovery</h2>
@@ -1072,7 +1125,7 @@ function App() {
                 <p 
                   className="overlay-description"
                   style={{ 
-                    '--reveal-progress': `${Math.min(overlayContentReveal, 20)}%`
+                    '--reveal-progress': Math.min(overlayContentReveal, 20)
                   } as React.CSSProperties}
                 >
                   {experiences[3].description}
@@ -1081,7 +1134,7 @@ function App() {
                 <div 
                   className="overlay-section"
                   style={{ 
-                    '--reveal-progress': `${getOverlaySectionProgress(0, 5)}%`
+                    '--reveal-progress': getOverlaySectionProgress(0, 5)
                   } as React.CSSProperties}
                 >
                   <h2 className="overlay-section-title">Role & Scope</h2>
@@ -1092,7 +1145,7 @@ function App() {
                 <div 
                   className="overlay-section"
                   style={{ 
-                    '--reveal-progress': `${getOverlaySectionProgress(1, 5)}%`
+                    '--reveal-progress': getOverlaySectionProgress(1, 5)
                   } as React.CSSProperties}
                 >
                   <h2 className="overlay-section-title">Problem</h2>
@@ -1102,7 +1155,7 @@ function App() {
                 <div 
                   className="overlay-section"
                   style={{ 
-                    '--reveal-progress': `${getOverlaySectionProgress(2, 5)}%`
+                    '--reveal-progress': getOverlaySectionProgress(2, 5)
                   } as React.CSSProperties}
                 >
                   <h2 className="overlay-section-title">Product Design</h2>
@@ -1113,7 +1166,7 @@ function App() {
                 <div 
                   className="overlay-section"
                   style={{ 
-                    '--reveal-progress': `${getOverlaySectionProgress(3, 5)}%`
+                    '--reveal-progress': getOverlaySectionProgress(3, 5)
                   } as React.CSSProperties}
                 >
                   <h2 className="overlay-section-title">Front End Development</h2>
@@ -1124,7 +1177,7 @@ function App() {
                 <div 
                   className="overlay-section"
                   style={{ 
-                    '--reveal-progress': `${getOverlaySectionProgress(4, 5)}%`
+                    '--reveal-progress': getOverlaySectionProgress(4, 5)
                   } as React.CSSProperties}
                 >
                   <h2 className="overlay-section-title">Skills & Tools</h2>
@@ -1162,7 +1215,7 @@ function App() {
                 <p 
                   className="overlay-description"
                   style={{ 
-                    '--reveal-progress': `${Math.min(overlayContentReveal, 20)}%`
+                    '--reveal-progress': Math.min(overlayContentReveal, 20)
                   } as React.CSSProperties}
                 >
                   {experiences[4].description}
@@ -1171,7 +1224,7 @@ function App() {
                 <div 
                   className="overlay-section"
                   style={{ 
-                    '--reveal-progress': `${getOverlaySectionProgress(0, 6)}%`
+                    '--reveal-progress': getOverlaySectionProgress(0, 6)
                   } as React.CSSProperties}
                 >
                   <h2 className="overlay-section-title">Role & Scope</h2>
@@ -1181,7 +1234,7 @@ function App() {
                 <div 
                   className="overlay-section"
                   style={{ 
-                    '--reveal-progress': `${getOverlaySectionProgress(1, 6)}%`
+                    '--reveal-progress': getOverlaySectionProgress(1, 6)
                   } as React.CSSProperties}
                 >
                   <h2 className="overlay-section-title">Context</h2>
@@ -1193,7 +1246,7 @@ function App() {
                 <div 
                   className="overlay-section"
                   style={{ 
-                    '--reveal-progress': `${getOverlaySectionProgress(2, 6)}%`
+                    '--reveal-progress': getOverlaySectionProgress(2, 6)
                   } as React.CSSProperties}
                 >
                   <h2 className="overlay-section-title">The User Stories</h2>
@@ -1211,7 +1264,7 @@ function App() {
                 <div 
                   className="overlay-section"
                   style={{ 
-                    '--reveal-progress': `${getOverlaySectionProgress(3, 6)}%`
+                    '--reveal-progress': getOverlaySectionProgress(3, 6)
                   } as React.CSSProperties}
                 >
                   <h2 className="overlay-section-title">The Process</h2>
@@ -1221,7 +1274,7 @@ function App() {
                 <div 
                   className="overlay-section"
                   style={{ 
-                    '--reveal-progress': `${getOverlaySectionProgress(4, 6)}%`
+                    '--reveal-progress': getOverlaySectionProgress(4, 6)
                   } as React.CSSProperties}
                 >
                   <h2 className="overlay-section-title">The Deliverables</h2>
@@ -1232,7 +1285,7 @@ function App() {
                 <div 
                   className="overlay-section"
                   style={{ 
-                    '--reveal-progress': `${getOverlaySectionProgress(5, 6)}%`
+                    '--reveal-progress': getOverlaySectionProgress(5, 6)
                   } as React.CSSProperties}
                 >
                   <h2 className="overlay-section-title">Skills & Tools</h2>
@@ -1243,7 +1296,7 @@ function App() {
                 <div 
                   className="overlay-section"
                   style={{ 
-                    '--reveal-progress': `${getOverlaySectionProgress(6, 7)}%`
+                    '--reveal-progress': getOverlaySectionProgress(6, 7)
                   } as React.CSSProperties}
                 >
                   <h2 className="overlay-section-title">Press Coverage</h2>
@@ -1284,7 +1337,7 @@ function App() {
                 <p 
                   className="overlay-description"
                   style={{ 
-                    '--reveal-progress': `${Math.min(overlayContentReveal, 20)}%`
+                    '--reveal-progress': Math.min(overlayContentReveal, 20)
                   } as React.CSSProperties}
                 >
                   {experiences[5].description}
@@ -1293,7 +1346,7 @@ function App() {
                 <div 
                   className="overlay-section"
                   style={{ 
-                    '--reveal-progress': `${getOverlaySectionProgress(0, 4)}%`
+                    '--reveal-progress': getOverlaySectionProgress(0, 4)
                   } as React.CSSProperties}
                 >
                   <h2 className="overlay-section-title">Role & Scope</h2>
@@ -1304,7 +1357,7 @@ function App() {
                 <div 
                   className="overlay-section"
                   style={{ 
-                    '--reveal-progress': `${getOverlaySectionProgress(1, 4)}%`
+                    '--reveal-progress': getOverlaySectionProgress(1, 4)
                   } as React.CSSProperties}
                 >
                   <h2 className="overlay-section-title">The Idea</h2>
@@ -1320,7 +1373,7 @@ function App() {
                 <div 
                   className="overlay-section"
                   style={{ 
-                    '--reveal-progress': `${getOverlaySectionProgress(2, 4)}%`
+                    '--reveal-progress': getOverlaySectionProgress(2, 4)
                   } as React.CSSProperties}
                 >
                   <h2 className="overlay-section-title">Research, Tools, and Processes</h2>
@@ -1334,7 +1387,7 @@ function App() {
                 <div 
                   className="overlay-section"
                   style={{ 
-                    '--reveal-progress': `${getOverlaySectionProgress(3, 4)}%`
+                    '--reveal-progress': getOverlaySectionProgress(3, 4)
                   } as React.CSSProperties}
                 >
                   <h2 className="overlay-section-title">The Site</h2>
@@ -1356,7 +1409,7 @@ function App() {
                 <div 
                   className="overlay-section"
                   style={{ 
-                    '--reveal-progress': `${getOverlaySectionProgress(4, 5)}%`
+                    '--reveal-progress': getOverlaySectionProgress(4, 5)
                   } as React.CSSProperties}
                 >
                   <h2 className="overlay-section-title">Skills & Tools</h2>
@@ -1367,7 +1420,7 @@ function App() {
                 <div 
                   className="overlay-section"
                   style={{ 
-                    '--reveal-progress': `${getOverlaySectionProgress(5, 6)}%`
+                    '--reveal-progress': getOverlaySectionProgress(5, 6)
                   } as React.CSSProperties}
                 >
                   <h2 className="overlay-section-title">Press</h2>
@@ -1387,14 +1440,25 @@ function App() {
       )}
       <div 
         className="content"
-        style={{
-          '--reveal-progress': `${landingReveal}%`
-        } as React.CSSProperties}
       >
-        <h1 className="title">
+        <h1 
+          className="title"
+          style={{
+            '--reveal-progress': landingReveal >= 0 
+              ? Math.min(100, (landingReveal / 30) * 100)
+              : 0
+          } as React.CSSProperties}
+        >
           {title}
         </h1>
-        <p className="description">
+        <p 
+          className="description"
+          style={{
+            '--reveal-progress': landingReveal >= 35 
+              ? Math.min(100, ((landingReveal - 35) / 35) * 100)
+              : 0
+          } as React.CSSProperties}
+        >
           {description}
         </p>
         {activeContent.map((contentId) => {
@@ -1408,7 +1472,7 @@ function App() {
                         <span 
                           className="reveal-text"
                           style={{ 
-                            '--reveal-progress': `${Math.max(0, Math.min(100, (contentReveal / 25) * 100))}%`
+                            '--reveal-progress': Math.max(0, Math.min(100, (contentReveal / 25) * 100))
                           } as React.CSSProperties}
                         >
                           What have I helped build lately?
@@ -1418,7 +1482,7 @@ function App() {
                         <span 
                           className="reveal-text"
                           style={{ 
-                            '--reveal-progress': `${Math.max(0, Math.min(100, ((contentReveal - 25) / 25) * 100))}%`
+                            '--reveal-progress': Math.max(0, Math.min(100, ((contentReveal - 25) / 25) * 100))
                           } as React.CSSProperties}
                         >
                           Here's a quick preview of my latest experiences:
@@ -1431,21 +1495,20 @@ function App() {
                           const isNewItem = showMoreExperiences && index >= 4
                           const shouldShowImmediately = isNewItem
                           
-                          // Title: 0-25% of contentReveal (completes when contentReveal = 25)
-                          // Description: 25-50% of contentReveal (starts at 25, completes at 50)
-                          // First tile starts at 50% of contentReveal
-                          // Each subsequent tile starts after previous completes
-                          // We'll allocate remaining 50% of contentReveal for all tiles
-                          const numTiles = showMoreExperiences ? experiences.length : 4
-                          const tilesRange = 50 // Remaining 50% of contentReveal for all tiles
-                          const tileProgressRange = tilesRange / numTiles // Progress range per tile
-                          const itemStartPoint = 50 + (index * tileProgressRange)
+                          // Calm, intentional tile reveals with generous overlapping
+                          // First tile starts early at 35% to create breathing room
+                          // Tiles overlap significantly for smooth, flowing cascade
+                          const firstTileStart = 35
+                          const tileSpacing = 12 // Generous spacing between tile starts for calm flow
+                          const itemStartPoint = firstTileStart + (index * tileSpacing)
                           
-                          // Calculate item progress - each tile gets its own slice of the progress
+                          // Each tile gets generous time to fully reveal
+                          // Progress range ensures each tile completes smoothly before next finishes
+                          const tileProgressDuration = 35 // Each tile takes longer to reveal
                           const itemProgress = shouldShowImmediately 
                             ? 100 
                             : contentReveal >= itemStartPoint
-                            ? Math.min(100, ((contentReveal - itemStartPoint) / tileProgressRange) * 100)
+                            ? Math.min(100, ((contentReveal - itemStartPoint) / tileProgressDuration) * 100)
                             : 0
                           
                           // Ensure items complete when contentReveal reaches 100%
@@ -1454,26 +1517,27 @@ function App() {
                             : itemProgress
                           
                           // Calculate cascading progress for elements within this experience item
-                          // Entire tile (including icon badge) loads together, then content cascades within
-                          // Role starts when tile reaches 20%
+                          // Calm, meditative cascade with generous breathing room
+                          // Icon badge fades in first with tile background
+                          // Role starts early at 20% for smooth, visible entry
                           const roleStartPoint = 20
                           const roleProgress = finalProgress >= roleStartPoint
                             ? Math.min(100, ((finalProgress - roleStartPoint) / (100 - roleStartPoint)) * 100)
                             : 0
-                          // Description starts when role reaches 30%
-                          const descStartPoint = 30
-                          const descProgress = roleProgress >= descStartPoint
-                            ? Math.min(100, ((roleProgress - descStartPoint) / (100 - descStartPoint)) * 100)
+                          // Description starts at 40% - ample space to absorb role
+                          const descStartPoint = 40
+                          const descProgress = finalProgress >= descStartPoint
+                            ? Math.min(100, ((finalProgress - descStartPoint) / (100 - descStartPoint)) * 100)
                             : 0
-                          // Company starts when description reaches 50%
-                          const companyStartPoint = 50
-                          const companyProgress = descProgress >= companyStartPoint
-                            ? Math.min(100, ((descProgress - companyStartPoint) / (100 - companyStartPoint)) * 100)
+                          // Company starts at 60% - calm transition
+                          const companyStartPoint = 60
+                          const companyProgress = finalProgress >= companyStartPoint
+                            ? Math.min(100, ((finalProgress - companyStartPoint) / (100 - companyStartPoint)) * 100)
                             : 0
-                          // Duration starts when company reaches 50%
-                          const durationStartPoint = 50
-                          const durationProgress = companyProgress >= durationStartPoint
-                            ? Math.min(100, ((companyProgress - durationStartPoint) / (100 - durationStartPoint)) * 100)
+                          // Duration starts at 75% - gentle, unhurried finale
+                          const durationStartPoint = 75
+                          const durationProgress = finalProgress >= durationStartPoint
+                            ? Math.min(100, ((finalProgress - durationStartPoint) / (100 - durationStartPoint)) * 100)
                             : 0
                           
                           // Ensure all elements complete when item completes
@@ -1484,7 +1548,7 @@ function App() {
                               key={index}
                               className="experience-item"
                               style={{
-                                '--reveal-progress': `${finalProgress}%`
+                                '--reveal-progress': finalProgress
                               } as React.CSSProperties}
                               onClick={() => {
                                 if (document.startViewTransition) {
@@ -1498,7 +1562,7 @@ function App() {
                                 }
                                 // Start content reveal animation after a short delay
                                 setTimeout(() => {
-                                  const duration = 2000
+                                  const duration = 2400 // Slower, calmer reveal
                                   const startTime = Date.now()
                                   const animate = () => {
                                     const elapsed = Date.now() - startTime
@@ -1510,7 +1574,7 @@ function App() {
                                     }
                                   }
                                   requestAnimationFrame(animate)
-                                }, 400) // Wait for header transition to start
+                                }, 500) // Slightly longer delay for calmer flow
                               }}
                               onMouseEnter={() => setHoveredExperience(index)}
                               onMouseLeave={() => setHoveredExperience(null)}
@@ -1533,7 +1597,7 @@ function App() {
                                   <h3 
                                     className="experience-role"
                                     style={{ 
-                                      '--reveal-progress': `${ensureComplete(roleProgress)}%`,
+                                      '--reveal-progress': ensureComplete(roleProgress),
                                       viewTransitionName: `experience-title-${index}`
                                     } as React.CSSProperties}
                                   >
@@ -1542,7 +1606,7 @@ function App() {
                                   <p 
                                     className="experience-description"
                                     style={{ 
-                                      '--reveal-progress': `${ensureComplete(descProgress)}%`
+                                      '--reveal-progress': ensureComplete(descProgress)
                                     } as React.CSSProperties}
                                   >
                                     {exp.description}
@@ -1552,7 +1616,7 @@ function App() {
                                   <span 
                                     className="experience-company"
                                     style={{ 
-                                      '--reveal-progress': `${ensureComplete(companyProgress)}%`
+                                      '--reveal-progress': ensureComplete(companyProgress)
                                     } as React.CSSProperties}
                                   >
                                     {exp.company}
@@ -1560,7 +1624,7 @@ function App() {
                                   <span 
                                     className="experience-duration"
                                     style={{ 
-                                      '--reveal-progress': `${ensureComplete(durationProgress)}%`
+                                      '--reveal-progress': ensureComplete(durationProgress)
                                     } as React.CSSProperties}
                                   >
                                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1579,6 +1643,11 @@ function App() {
                         <button 
                           className="see-more-button"
                           onClick={() => setShowMoreExperiences(true)}
+                          style={{
+                            '--reveal-progress': contentReveal >= 82 
+                              ? Math.min(100, ((contentReveal - 82) / 18) * 100)
+                              : 0
+                          } as React.CSSProperties}
                         >
                           See more
                         </button>
@@ -1681,7 +1750,7 @@ function App() {
                         <span
                           className="reveal-text"
                           style={{
-                            '--reveal-progress': `${contentReveal}%`
+                            '--reveal-progress': contentReveal
                           } as React.CSSProperties}
                         >
                           My Design Approach
@@ -1690,14 +1759,15 @@ function App() {
                       <p 
                         className="how-i-work-intro"
                         style={{
-                          '--reveal-progress': `${contentReveal >= 55 ? Math.min(100, ((contentReveal - 55) / (100 - 55)) * 100) : 0}%`
+                          '--reveal-progress': contentReveal >= 40 ? Math.min(100, ((contentReveal - 40) / (100 - 40)) * 100) : 0
                         } as React.CSSProperties}
                       >
                         A super IC founding/solo designer owning product discovery, rapid prototyping, and delivery, tracing business outcomes back to early problem framing, first-principles decisions, and validation loops.
                       </p>
                       <div className="how-i-work-list">
                         {howIWorkSteps.map((step, index) => {
-                          const stepStartPoint = 50 + (index * 5)
+                          // Calm, intentional cascade - 8% spacing for breathing room
+                          const stepStartPoint = 45 + (index * 8)
                           const stepProgress = contentReveal >= stepStartPoint
                             ? Math.min(100, ((contentReveal - stepStartPoint) / (100 - stepStartPoint)) * 100)
                             : 0
@@ -1708,7 +1778,7 @@ function App() {
                               key={index}
                               className="how-i-work-item"
                               style={{
-                                '--reveal-progress': `${finalStepProgress}%`
+                                '--reveal-progress': finalStepProgress
                               } as React.CSSProperties}
                               onMouseEnter={() => setHoveredHowIWorkStep(index)}
                               onMouseLeave={() => setHoveredHowIWorkStep(null)}
@@ -1735,14 +1805,13 @@ function App() {
 
                       <div className="working-style-list">
                         {workingStyleTraits.map((trait, index) => {
-                          // First item starts when title is at 80% (contentReveal = 80)
-                          // Each subsequent item starts when previous is at 80%
-                          // Compress timing to fit all items
-                          const firstItemStart = 80
-                          const itemSpacing = 6 // Space between items
+                          // Calm, intentional reveal - each trait gets breathing room
+                          // Start earlier with more generous spacing
+                          const firstItemStart = 50
+                          const itemSpacing = 10 // More breathing room between items
                           const itemStartPoint = firstItemStart + (index * itemSpacing)
                           
-                          // Calculate item progress with faster animation to fit in remaining range
+                          // Calculate item progress with smooth animation
                           const remainingRange = 100 - itemStartPoint
                           const itemProgress = contentReveal >= itemStartPoint
                             ? Math.min(100, ((contentReveal - itemStartPoint) / remainingRange) * 100)
@@ -1758,7 +1827,7 @@ function App() {
                               key={index}
                               className="working-style-item"
                               style={{ 
-                                '--reveal-progress': `${finalProgress}%`
+                                '--reveal-progress': finalProgress
                               } as React.CSSProperties}
                             >
                               {'icon' in trait && (trait as any).icon && (
@@ -1787,7 +1856,7 @@ function App() {
                         <span 
                           className="reveal-text"
                           style={{ 
-                            '--reveal-progress': `${contentReveal}%`
+                            '--reveal-progress': contentReveal
                           } as React.CSSProperties}
                         >
                           Contact Me
@@ -1862,18 +1931,30 @@ function App() {
                         <span 
                           className="reveal-text"
                           style={{ 
-                            '--reveal-progress': `${contentReveal}%`
+                            '--reveal-progress': contentReveal
                           } as React.CSSProperties}
                         >
                           My Impact
                         </span>
                       </h2>
                       <div className="testimonial-carousel">
-                        <div className="testimonial-cards-wrapper">
+                        <div 
+                          className="testimonial-cards-wrapper"
+                          style={{
+                            '--reveal-progress': contentReveal >= 45 ? Math.min(100, ((contentReveal - 45) / (100 - 45)) * 100) : 0
+                          } as React.CSSProperties}
+                        >
                           <button
                             className="carousel-button prev"
-                            onClick={() => setCurrentTestimonialIndex((prev) => (prev === 0 ? testimonials.length - 1 : prev - 1))}
+                            onClick={() => {
+                              const newIndex = currentTestimonialIndex === 0 ? testimonials.length - 1 : currentTestimonialIndex - 1
+                              handleTestimonialChange(newIndex)
+                            }}
                             aria-label="Previous testimonial"
+                            style={{
+                              opacity: contentReveal >= 60 ? 1 : 0,
+                              transition: 'opacity 0.6s ease-out'
+                            }}
                           >
                             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                               <path d="M10 12L6 8L10 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -1882,9 +1963,9 @@ function App() {
                           {testimonials.map((testimonial, index) => (
                             <div
                               key={index}
-                              className={`testimonial-card ${index === currentTestimonialIndex ? 'active' : ''}`}
+                              className={`testimonial-card ${index === currentTestimonialIndex ? 'active' : ''} ${isTestimonialTransitioning ? 'transitioning' : ''}`}
                               style={{
-                                '--reveal-progress': `${contentReveal}%`
+                                '--reveal-progress': contentReveal >= 45 ? Math.min(100, ((contentReveal - 45) / (100 - 45)) * 100) : 0
                               } as React.CSSProperties}
                             >
                               <p className="testimonial-text">"{testimonial.text}"</p>
@@ -1893,20 +1974,33 @@ function App() {
                           ))}
                           <button
                             className="carousel-button next"
-                            onClick={() => setCurrentTestimonialIndex((prev) => (prev === testimonials.length - 1 ? 0 : prev + 1))}
+                            onClick={() => {
+                              const newIndex = currentTestimonialIndex === testimonials.length - 1 ? 0 : currentTestimonialIndex + 1
+                              handleTestimonialChange(newIndex)
+                            }}
                             aria-label="Next testimonial"
+                            style={{
+                              opacity: contentReveal >= 60 ? 1 : 0,
+                              transition: 'opacity 0.6s ease-out'
+                            }}
                           >
                             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                               <path d="M6 4L10 8L6 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                             </svg>
                           </button>
                         </div>
-                        <div className="carousel-indicators">
+                        <div 
+                          className="carousel-indicators"
+                          style={{
+                            opacity: contentReveal >= 70 ? 1 : 0,
+                            transition: 'opacity 0.6s ease-out'
+                          }}
+                        >
                           {testimonials.map((_, index) => (
                             <button
                               key={index}
                               className={`carousel-indicator ${index === currentTestimonialIndex ? 'active' : ''}`}
-                              onClick={() => setCurrentTestimonialIndex(index)}
+                              onClick={() => handleTestimonialChange(index)}
                               aria-label={`Go to testimonial ${index + 1}`}
                             />
                           ))}
@@ -1930,10 +2024,26 @@ function App() {
             </div>
           </div>
         )}
-        {isDescComplete && clickedActions.length === 0 && (
-          <div className="suggested-actions visible">
+        {clickedActions.length === 0 && (
+          <div 
+            className="suggested-actions visible"
+            style={{
+              opacity: landingReveal >= 70 ? 1 : 0,
+              transition: 'opacity 0.6s ease-out',
+              pointerEvents: landingReveal >= 70 ? 'auto' : 'none'
+            }}
+          >
             <div className="actions-list">
-              {suggestedActions.map((action) => {
+              {suggestedActions.map((action, index) => {
+                    // Cascade buttons after description completes (at 70%)
+                    // Show buttons instantly when landing reveal reaches their threshold
+                    const buttonStartBase = 72
+                    const buttonSpacing = 6 // Calm spacing between buttons
+                    const buttonStartPoint = buttonStartBase + (index * buttonSpacing)
+                    
+                    // Instant appearance - either 100 or 0, no gradient
+                    const buttonReveal = landingReveal >= buttonStartPoint ? 100 : 0
+                    
                     if ('isLink' in action && action.isLink && 'href' in action && action.href) {
                       const linkAction = action as { id: string; icon: React.ReactElement; text: string; isLink: boolean; href: string }
                       return (
@@ -1949,6 +2059,9 @@ function App() {
                           }}
                           onMouseEnter={() => setHoveredAction(action.id)}
                           onMouseLeave={() => setHoveredAction(null)}
+                          style={{
+                            '--reveal-progress': buttonReveal
+                          } as React.CSSProperties}
                         >
                           <span className="action-icon">
                             {(hoveredAction === action.id && 'iconFill' in action && (action as any).iconFill) 
@@ -1967,6 +2080,9 @@ function App() {
                         onClick={() => handleActionClick(action.id)}
                         onMouseEnter={() => setHoveredAction(action.id)}
                         onMouseLeave={() => setHoveredAction(null)}
+                        style={{
+                          '--reveal-progress': buttonReveal
+                        } as React.CSSProperties}
                       >
                         <span className="action-icon">
                           {(hoveredAction === action.id && 'iconFill' in action && action.iconFill) 
@@ -1985,6 +2101,25 @@ function App() {
           <div className="suggested-actions-bottom">
             <div className="actions-list">
                 {availableActions.filter(action => action.id !== 'linkedin').map((action, index) => {
+                  // Calculate button reveal based on content type
+                  let buttonReveal = bottomButtonReveals[index] || 0
+                  
+                  // For experiences section, cascade buttons seamlessly after tiles
+                  if (activeContent.includes('experiences') && contentReveals['experiences'] !== undefined) {
+                    const experiencesReveal = contentReveals['experiences']
+                    // Tiles cascade: starts at 35%, spacing 12%, 4 tiles
+                    // Last tile (index 3) starts at 35 + (3 * 12) = 71%
+                    // Buttons should start appearing around 75% to overlap with last tile finishing
+                    const buttonStartBase = 75
+                    const buttonSpacing = 6 // Generous spacing for calm cascade
+                    const buttonStartPoint = buttonStartBase + (index * buttonSpacing)
+                    const buttonDuration = 20 // Each button takes 20% to reveal
+                    
+                    buttonReveal = experiencesReveal >= buttonStartPoint
+                      ? Math.min(100, ((experiencesReveal - buttonStartPoint) / buttonDuration) * 100)
+                      : 0
+                  }
+                  
                   if ('isLink' in action && action.isLink && 'href' in action && action.href) {
                     const linkAction = action as { id: string; icon: React.ReactElement; text: string; isLink: boolean; href: string }
                     return (
@@ -2001,7 +2136,7 @@ function App() {
                         onMouseEnter={() => setHoveredAction(action.id)}
                         onMouseLeave={() => setHoveredAction(null)}
                         style={{ 
-                          '--reveal-progress': `${bottomButtonReveals[index] || 0}%`
+                          '--reveal-progress': buttonReveal
                         } as React.CSSProperties}
                       >
                         <span className="action-icon">
@@ -2022,7 +2157,7 @@ function App() {
                       onMouseEnter={() => setHoveredAction(action.id)}
                       onMouseLeave={() => setHoveredAction(null)}
                       style={{ 
-                        '--reveal-progress': `${bottomButtonReveals[index] || 0}%`
+                        '--reveal-progress': buttonReveal
                       } as React.CSSProperties}
                     >
                       <span className="action-icon">
