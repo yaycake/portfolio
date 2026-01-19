@@ -24,6 +24,17 @@ import HandPeaceLine from './assets/icons/handpeace-line.svg?react'
 import HandPeaceSolid from './assets/icons/handpeace-solid.svg?react'
 import SparkleLine from './assets/icons/sparkle-line.svg?react'
 import SparkleSolid from './assets/icons/sparkle-solid.svg?react'
+import CaretDownLine from './assets/icons/caretdown-line.svg?react'
+import MoonStarsFill from './assets/icons/moon-stars-fill.svg?react'
+import MoonStarsLine from './assets/icons/moon-stars-line.svg?react'
+import SunLine from './assets/icons/sun-line.svg?react'
+import SunFill from './assets/icons/sun-fill.svg?react'
+import ButterflyFill from './assets/icons/butterfly-fill.svg?react'
+import ButterflyLine from './assets/icons/butterfly-line.svg?react'
+import AlienFill from './assets/icons/alien-fill.svg?react'
+import AlienLine from './assets/icons/alien-line.svg?react'
+import RobotFill from './assets/icons/robot-fill.svg?react'
+import RobotLine from './assets/icons/robot-line.svg?react'
 
 function App() {
   const [titleReveal, setTitleReveal] = useState(0)
@@ -43,6 +54,10 @@ function App() {
   const [hoveredHowIWorkStep, setHoveredHowIWorkStep] = useState<number | null>(null)
   const [overlayContentReveal, setOverlayContentReveal] = useState(0)
   const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [theme, setTheme] = useState<'light' | 'dark' | 'butterfly' | 'alien' | 'robot'>('dark')
+  const [showDarkModeTooltip, setShowDarkModeTooltip] = useState(false)
+  const [hoveredTheme, setHoveredTheme] = useState<string | null>(null)
 
   const title = "Hi, I'm Grace Yang"
   const description = <>Cross-functional product designer combining design and code to craft AI-driven, user-friendly products.<br /><br />I prototype rapidly, validate with real users, and achieve measurable results—leading to increased engagement, streamlined workflows, and sleek interfaces.</>
@@ -385,8 +400,183 @@ function App() {
     return () => window.removeEventListener('keydown', handleEsc)
   }, [selectedExperience])
 
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement
+      if (isMenuOpen && !target.closest('.floating-menu')) {
+        setIsMenuOpen(false)
+      }
+    }
+
+    if (isMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside)
+      return () => document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [isMenuOpen])
+
+  // Menu items mapping
+  const menuItems = [
+    { id: 'experiences', label: 'Work' },
+    { id: 'working-style', label: 'Design Approach' },
+    { id: 'contact', label: 'Contact Me' },
+    { id: 'impact', label: 'My Impact' },
+    { id: 'linkedin', label: 'Visit LinkedIn', isLink: true, href: 'https://www.linkedin.com/in/ygrace/' }
+  ]
+
+  const handleMenuClick = (item: typeof menuItems[0]) => {
+    setIsMenuOpen(false)
+    
+    // If it's a link, just open it
+    if (item.isLink && item.href) {
+      handleActionClick(item.id, true, item.href)
+      return
+    }
+    
+    // Check if content is already loaded
+    if (activeContent.includes(item.id)) {
+      // Content is already loaded, scroll to it
+      setTimeout(() => {
+        const element = document.getElementById(`content-${item.id}`)
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }
+      }, 100) // Small delay to ensure menu closes first
+    } else {
+      // Content not loaded, load it and then scroll
+      handleActionClick(item.id)
+      // Wait for content to be added to DOM, then scroll
+      // Use a polling approach to wait for element to appear
+      const checkAndScroll = () => {
+        const element = document.getElementById(`content-${item.id}`)
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        } else {
+          // Check again after a short delay
+          setTimeout(checkAndScroll, 100)
+        }
+      }
+      // Start checking after loading animation begins
+      setTimeout(checkAndScroll, 300)
+    }
+  }
+
   return (
     <div className="landing-page">
+      {/* Floating Menu Button */}
+      <div className="floating-menu">
+        <button
+          className="menu-button"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          aria-label="Menu"
+          aria-expanded={isMenuOpen}
+        >
+          <CaretDownLine width="16" height="16" fill="white" />
+        </button>
+        {isMenuOpen && (
+          <div className="menu-dropdown">
+            {menuItems.map((item) => (
+              <button
+                key={item.id}
+                className="menu-item"
+                onClick={() => handleMenuClick(item)}
+              >
+                {item.label}
+              </button>
+            ))}
+            <div className="menu-mode-switcher">
+              <div className="mode-switcher-container">
+                <button
+                  className={`mode-button ${theme === 'dark' ? 'active' : ''}`}
+                  onClick={() => setTheme('dark')}
+                  onMouseEnter={() => {
+                    setHoveredTheme('dark')
+                    setShowDarkModeTooltip(true)
+                  }}
+                  onMouseLeave={() => {
+                    setHoveredTheme(null)
+                    setShowDarkModeTooltip(false)
+                  }}
+                  aria-label="Dark mode"
+                >
+                  {(theme === 'dark' || hoveredTheme === 'dark') ? (
+                    <MoonStarsFill width="16" height="16" fill="currentColor" />
+                  ) : (
+                    <MoonStarsLine width="16" height="16" fill="currentColor" />
+                  )}
+                  {showDarkModeTooltip && (
+                    <div className="mode-tooltip">dark mode</div>
+                  )}
+                </button>
+                <button
+                  className={`mode-button ${theme === 'light' ? 'active' : ''}`}
+                  onClick={() => setTheme('light')}
+                  onMouseEnter={() => setHoveredTheme('light')}
+                  onMouseLeave={() => setHoveredTheme(null)}
+                  aria-label="Light mode"
+                >
+                  {(theme === 'light' || hoveredTheme === 'light') ? (
+                    <SunFill width="16" height="16" fill="currentColor" />
+                  ) : (
+                    <SunLine width="16" height="16" fill="currentColor" />
+                  )}
+                </button>
+                <button
+                  className={`mode-button ${theme === 'butterfly' ? 'active' : ''}`}
+                  onClick={() => setTheme('butterfly')}
+                  onMouseEnter={() => setHoveredTheme('butterfly')}
+                  onMouseLeave={() => setHoveredTheme(null)}
+                  aria-label="Butterfly theme"
+                >
+                  {(theme === 'butterfly' || hoveredTheme === 'butterfly') ? (
+                    <ButterflyFill width="16" height="16" fill="currentColor" />
+                  ) : (
+                    <ButterflyLine width="16" height="16" fill="currentColor" />
+                  )}
+                </button>
+                <button
+                  className={`mode-button ${theme === 'alien' ? 'active' : ''}`}
+                  onClick={() => setTheme('alien')}
+                  onMouseEnter={() => setHoveredTheme('alien')}
+                  onMouseLeave={() => setHoveredTheme(null)}
+                  aria-label="Alien theme"
+                >
+                  {(theme === 'alien' || hoveredTheme === 'alien') ? (
+                    <AlienFill width="16" height="16" fill="currentColor" />
+                  ) : (
+                    <AlienLine width="16" height="16" fill="currentColor" />
+                  )}
+                </button>
+                <button
+                  className={`mode-button ${theme === 'robot' ? 'active' : ''}`}
+                  onClick={() => setTheme('robot')}
+                  onMouseEnter={() => setHoveredTheme('robot')}
+                  onMouseLeave={() => setHoveredTheme(null)}
+                  aria-label="Robot theme"
+                >
+                  {(theme === 'robot' || hoveredTheme === 'robot') ? (
+                    <RobotFill width="16" height="16" fill="currentColor" />
+                  ) : (
+                    <RobotLine width="16" height="16" fill="currentColor" />
+                  )}
+                </button>
+              </div>
+            </div>
+            <div className="menu-footer">
+              <div className="menu-footer-content">
+                <span className="menu-footer-text">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="copyright-icon">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.5" fill="none"/>
+                    <path d="M12 8C10.34 8 9 9.34 9 11s1.34 3 3 3c.89 0 1.68-.38 2.24-1h1.52c-.56 1.24-1.86 2-3.26 2-2.21 0-4-1.79-4-4s1.79-4 4-4c1.4 0 2.7.76 3.26 2h-1.52C13.68 8.38 12.89 8 12 8z" fill="currentColor"/>
+                  </svg>
+                  {' '}2026
+                </span>
+                <span className="menu-footer-text">Designed & generated by Grace, Cursor, & Claude Code </span>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
       {selectedExperience !== null && (
         <div 
           className="experience-overlay" 
@@ -1079,7 +1269,7 @@ function App() {
               
               if (contentId === 'experiences') {
                 return (
-                  <div key={contentId} className="content-block">
+                  <div key={contentId} id={`content-${contentId}`} className="content-block">
                     <div className="experiences-content">
                       <h2 className="content-title">
                         <span 
@@ -1347,7 +1537,7 @@ function App() {
                 ]
 
                 return (
-                  <div key={contentId} className="content-block">
+                  <div key={contentId} id={`content-${contentId}`} className="content-block">
                     <div className="working-style-content">
                       <h2 className="content-title">
                         <span
@@ -1453,7 +1643,7 @@ function App() {
               
               if (contentId === 'contact') {
                 return (
-                  <div key={contentId} className="content-block">
+                  <div key={contentId} id={`content-${contentId}`} className="content-block">
                     <div className="contact-content">
                       <h2 className="content-title">
                         <span 
@@ -1528,7 +1718,7 @@ function App() {
 
               if (contentId === 'impact') {
                 return (
-                  <div key={contentId} className="content-block">
+                  <div key={contentId} id={`content-${contentId}`} className="content-block">
                     <div className="impact-content">
                       <h2 className="content-title">
                         <span 
