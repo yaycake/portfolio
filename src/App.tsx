@@ -29,8 +29,6 @@ import SunLine from './assets/icons/sun-line.svg?react'
 import SunFill from './assets/icons/sun-fill.svg?react'
 import RobotFill from './assets/icons/robot-fill.svg?react'
 import RobotLine from './assets/icons/robot-line.svg?react'
-import ResumeLine from './assets/icons/resume-line.svg?react'
-import ResumeSolid from './assets/icons/resume-solid.svg?react'
 
 // Resume PDF
 import ResumePDF from './assets/resume-2025.pdf'
