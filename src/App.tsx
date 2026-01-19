@@ -157,27 +157,16 @@ function App() {
       text: "View design approach"
     },
     {
-      id: 'contact',
-      icon: <PaperPlaneTiltLine width="16" height="16" fill="white" />,
-      iconFill: <PaperPlaneTiltSolid width="16" height="16" fill="white" />,
-      text: "Contact Me"
-    },
-    {
       id: 'impact',
       icon: <SparkleLine width="16" height="16" fill="white" />,
       iconFill: <SparkleSolid width="16" height="16" fill="white" />,
       text: "My Impact"
     },
     {
-      id: 'linkedin',
-      icon: (
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M20.447 20.452H16.893V15.885C16.893 14.555 16.866 12.816 15.041 12.816C13.188 12.816 12.905 14.183 12.905 15.785V20.452H9.357V9H12.765V10.561H12.811C13.288 9.661 14.448 8.711 16.181 8.711C19.782 8.711 20.448 11.081 20.448 14.993V20.452H20.447ZM5.337 7.433C4.193 7.433 3.274 6.507 3.274 5.367C3.274 4.228 4.194 3.312 5.337 3.312C6.477 3.312 7.401 4.228 7.401 5.367C7.401 6.507 6.476 7.433 5.337 7.433ZM7.119 20.452H3.555V9H7.119V20.452ZM22.225 0H1.771C0.792 0 0 0.774 0 1.729V22.271C0 23.227 0.792 24 1.771 24H22.222C23.2 24 24 23.227 24 22.271V1.729C24 0.774 23.2 0 22.222 0H22.225Z" fill="white"/>
-        </svg>
-      ),
-      text: "LinkedIn",
-      isLink: true,
-      href: "https://www.linkedin.com/in/ygrace/"
+      id: 'contact',
+      icon: <PaperPlaneTiltLine width="16" height="16" fill="white" />,
+      iconFill: <PaperPlaneTiltSolid width="16" height="16" fill="white" />,
+      text: "Contact Me"
     }
   ]
 
@@ -230,14 +219,33 @@ function App() {
     // Reset bottom section states for re-animation
     setBottomButtonReveals([])
     
+    // Add content block immediately to reserve space and prevent layout shift
+    setActiveContent(prev => [...prev, actionId])
+    
+    // Set initial reveal to 0 (content will be hidden initially)
+    setContentReveals(prev => ({
+      ...prev,
+      [actionId]: 0
+    }))
+    
     setIsLoading(true)
     
     // Simulate loading delay
     setTimeout(() => {
       setIsLoading(false)
-      // Append to active content array - this allows multiple content blocks
-      // to be displayed in the order they were clicked (e.g., working-style before experiences)
-      setActiveContent(prev => [...prev, actionId])
+      
+      // Scroll to the content block smoothly
+      const scrollToContent = () => {
+        const element = document.getElementById(`content-${actionId}`)
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        } else {
+          // If element not found yet, try again after a short delay
+          setTimeout(scrollToContent, 50)
+        }
+      }
+      // Start scrolling after a brief delay to ensure DOM is updated
+      setTimeout(scrollToContent, 100)
       
       // Start content reveal animation for this specific content
       const duration = 2000
@@ -316,10 +324,7 @@ function App() {
     const delayBetweenButtons = 300 // 0.3s delay between each button
 
     suggestedActions.forEach((_, index) => {
-      // For LinkedIn (index 3), wait until contact (index 2) has started revealing
-      const delay = index === 3 
-        ? 2 * delayBetweenButtons + 200 // Wait for contact to start, then add small delay
-        : index * delayBetweenButtons
+      const delay = index * delayBetweenButtons
       
       setTimeout(() => {
         const startTime = Date.now()
@@ -1781,7 +1786,7 @@ function App() {
               
               return null
             })}
-        {isLoading && (
+        {isLoading && activeContent.length === 0 && (
           <div className="content-block">
             <div className="loading-state">
               <div className="loading-dots">
@@ -1796,11 +1801,6 @@ function App() {
           <div className="suggested-actions">
             <div className="actions-list">
                 {suggestedActions.map((action, index) => {
-                  // Only start LinkedIn animation after contact (index 2) has reached 50% progress
-                  if (action.id === 'linkedin' && buttonReveals[2] < 50) {
-                    return null
-                  }
-                  
                   if ('isLink' in action && action.isLink && 'href' in action && action.href) {
                     const linkAction = action as { id: string; icon: React.ReactElement; text: string; isLink: boolean; href: string }
                     return (
@@ -1857,7 +1857,7 @@ function App() {
         {clickedActions.length > 0 && availableActions.length > 0 && activeContent.length > 0 && !isLoading && (
           <div className="suggested-actions-bottom">
             <div className="actions-list">
-                {availableActions.map((action, index) => {
+                {availableActions.filter(action => action.id !== 'linkedin').map((action, index) => {
                   if ('isLink' in action && action.isLink && 'href' in action && action.href) {
                     const linkAction = action as { id: string; icon: React.ReactElement; text: string; isLink: boolean; href: string }
                     return (
