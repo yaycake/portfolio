@@ -380,6 +380,10 @@ function App() {
         setSubmitStatus('success')
         setFormData({ email: '', message: '', interest: '' })
         setEmailError('')
+        // Auto-return to form after 3 seconds
+        setTimeout(() => {
+          setSubmitStatus('idle')
+        }, 3000)
       } else {
         setSubmitStatus('error')
         setTimeout(() => setSubmitStatus('idle'), 3000)
@@ -1939,16 +1943,10 @@ function App() {
                           alignItems: 'center',
                           justifyContent: 'center',
                           minHeight: '400px',
-                          gap: '2rem',
+                          gap: '1.5rem',
                           opacity: 0,
                           animation: 'fade-in 0.6s ease-out forwards'
                         }}>
-                          <div style={{
-                            fontSize: '4rem',
-                            animation: 'celebrate 0.6s ease-out'
-                          }}>
-                            🎉
-                          </div>
                           <h3 style={{
                             fontSize: 'var(--font-size-h1)',
                             fontWeight: 'var(--font-weight-bold)',
@@ -1961,41 +1959,11 @@ function App() {
                             fontSize: 'var(--font-size-body)',
                             color: 'var(--text-secondary)',
                             margin: 0,
-                            textAlign: 'center'
+                            textAlign: 'center',
+                            maxWidth: '400px'
                           }}>
                             Thanks for reaching out. I'll get back to you soon!
                           </p>
-                          <button
-                            onClick={() => {
-                              setSubmitStatus('idle')
-                              setEmailError('')
-                            }}
-                            style={{
-                              marginTop: '1rem',
-                              padding: '0.75rem 1.5rem',
-                              background: 'transparent',
-                              border: '1px solid var(--border-primary)',
-                              color: 'var(--text-secondary)',
-                              fontSize: 'var(--font-size-body-small)',
-                              fontWeight: 'var(--font-weight-normal)',
-                              fontFamily: 'var(--font-primary)',
-                              borderRadius: '0.5rem',
-                              cursor: 'pointer',
-                              transition: 'all 0.3s ease-out'
-                            }}
-                            onMouseEnter={(e) => {
-                              e.currentTarget.style.background = 'var(--bg-secondary)'
-                              e.currentTarget.style.borderColor = 'var(--border-secondary)'
-                              e.currentTarget.style.color = 'var(--text-primary)'
-                            }}
-                            onMouseLeave={(e) => {
-                              e.currentTarget.style.background = 'transparent'
-                              e.currentTarget.style.borderColor = 'var(--border-primary)'
-                              e.currentTarget.style.color = 'var(--text-secondary)'
-                            }}
-                          >
-                            Send another message
-                          </button>
                         </div>
                       ) : (
                         <form className="contact-form" onSubmit={handleContactSubmit}>

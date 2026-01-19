@@ -624,20 +624,6 @@ a.action-button:focus .action-arrow {
   }
 }
 
-@keyframes celebrate {
-  0% {
-    transform: scale(0) rotate(0deg);
-    opacity: 0;
-  }
-  50% {
-    transform: scale(1.2) rotate(180deg);
-  }
-  100% {
-    transform: scale(1) rotate(360deg);
-    opacity: 1;
-  }
-}
-
 .experiences-content {
   margin-top: 1rem;
   min-height: 680px;
