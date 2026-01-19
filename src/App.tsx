@@ -41,12 +41,23 @@ import SkyrockFlow from './assets/images/skyrock_flow.webp'
 import SkyrockSummerLaunch from './assets/images/skyrock_summer_launch.webp'
 import SkyrockDigiOps from './assets/images/skyrock-digiops.webp'
 
+// Patlytics project images
+import PatlyticsBanner from './assets/images/patlytics-banner.png'
+import PatlyticsDRGraphic from './assets/images/patlytics-dr-graphic.png'
+import PatlyticsTestimonial from './assets/images/patlytics-testimonial.png'
+import PatlyticsAIProcess from './assets/images/patlytics-ai-process.png'
+
 // Viewabo project images
 import ViewaboBanner from './assets/images/viewabo-banner.png'
 import ViewaboTestimonial from './assets/images/viewab-testimonial.png'
 import ViewaboMobile from './assets/images/viewabo_mobile.png'
 import ViewaboDesktopMobile from './assets/images/viewabo_desktop-mobile.png'
 import ViewaboUICover from './assets/images/viewabo-ui-cover.png'
+
+// ORM Fertility project images
+import OrmMobile from './assets/images/orm-mobile.webp'
+import OrmMockups from './assets/images/orm-mockups.webp'
+import OrmWebapp from './assets/images/orm-webapp.webp'
 
 // A Pure Person project images
 import PurePersonBanner from './assets/images/pureperson_banner.webp'
@@ -617,6 +628,7 @@ function App() {
                 >
                   <h2 className="overlay-section-title">Role & Scope</h2>
                   <p>Zero-to-one design lead for an AI-driven patent platform. I owned the loop: customer discovery → rapid prototyping → ship. Designed role-based, multi-stakeholder workflows; set patterns and decision gates; used generative AI to cut time-to-insight. My focus: keep complexity from becoming clutter—and make the hard parts feel obvious.</p>
+                  <img src={PatlyticsBanner} alt="Patlytics Platform" className="overlay-image" />
                 </div>
 
                 <div 
@@ -657,6 +669,7 @@ function App() {
                     <li>Feasibility spikes with Engineering on ingestion, semantic comparison, and performance; aligned constraints early to de-risk builds.</li>
                     <li>Validation loops using real matters and edge cases; measured time-to-insight, reuse of outputs, and error rates to confirm direction.</li>
                   </ul>
+                  <img src={PatlyticsAIProcess} alt="Patlytics AI Process" className="overlay-image" />
                 </div>
 
                 <div className="overlay-section">
@@ -678,6 +691,7 @@ function App() {
                     <li>Structured, exportable outputs users can cite and reuse; guardrails to steer generative AI rather than accept black-box results.</li>
                     <li>Lightweight design system: components tuned for multi-stakeholder workflows and zero-to-one iteration speed.</li>
                   </ul>
+                  <img src={PatlyticsDRGraphic} alt="Patlytics Design Research" className="overlay-image" />
                 </div>
 
                 <div className="overlay-section">
@@ -690,6 +704,7 @@ function App() {
                     <li>Prompt design is product design; guardrails and interaction patterns matter as much as models.</li>
                     <li>Designing for reuse (structured outputs, exportability) compounds value across matters and teams. This is important for all stakeholders and how they collaborate within their team structures</li>
                   </ul>
+                  <img src={PatlyticsTestimonial} alt="Patlytics Customer Testimonial" className="overlay-image" />
 
                   <h3 className="overlay-subsection-title">Outcomes</h3>
                   <ul className="overlay-list">
@@ -699,6 +714,41 @@ function App() {
                     <li>"You know, it can take tasks that typically take, you know, days or weeks, and you know, make it take one day."</li>
                     <li>"Honestly, I'm looking at [ COMPETITOR ] as a competitor of yours... they say they do the same thing... I like your product better, it looks really well organized and it's a great UI".</li>
                   </ul>
+                </div>
+
+                <div className="overlay-section">
+                  <h2 className="overlay-section-title">See More Details</h2>
+                  <p>
+                    <a 
+                      href="#contact"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        // Close the overlay first
+                        if (document.startViewTransition) {
+                          document.startViewTransition(() => {
+                            setSelectedExperience(null);
+                            setOverlayContentReveal(0);
+                          });
+                        } else {
+                          setSelectedExperience(null);
+                          setOverlayContentReveal(0);
+                        }
+                        // Then navigate to contact after a brief delay to allow overlay to close
+                        setTimeout(() => {
+                          handleActionClick('contact');
+                          // Scroll to contact section after content loads
+                          setTimeout(() => {
+                            const contactSection = document.getElementById('content-contact');
+                            if (contactSection) {
+                              contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            }
+                          }, 300);
+                        }, 100);
+                      }}
+                    >
+                      Contact me
+                    </a> if you'd like additional information about my work at Patlytics.
+                  </p>
                 </div>
               </div>
             )}
@@ -1031,17 +1081,18 @@ function App() {
                 <div 
                   className="overlay-section"
                   style={{ 
-                    '--reveal-progress': `${getOverlaySectionProgress(0, 6)}%`
+                    '--reveal-progress': `${getOverlaySectionProgress(0, 5)}%`
                   } as React.CSSProperties}
                 >
                   <h2 className="overlay-section-title">Role & Scope</h2>
                   <p>Mini Program + Web Development for ORM Fertility. Designed and developed a WeChat Mini Program to help ORM Fertility establish their marketing presence in Shanghai and take ownership over their community in the WeChat ecosystem.</p>
+                  <img src={OrmMobile} alt="ORM Fertility Mobile" className="overlay-image" />
                 </div>
 
                 <div 
                   className="overlay-section"
                   style={{ 
-                    '--reveal-progress': `${getOverlaySectionProgress(1, 6)}%`
+                    '--reveal-progress': `${getOverlaySectionProgress(1, 5)}%`
                   } as React.CSSProperties}
                 >
                   <h2 className="overlay-section-title">Problem</h2>
@@ -1051,42 +1102,34 @@ function App() {
                 <div 
                   className="overlay-section"
                   style={{ 
-                    '--reveal-progress': `${getOverlaySectionProgress(2, 6)}%`
+                    '--reveal-progress': `${getOverlaySectionProgress(2, 5)}%`
                   } as React.CSSProperties}
                 >
                   <h2 className="overlay-section-title">Product Design</h2>
                   <p>ORM Fertility already had a WeChat Official Account, so I had to work with them to figure out how the mini program would fit in with their current marketing workflow and team resources. We went through a discovery phase, where I provided examples of different information-heavy mini programs and illustrated certain strengths and weaknesses of the mini program framework. We coasted through three user experience design rounds and user interaction design rounds.</p>
+                  <img src={OrmMockups} alt="ORM Fertility Mockups" className="overlay-image" />
                 </div>
 
                 <div 
                   className="overlay-section"
                   style={{ 
-                    '--reveal-progress': `${getOverlaySectionProgress(3, 6)}%`
+                    '--reveal-progress': `${getOverlaySectionProgress(3, 5)}%`
                   } as React.CSSProperties}
                 >
                   <h2 className="overlay-section-title">Front End Development</h2>
                   <p>One of the most exciting phases of the project is where I take my designs and step into the front-end developer role to bring them to life. Working in the WeChat IDE, the framework has evolved with "React" features, so I organized all the front-end code into functional and higher-order components.</p>
+                  <img src={OrmWebapp} alt="ORM Fertility Web App" className="overlay-image" />
                 </div>
 
                 <div 
                   className="overlay-section"
                   style={{ 
-                    '--reveal-progress': `${getOverlaySectionProgress(4, 6)}%`
+                    '--reveal-progress': `${getOverlaySectionProgress(4, 5)}%`
                   } as React.CSSProperties}
                 >
                   <h2 className="overlay-section-title">Skills & Tools</h2>
                   <p><strong>Skills:</strong> Product design, user interaction design, user experience design, WeChat development, front end development</p>
                   <p><strong>Tools:</strong> WXML, WXSS, WeChat components, Ruby on Rails, HTML, CSS, Javascript</p>
-                </div>
-
-                <div 
-                  className="overlay-section"
-                  style={{ 
-                    '--reveal-progress': `${getOverlaySectionProgress(5, 6)}%`
-                  } as React.CSSProperties}
-                >
-                  <h2 className="overlay-section-title">Status</h2>
-                  <p>Currently, the project is in the process of being deployed onto Chinese servers beyond the Great Firewall.</p>
                 </div>
               </div>
             )}
@@ -1887,55 +1930,57 @@ function App() {
             </div>
           </div>
         )}
-        <div className={`suggested-actions ${isDescComplete && clickedActions.length === 0 ? 'visible' : 'hidden'}`}>
-          <div className="actions-list">
-            {suggestedActions.map((action) => {
-                  if ('isLink' in action && action.isLink && 'href' in action && action.href) {
-                    const linkAction = action as { id: string; icon: React.ReactElement; text: string; isLink: boolean; href: string }
+        {isDescComplete && clickedActions.length === 0 && (
+          <div className="suggested-actions visible">
+            <div className="actions-list">
+              {suggestedActions.map((action) => {
+                    if ('isLink' in action && action.isLink && 'href' in action && action.href) {
+                      const linkAction = action as { id: string; icon: React.ReactElement; text: string; isLink: boolean; href: string }
+                      return (
+                        <a
+                          key={action.id}
+                          href={linkAction.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="action-button"
+                          onClick={(e) => {
+                            e.preventDefault()
+                            handleActionClick(action.id, linkAction.isLink, linkAction.href)
+                          }}
+                          onMouseEnter={() => setHoveredAction(action.id)}
+                          onMouseLeave={() => setHoveredAction(null)}
+                        >
+                          <span className="action-icon">
+                            {(hoveredAction === action.id && 'iconFill' in action && (action as any).iconFill) 
+                              ? (action as any).iconFill 
+                              : action.icon}
+                          </span>
+                          <span className="action-text">{action.text}</span>
+                          <span className="action-arrow">→</span>
+                        </a>
+                      )
+                    }
                     return (
-                      <a
+                      <button
                         key={action.id}
-                        href={linkAction.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
                         className="action-button"
-                        onClick={(e) => {
-                          e.preventDefault()
-                          handleActionClick(action.id, linkAction.isLink, linkAction.href)
-                        }}
+                        onClick={() => handleActionClick(action.id)}
                         onMouseEnter={() => setHoveredAction(action.id)}
                         onMouseLeave={() => setHoveredAction(null)}
                       >
                         <span className="action-icon">
-                          {(hoveredAction === action.id && 'iconFill' in action && (action as any).iconFill) 
-                            ? (action as any).iconFill 
+                          {(hoveredAction === action.id && 'iconFill' in action && action.iconFill) 
+                            ? action.iconFill 
                             : action.icon}
                         </span>
                         <span className="action-text">{action.text}</span>
                         <span className="action-arrow">→</span>
-                      </a>
+                      </button>
                     )
-                  }
-                  return (
-                    <button
-                      key={action.id}
-                      className="action-button"
-                      onClick={() => handleActionClick(action.id)}
-                      onMouseEnter={() => setHoveredAction(action.id)}
-                      onMouseLeave={() => setHoveredAction(null)}
-                    >
-                      <span className="action-icon">
-                        {(hoveredAction === action.id && 'iconFill' in action && action.iconFill) 
-                          ? action.iconFill 
-                          : action.icon}
-                      </span>
-                      <span className="action-text">{action.text}</span>
-                      <span className="action-arrow">→</span>
-                    </button>
-                  )
-                })}
+                  })}
+            </div>
           </div>
-        </div>
+        )}
         {clickedActions.length > 0 && availableActions.length > 0 && activeContent.length > 0 && !isLoading && (
           <div className="suggested-actions-bottom">
             <div className="actions-list">
