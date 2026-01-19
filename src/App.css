@@ -1014,6 +1014,10 @@ a.action-button:focus .action-arrow {
 }
 
 @media (max-width: 768px) {
+  .content {
+    padding: 1rem;
+  }
+
   .title {
     font-size: 2rem;
   }
@@ -1044,8 +1048,34 @@ a.action-button:focus .action-arrow {
   }
 
   .how-i-work-list {
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+  }
+
+  .how-i-work-item {
+    padding: 1rem;
+    border-right: 1px solid #1f1f1f;
+    border-bottom: 1px solid #1f1f1f;
+  }
+
+  /* Reset desktop 3-column border rules */
+  .how-i-work-item:nth-child(3n) {
+    border-right: 1px solid #1f1f1f;
+  }
+
+  .how-i-work-item:nth-last-child(-n+3) {
+    border-bottom: 1px solid #1f1f1f;
+  }
+
+  /* Apply 2-column border rules */
+  /* Remove right border from even items (last in each row) */
+  .how-i-work-item:nth-child(2n) {
+    border-right: none;
+  }
+
+  /* Remove bottom border from last row */
+  .how-i-work-item:nth-last-child(-n+2) {
+    border-bottom: none;
   }
 }
 
@@ -1279,10 +1309,50 @@ a.action-button:focus .action-arrow {
   }
 
   .menu-dropdown {
-    width: calc(100vw - 2rem);
+    position: fixed;
+    top: 4rem;
+    left: 1rem;
     right: 1rem;
-    left: auto;
+    width: auto;
     max-width: none;
+  }
+
+  .menu-item {
+    padding: 0.75rem 1rem;
+  }
+
+  .menu-mode-switcher {
+    padding: 0.75rem 1rem;
+  }
+
+  .menu-footer {
+    padding: 0.75rem 1rem;
+  }
+
+  .experience-overlay {
+    padding: 1rem;
+  }
+
+  .overlay-content {
+    padding: 1rem;
+    height: calc(100vh - 32px);
+  }
+
+  .overlay-navigation {
+    margin-bottom: 1.5rem;
+  }
+
+  .overlay-section {
+    margin-top: 1.5rem;
+  }
+
+  .overlay-subsection-title {
+    padding-left: 0.75rem;
+  }
+
+  .overlay-section > .overlay-subsection-title + p,
+  .overlay-section > .overlay-subsection-title + ul {
+    padding-left: 0.75rem;
   }
 
   .overlay-header {
