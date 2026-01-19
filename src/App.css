@@ -1595,6 +1595,28 @@ a.action-button:focus .action-arrow {
   color: #10b981;
 }
 
+.overlay-list li a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+  border-bottom: 1px solid transparent;
+}
+
+.overlay-list li a:hover {
+  color: var(--text-primary);
+  border-bottom-color: var(--text-primary);
+}
+
+.overlay-image {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  margin-top: 1.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border-primary);
+  display: block;
+}
+
 @media (max-width: 768px) {
   .floating-menu {
     top: 1rem;
