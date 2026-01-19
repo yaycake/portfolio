@@ -1406,8 +1406,8 @@ a.action-button:focus .action-arrow {
 .overlay-section p a {
   color: var(--text-secondary);
   text-decoration: none;
-  border-bottom: 1px solid transparent;
-  transition: color 0.2s ease, border-bottom-color 0.2s ease;
+  border-bottom: 1px solid var(--text-secondary);
+  transition: color 0.3s ease-out, border-bottom-color 0.3s ease-out;
 }
 
 .overlay-section p a:hover {
@@ -1440,8 +1440,8 @@ a.action-button:focus .action-arrow {
 .overlay-list li a {
   color: var(--text-secondary);
   text-decoration: none;
-  transition: color 0.2s ease;
-  border-bottom: 1px solid transparent;
+  border-bottom: 1px solid var(--text-secondary);
+  transition: color 0.3s ease-out, border-bottom-color 0.3s ease-out;
 }
 
 .overlay-list li a:hover {
@@ -1627,21 +1627,22 @@ a.action-button:focus .action-arrow {
 /* Robot theme link styling */
 .robot-theme .overlay-list li a {
   color: var(--text-primary);
-  border-bottom-color: var(--text-primary);
+  border-bottom: 1px solid var(--text-primary);
 }
 
 .robot-theme .overlay-list li a:hover {
   color: var(--text-primary);
-  text-decoration: underline;
+  border-bottom: 2px solid var(--text-primary);
 }
 
 .robot-theme .overlay-section p a {
   color: var(--text-primary);
-  border-bottom-color: var(--text-primary);
+  border-bottom: 1px solid var(--text-primary);
 }
 
 .robot-theme .overlay-section p a:hover {
-  text-decoration: underline;
+  color: var(--text-primary);
+  border-bottom: 2px solid var(--text-primary);
 }
 
 /* Terminal-style buttons */
