@@ -139,8 +139,8 @@
 .landing-page *::before,
 .landing-page *::after {
   transition-property: background-color, border-color, color, fill, stroke;
-  transition-duration: 0.3s;
-  transition-timing-function: ease;
+  transition-duration: 0.4s;
+  transition-timing-function: ease-out;
 }
 
 .floating-menu {
@@ -161,7 +161,7 @@
   justify-content: center;
   cursor: pointer;
   color: var(--text-primary);
-  transition: all 0.2s ease;
+  transition: all 0.3s ease-out;
   padding: 0;
 }
 
@@ -382,36 +382,6 @@
   padding: 2rem;
   text-align: left;
   color: var(--text-primary);
-  --reveal-edge: var(--reveal-progress);
-  --fade-distance: 30%;
-  --full-opaque-end: calc(var(--reveal-edge) + 15%);
-  mask-image: linear-gradient(
-    135deg,
-    black 0%,
-    black var(--full-opaque-end),
-    rgba(0, 0, 0, 0.95) calc(var(--full-opaque-end) + 3%),
-    rgba(0, 0, 0, 0.85) calc(var(--full-opaque-end) + 6%),
-    rgba(0, 0, 0, 0.7) calc(var(--full-opaque-end) + 10%),
-    rgba(0, 0, 0, 0.5) calc(var(--full-opaque-end) + 15%),
-    rgba(0, 0, 0, 0.3) calc(var(--full-opaque-end) + 20%),
-    rgba(0, 0, 0, 0.1) calc(var(--full-opaque-end) + 28%),
-    transparent calc(var(--full-opaque-end) + 40%),
-    transparent 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    135deg,
-    black 0%,
-    black var(--full-opaque-end),
-    rgba(0, 0, 0, 0.95) calc(var(--full-opaque-end) + 3%),
-    rgba(0, 0, 0, 0.85) calc(var(--full-opaque-end) + 6%),
-    rgba(0, 0, 0, 0.7) calc(var(--full-opaque-end) + 10%),
-    rgba(0, 0, 0, 0.5) calc(var(--full-opaque-end) + 15%),
-    rgba(0, 0, 0, 0.3) calc(var(--full-opaque-end) + 20%),
-    rgba(0, 0, 0, 0.1) calc(var(--full-opaque-end) + 28%),
-    transparent calc(var(--full-opaque-end) + 40%),
-    transparent 100%
-  );
-  will-change: mask-image, -webkit-mask-image;
 }
 
 .title {
@@ -420,6 +390,8 @@
   line-height: var(--line-height-tight);
   margin: 0 0 1.5rem 0;
   color: var(--text-primary);
+  opacity: calc(var(--reveal-progress) / 100);
+  transition: opacity 0.8s ease-out;
 }
 
 .description {
@@ -428,6 +400,8 @@
   line-height: var(--line-height-relaxed);
   margin: 0 0 2rem 0;
   color: var(--text-primary);
+  opacity: calc(var(--reveal-progress) / 100);
+  transition: opacity 0.8s ease-out;
 }
 
 .suggested-actions {
@@ -438,24 +412,6 @@
   border-bottom: 1px solid var(--border-primary);
   min-height: 250px;
   contain: layout style;
-}
-
-.suggested-actions.hidden {
-  opacity: 0;
-  pointer-events: none;
-}
-
-.suggested-actions.hidden .actions-list {
-  visibility: hidden;
-}
-
-.suggested-actions.visible {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.suggested-actions.visible .actions-list {
-  visibility: visible;
 }
 
 .suggested-actions-bottom {
@@ -493,8 +449,9 @@
   text-align: left;
   cursor: pointer;
   border-radius: 0.5rem;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease-out, opacity 0.8s ease-out;
   position: relative;
+  opacity: calc(var(--reveal-progress) / 100);
 }
 
 .action-icon {
@@ -520,7 +477,7 @@
 
 .action-arrow {
   opacity: 0;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.3s ease-out;
   color: var(--text-secondary);
   font-size: 1rem;
 }
@@ -561,35 +518,9 @@ a.action-button {
   text-align: left;
   cursor: pointer;
   border-radius: 0.5rem;
-  transition: all 0.2s ease;
+  transition: background 0.3s ease-out, border 0.3s ease-out, color 0.3s ease-out, opacity 0.8s ease-out;
   position: relative;
-  --reveal-edge: var(--reveal-progress);
-  --fade-distance: 25%;
-  mask-image: linear-gradient(
-    to bottom right,
-    black 0%,
-    black calc(var(--reveal-edge) - var(--fade-distance)),
-    rgba(0, 0, 0, 0.9) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.9)),
-    rgba(0, 0, 0, 0.7) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.7)),
-    rgba(0, 0, 0, 0.5) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.5)),
-    rgba(0, 0, 0, 0.3) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.3)),
-    rgba(0, 0, 0, 0.1) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.1)),
-    transparent var(--reveal-edge),
-    transparent 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    to bottom right,
-    black 0%,
-    black calc(var(--reveal-edge) - var(--fade-distance)),
-    rgba(0, 0, 0, 0.9) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.9)),
-    rgba(0, 0, 0, 0.7) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.7)),
-    rgba(0, 0, 0, 0.5) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.5)),
-    rgba(0, 0, 0, 0.3) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.3)),
-    rgba(0, 0, 0, 0.1) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.1)),
-    transparent var(--reveal-edge),
-    transparent 100%
-  );
-  will-change: mask-image, -webkit-mask-image;
+  opacity: calc(var(--reveal-progress) / 100);
 }
 
 a.action-button:hover {
@@ -614,33 +545,8 @@ a.action-button:focus .action-arrow {
   display: inline-block;
   position: relative;
   color: var(--text-primary);
-  --reveal-edge: var(--reveal-progress);
-  --fade-distance: 25%;
-  mask-image: linear-gradient(
-    to bottom right,
-    black 0%,
-    black calc(var(--reveal-edge) - var(--fade-distance)),
-    rgba(0, 0, 0, 0.9) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.9)),
-    rgba(0, 0, 0, 0.7) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.7)),
-    rgba(0, 0, 0, 0.5) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.5)),
-    rgba(0, 0, 0, 0.3) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.3)),
-    rgba(0, 0, 0, 0.1) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.1)),
-    transparent var(--reveal-edge),
-    transparent 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    to bottom right,
-    black 0%,
-    black calc(var(--reveal-edge) - var(--fade-distance)),
-    rgba(0, 0, 0, 0.9) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.9)),
-    rgba(0, 0, 0, 0.7) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.7)),
-    rgba(0, 0, 0, 0.5) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.5)),
-    rgba(0, 0, 0, 0.3) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.3)),
-    rgba(0, 0, 0, 0.1) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.1)),
-    transparent var(--reveal-edge),
-    transparent 100%
-  );
-  will-change: mask-image, -webkit-mask-image;
+  opacity: calc(var(--reveal-progress) / 100);
+  transition: opacity 0.6s ease-out;
 }
 
 .content-block {
@@ -649,6 +555,8 @@ a.action-button:focus .action-arrow {
   border-top: 1px solid var(--border-primary);
   min-height: 200px;
   contain: layout;
+  opacity: 0;
+  animation: fade-in 0.6s ease-out forwards;
 }
 
 .loading-state {
@@ -696,6 +604,15 @@ a.action-button:focus .action-arrow {
   }
 }
 
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 .experiences-content {
   margin-top: 1rem;
 }
@@ -731,8 +648,9 @@ a.action-button:focus .action-arrow {
   font-family: var(--font-primary);
   border-radius: 0.5rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background 0.3s ease-out, border-color 0.3s ease-out, color 0.3s ease-out, opacity 0.8s ease-out;
   align-self: flex-start;
+  opacity: calc(var(--reveal-progress) / 100);
 }
 
 .see-more-button:hover {
@@ -749,38 +667,9 @@ a.action-button:focus .action-arrow {
   padding: 1rem;
   border-radius: 0.5rem;
   background-color: transparent;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.4s ease-out, opacity 0.8s ease-out;
   cursor: pointer;
-  --reveal-edge: var(--reveal-progress);
-  --fade-distance: 30%;
-  --full-opaque-end: calc(var(--reveal-edge) + 15%);
-  mask-image: linear-gradient(
-    to bottom right,
-    black 0%,
-    black var(--full-opaque-end),
-    rgba(0, 0, 0, 0.95) calc(var(--full-opaque-end) + 3%),
-    rgba(0, 0, 0, 0.85) calc(var(--full-opaque-end) + 6%),
-    rgba(0, 0, 0, 0.7) calc(var(--full-opaque-end) + 10%),
-    rgba(0, 0, 0, 0.5) calc(var(--full-opaque-end) + 15%),
-    rgba(0, 0, 0, 0.3) calc(var(--full-opaque-end) + 20%),
-    rgba(0, 0, 0, 0.1) calc(var(--full-opaque-end) + 28%),
-    transparent calc(var(--full-opaque-end) + 40%),
-    transparent 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    to bottom right,
-    black 0%,
-    black var(--full-opaque-end),
-    rgba(0, 0, 0, 0.95) calc(var(--full-opaque-end) + 3%),
-    rgba(0, 0, 0, 0.85) calc(var(--full-opaque-end) + 6%),
-    rgba(0, 0, 0, 0.7) calc(var(--full-opaque-end) + 10%),
-    rgba(0, 0, 0, 0.5) calc(var(--full-opaque-end) + 15%),
-    rgba(0, 0, 0, 0.3) calc(var(--full-opaque-end) + 20%),
-    rgba(0, 0, 0, 0.1) calc(var(--full-opaque-end) + 28%),
-    transparent calc(var(--full-opaque-end) + 40%),
-    transparent 100%
-  );
-  will-change: mask-image, -webkit-mask-image;
+  opacity: calc(var(--reveal-progress) / 100);
 }
 
 .experience-item:hover {
@@ -797,6 +686,7 @@ a.action-button:focus .action-arrow {
   justify-content: center;
   flex-shrink: 0;
   position: relative;
+  transition: opacity 0.8s ease-out;
 }
 
 .experience-icon svg {
@@ -833,33 +723,8 @@ a.action-button:focus .action-arrow {
   margin: 0 0 0.5rem 0;
   color: var(--text-primary);
   position: relative;
-  --reveal-edge: var(--reveal-progress);
-  --fade-distance: 25%;
-  mask-image: linear-gradient(
-    to bottom right,
-    black 0%,
-    black calc(var(--reveal-edge) - var(--fade-distance)),
-    rgba(0, 0, 0, 0.9) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.9)),
-    rgba(0, 0, 0, 0.7) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.7)),
-    rgba(0, 0, 0, 0.5) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.5)),
-    rgba(0, 0, 0, 0.3) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.3)),
-    rgba(0, 0, 0, 0.1) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.1)),
-    transparent var(--reveal-edge),
-    transparent 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    to bottom right,
-    black 0%,
-    black calc(var(--reveal-edge) - var(--fade-distance)),
-    rgba(0, 0, 0, 0.9) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.9)),
-    rgba(0, 0, 0, 0.7) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.7)),
-    rgba(0, 0, 0, 0.5) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.5)),
-    rgba(0, 0, 0, 0.3) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.3)),
-    rgba(0, 0, 0, 0.1) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.1)),
-    transparent var(--reveal-edge),
-    transparent 100%
-  );
-  will-change: mask-image, -webkit-mask-image;
+  opacity: calc(var(--reveal-progress) / 100);
+  transition: opacity 0.8s ease-out;
 }
 
 .experience-description {
@@ -869,33 +734,8 @@ a.action-button:focus .action-arrow {
   margin: 0;
   color: var(--text-primary);
   position: relative;
-  --reveal-edge: var(--reveal-progress);
-  --fade-distance: 25%;
-  mask-image: linear-gradient(
-    to bottom right,
-    black 0%,
-    black calc(var(--reveal-edge) - var(--fade-distance)),
-    rgba(0, 0, 0, 0.9) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.9)),
-    rgba(0, 0, 0, 0.7) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.7)),
-    rgba(0, 0, 0, 0.5) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.5)),
-    rgba(0, 0, 0, 0.3) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.3)),
-    rgba(0, 0, 0, 0.1) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.1)),
-    transparent var(--reveal-edge),
-    transparent 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    to bottom right,
-    black 0%,
-    black calc(var(--reveal-edge) - var(--fade-distance)),
-    rgba(0, 0, 0, 0.9) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.9)),
-    rgba(0, 0, 0, 0.7) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.7)),
-    rgba(0, 0, 0, 0.5) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.5)),
-    rgba(0, 0, 0, 0.3) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.3)),
-    rgba(0, 0, 0, 0.1) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.1)),
-    transparent var(--reveal-edge),
-    transparent 100%
-  );
-  will-change: mask-image, -webkit-mask-image;
+  opacity: calc(var(--reveal-progress) / 100);
+  transition: opacity 0.8s ease-out;
 }
 
 .experience-meta {
@@ -912,33 +752,8 @@ a.action-button:focus .action-arrow {
   font-weight: var(--font-weight-normal);
   color: var(--text-tertiary);
   position: relative;
-  --reveal-edge: var(--reveal-progress);
-  --fade-distance: 25%;
-  mask-image: linear-gradient(
-    to bottom right,
-    black 0%,
-    black calc(var(--reveal-edge) - var(--fade-distance)),
-    rgba(0, 0, 0, 0.9) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.9)),
-    rgba(0, 0, 0, 0.7) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.7)),
-    rgba(0, 0, 0, 0.5) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.5)),
-    rgba(0, 0, 0, 0.3) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.3)),
-    rgba(0, 0, 0, 0.1) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.1)),
-    transparent var(--reveal-edge),
-    transparent 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    to bottom right,
-    black 0%,
-    black calc(var(--reveal-edge) - var(--fade-distance)),
-    rgba(0, 0, 0, 0.9) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.9)),
-    rgba(0, 0, 0, 0.7) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.7)),
-    rgba(0, 0, 0, 0.5) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.5)),
-    rgba(0, 0, 0, 0.3) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.3)),
-    rgba(0, 0, 0, 0.1) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.1)),
-    transparent var(--reveal-edge),
-    transparent 100%
-  );
-  will-change: mask-image, -webkit-mask-image;
+  opacity: calc(var(--reveal-progress) / 100);
+  transition: opacity 0.8s ease-out;
 }
 
 .experience-duration {
@@ -949,33 +764,8 @@ a.action-button:focus .action-arrow {
   font-weight: var(--font-weight-normal);
   color: var(--text-tertiary);
   position: relative;
-  --reveal-edge: var(--reveal-progress);
-  --fade-distance: 25%;
-  mask-image: linear-gradient(
-    to bottom right,
-    black 0%,
-    black calc(var(--reveal-edge) - var(--fade-distance)),
-    rgba(0, 0, 0, 0.9) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.9)),
-    rgba(0, 0, 0, 0.7) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.7)),
-    rgba(0, 0, 0, 0.5) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.5)),
-    rgba(0, 0, 0, 0.3) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.3)),
-    rgba(0, 0, 0, 0.1) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.1)),
-    transparent var(--reveal-edge),
-    transparent 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    to bottom right,
-    black 0%,
-    black calc(var(--reveal-edge) - var(--fade-distance)),
-    rgba(0, 0, 0, 0.9) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.9)),
-    rgba(0, 0, 0, 0.7) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.7)),
-    rgba(0, 0, 0, 0.5) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.5)),
-    rgba(0, 0, 0, 0.3) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.3)),
-    rgba(0, 0, 0, 0.1) calc(var(--reveal-edge) - calc(var(--fade-distance) * 0.1)),
-    transparent var(--reveal-edge),
-    transparent 100%
-  );
-  will-change: mask-image, -webkit-mask-image;
+  opacity: calc(var(--reveal-progress) / 100);
+  transition: opacity 0.8s ease-out;
 }
 
 .experience-duration svg {
@@ -993,36 +783,7 @@ a.action-button:focus .action-arrow {
   margin-top: 1rem;
   margin-bottom: 1.5rem;
   position: relative;
-  --reveal-edge: var(--reveal-progress);
-  --fade-distance: 30%;
-  --full-opaque-end: calc(var(--reveal-edge) + 15%);
-  mask-image: linear-gradient(
-    to bottom right,
-    black 0%,
-    black var(--full-opaque-end),
-    rgba(0, 0, 0, 0.95) calc(var(--full-opaque-end) + 3%),
-    rgba(0, 0, 0, 0.85) calc(var(--full-opaque-end) + 6%),
-    rgba(0, 0, 0, 0.7) calc(var(--full-opaque-end) + 10%),
-    rgba(0, 0, 0, 0.5) calc(var(--full-opaque-end) + 15%),
-    rgba(0, 0, 0, 0.3) calc(var(--full-opaque-end) + 20%),
-    rgba(0, 0, 0, 0.1) calc(var(--full-opaque-end) + 28%),
-    transparent calc(var(--full-opaque-end) + 40%),
-    transparent 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    to bottom right,
-    black 0%,
-    black var(--full-opaque-end),
-    rgba(0, 0, 0, 0.95) calc(var(--full-opaque-end) + 3%),
-    rgba(0, 0, 0, 0.85) calc(var(--full-opaque-end) + 6%),
-    rgba(0, 0, 0, 0.7) calc(var(--full-opaque-end) + 10%),
-    rgba(0, 0, 0, 0.5) calc(var(--full-opaque-end) + 15%),
-    rgba(0, 0, 0, 0.3) calc(var(--full-opaque-end) + 20%),
-    rgba(0, 0, 0, 0.1) calc(var(--full-opaque-end) + 28%),
-    transparent calc(var(--full-opaque-end) + 40%),
-    transparent 100%
-  );
-  will-change: mask-image, -webkit-mask-image;
+  opacity: calc(var(--reveal-progress) / 100);
 }
 
 .how-i-work-list {
@@ -1040,40 +801,11 @@ a.action-button:focus .action-arrow {
   padding: 1.25rem;
   border-radius: 0;
   cursor: default;
-  --reveal-edge: var(--reveal-progress);
-  --fade-distance: 30%;
-  --full-opaque-end: calc(var(--reveal-edge) + 15%);
   /* Vertical lines between columns */
   border-right: 1px solid var(--border-primary);
   /* Horizontal lines between rows */
   border-bottom: 1px solid var(--border-primary);
-  mask-image: linear-gradient(
-    to bottom right,
-    black 0%,
-    black var(--full-opaque-end),
-    rgba(0, 0, 0, 0.95) calc(var(--full-opaque-end) + 3%),
-    rgba(0, 0, 0, 0.85) calc(var(--full-opaque-end) + 6%),
-    rgba(0, 0, 0, 0.7) calc(var(--full-opaque-end) + 10%),
-    rgba(0, 0, 0, 0.5) calc(var(--full-opaque-end) + 15%),
-    rgba(0, 0, 0, 0.3) calc(var(--full-opaque-end) + 20%),
-    rgba(0, 0, 0, 0.1) calc(var(--full-opaque-end) + 28%),
-    transparent calc(var(--full-opaque-end) + 40%),
-    transparent 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    to bottom right,
-    black 0%,
-    black var(--full-opaque-end),
-    rgba(0, 0, 0, 0.95) calc(var(--full-opaque-end) + 3%),
-    rgba(0, 0, 0, 0.85) calc(var(--full-opaque-end) + 6%),
-    rgba(0, 0, 0, 0.7) calc(var(--full-opaque-end) + 10%),
-    rgba(0, 0, 0, 0.5) calc(var(--full-opaque-end) + 15%),
-    rgba(0, 0, 0, 0.3) calc(var(--full-opaque-end) + 20%),
-    rgba(0, 0, 0, 0.1) calc(var(--full-opaque-end) + 28%),
-    transparent calc(var(--full-opaque-end) + 40%),
-    transparent 100%
-  );
-  will-change: mask-image, -webkit-mask-image;
+  opacity: calc(var(--reveal-progress) / 100);
 }
 
 /* Remove right border from last column */
@@ -1095,7 +827,8 @@ a.action-button:focus .action-arrow {
   border-radius: 0.5rem;
   color: var(--text-primary);
   flex-shrink: 0;
-  transition: background-color 0.2s ease;
+  opacity: calc(var(--reveal-progress) / 100);
+  transition: background-color 0.3s ease-out, opacity 0.6s ease-out;
 }
 
 .how-i-work-icon svg {
@@ -1103,13 +836,13 @@ a.action-button:focus .action-arrow {
   height: 1.25rem;
   fill: var(--text-primary);
   color: var(--text-primary);
-  transition: fill 0.2s ease;
+  transition: fill 0.3s ease-out;
 }
 
 .how-i-work-icon svg path {
   fill: var(--text-primary) !important;
   stroke: var(--text-primary);
-  transition: fill 0.2s ease;
+  transition: fill 0.3s ease-out;
 }
 
 /* On hover, keep icon white even with colored background */
@@ -1135,6 +868,8 @@ a.action-button:focus .action-arrow {
   line-height: var(--line-height-snug);
   cursor: default;
   user-select: none;
+  opacity: calc(var(--reveal-progress) / 100);
+  transition: opacity 0.6s ease-out;
 }
 
 .how-i-work-description {
@@ -1143,6 +878,8 @@ a.action-button:focus .action-arrow {
   line-height: var(--line-height-normal);
   cursor: default;
   user-select: none;
+  opacity: calc(var(--reveal-progress) / 100);
+  transition: opacity 0.6s ease-out 0.1s;
 }
 
 .working-style-list {
@@ -1158,36 +895,7 @@ a.action-button:focus .action-arrow {
   gap: 1rem;
   align-items: flex-start;
   position: relative;
-  --reveal-edge: var(--reveal-progress);
-  --fade-distance: 30%;
-  --full-opaque-end: calc(var(--reveal-edge) + 15%);
-  mask-image: linear-gradient(
-    to bottom right,
-    black 0%,
-    black var(--full-opaque-end),
-    rgba(0, 0, 0, 0.95) calc(var(--full-opaque-end) + 3%),
-    rgba(0, 0, 0, 0.85) calc(var(--full-opaque-end) + 6%),
-    rgba(0, 0, 0, 0.7) calc(var(--full-opaque-end) + 10%),
-    rgba(0, 0, 0, 0.5) calc(var(--full-opaque-end) + 15%),
-    rgba(0, 0, 0, 0.3) calc(var(--full-opaque-end) + 20%),
-    rgba(0, 0, 0, 0.1) calc(var(--full-opaque-end) + 28%),
-    transparent calc(var(--full-opaque-end) + 40%),
-    transparent 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    to bottom right,
-    black 0%,
-    black var(--full-opaque-end),
-    rgba(0, 0, 0, 0.95) calc(var(--full-opaque-end) + 3%),
-    rgba(0, 0, 0, 0.85) calc(var(--full-opaque-end) + 6%),
-    rgba(0, 0, 0, 0.7) calc(var(--full-opaque-end) + 10%),
-    rgba(0, 0, 0, 0.5) calc(var(--full-opaque-end) + 15%),
-    rgba(0, 0, 0, 0.3) calc(var(--full-opaque-end) + 20%),
-    rgba(0, 0, 0, 0.1) calc(var(--full-opaque-end) + 28%),
-    transparent calc(var(--full-opaque-end) + 40%),
-    transparent 100%
-  );
-  will-change: mask-image, -webkit-mask-image;
+  opacity: calc(var(--reveal-progress) / 100);
 }
 
 .working-style-item:not(:last-child) {
@@ -1201,6 +909,8 @@ a.action-button:focus .action-arrow {
   align-items: flex-start;
   flex-shrink: 0;
   margin-top: 0.25rem;
+  opacity: calc(var(--reveal-progress) / 100);
+  transition: opacity 0.6s ease-out;
 }
 
 .working-style-text {
@@ -1214,6 +924,8 @@ a.action-button:focus .action-arrow {
   font-weight: var(--font-weight-bold);
   margin: 0;
   color: var(--text-primary);
+  opacity: calc(var(--reveal-progress) / 100);
+  transition: opacity 0.6s ease-out;
 }
 
 .working-style-description {
@@ -1222,6 +934,8 @@ a.action-button:focus .action-arrow {
   line-height: var(--line-height-normal);
   margin: 0;
   color: var(--text-primary);
+  opacity: calc(var(--reveal-progress) / 100);
+  transition: opacity 0.6s ease-out 0.1s;
 }
 
 .contact-content {
@@ -1243,6 +957,8 @@ a.action-button:focus .action-arrow {
   display: flex;
   align-items: center;
   gap: 1.5rem;
+  opacity: calc(var(--reveal-progress) / 100);
+  transition: opacity 0.6s ease-out;
 }
 
 .testimonial-card {
@@ -1252,39 +968,9 @@ a.action-button:focus .action-arrow {
   width: 100%;
   opacity: 0;
   transform: translateX(20px);
-  transition: opacity 0.4s ease, transform 0.4s ease;
+  transition: opacity 0.7s ease-out, transform 0.7s ease-out;
   pointer-events: none;
   padding: 0 3rem;
-  --reveal-edge: var(--reveal-progress);
-  --fade-distance: 30%;
-  --full-opaque-end: calc(var(--reveal-edge) + 15%);
-  mask-image: linear-gradient(
-    to bottom right,
-    black 0%,
-    black var(--full-opaque-end),
-    rgba(0, 0, 0, 0.95) calc(var(--full-opaque-end) + 3%),
-    rgba(0, 0, 0, 0.85) calc(var(--full-opaque-end) + 6%),
-    rgba(0, 0, 0, 0.7) calc(var(--full-opaque-end) + 10%),
-    rgba(0, 0, 0, 0.5) calc(var(--full-opaque-end) + 15%),
-    rgba(0, 0, 0, 0.3) calc(var(--full-opaque-end) + 20%),
-    rgba(0, 0, 0, 0.1) calc(var(--full-opaque-end) + 28%),
-    transparent calc(var(--full-opaque-end) + 40%),
-    transparent 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    to bottom right,
-    black 0%,
-    black var(--full-opaque-end),
-    rgba(0, 0, 0, 0.95) calc(var(--full-opaque-end) + 3%),
-    rgba(0, 0, 0, 0.85) calc(var(--full-opaque-end) + 6%),
-    rgba(0, 0, 0, 0.7) calc(var(--full-opaque-end) + 10%),
-    rgba(0, 0, 0, 0.5) calc(var(--full-opaque-end) + 15%),
-    rgba(0, 0, 0, 0.3) calc(var(--full-opaque-end) + 20%),
-    rgba(0, 0, 0, 0.1) calc(var(--full-opaque-end) + 28%),
-    transparent calc(var(--full-opaque-end) + 40%),
-    transparent 100%
-  );
-  will-change: mask-image, -webkit-mask-image;
 }
 
 .testimonial-card.active {
@@ -1301,12 +987,16 @@ a.action-button:focus .action-arrow {
   line-height: var(--line-height-loose);
   margin-bottom: 1.5rem;
   font-style: italic;
+  opacity: calc(var(--reveal-progress) / 100);
+  transition: opacity 0.7s ease-out;
 }
 
 .testimonial-author {
   color: var(--text-tertiary);
   font-size: var(--font-size-body-small);
   line-height: var(--line-height-normal);
+  opacity: calc(var(--reveal-progress) / 100);
+  transition: opacity 0.7s ease-out 0.15s;
 }
 
 .carousel-button {
@@ -1320,7 +1010,7 @@ a.action-button:focus .action-arrow {
   justify-content: center;
   cursor: pointer;
   color: var(--text-primary);
-  transition: all 0.2s ease;
+  transition: all 0.3s ease-out;
   padding: 0;
   flex-shrink: 0;
   z-index: 10;
@@ -1351,7 +1041,7 @@ a.action-button:focus .action-arrow {
   border: none;
   cursor: pointer;
   padding: 0;
-  transition: all 0.2s ease;
+  transition: all 0.4s ease-out;
 }
 
 .carousel-indicator:hover {
@@ -1862,14 +1552,14 @@ a.action-button:focus .action-arrow {
 
 /* Ensure overlay background fades in smoothly after header transition */
 .experience-overlay {
-  animation: overlay-fade-in 0.5s ease-out 0.3s forwards;
+  animation: overlay-fade-in 0.6s ease-out 0.3s forwards;
   background-color: rgba(0, 0, 0, 0);
 }
 
 /* Hide overlay content initially to prevent overlap during transition */
 .experience-overlay .overlay-content {
   opacity: 0;
-  animation: overlay-content-fade-in 0.4s ease-out 0.5s forwards;
+  animation: overlay-content-fade-in 0.6s ease-out 0.5s forwards;
 }
 
 /* Hide non-transitioning parts of overlay during transition */
@@ -1877,7 +1567,7 @@ a.action-button:focus .action-arrow {
 .experience-overlay .overlay-description,
 .experience-overlay .overlay-section {
   opacity: 0;
-  animation: overlay-content-fade-in 0.4s ease-out 0.5s forwards;
+  animation: overlay-content-fade-in 0.6s ease-out 0.5s forwards;
 }
 
 @keyframes overlay-fade-in {
