@@ -1226,8 +1226,26 @@ a.action-button:focus .action-arrow {
   }
 
   .how-i-work-list {
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+  }
+
+  /* Reset desktop border rules for mobile */
+  .how-i-work-item:nth-child(3n) {
+    border-right: 1px solid var(--border-primary);
+  }
+
+  .how-i-work-item:nth-last-child(-n+3) {
+    border-bottom: 1px solid var(--border-primary);
+  }
+
+  /* Apply 2-column border rules */
+  .how-i-work-item:nth-child(2n) {
+    border-right: none;
+  }
+
+  .how-i-work-item:nth-last-child(-n+2) {
+    border-bottom: none;
   }
 }
 
