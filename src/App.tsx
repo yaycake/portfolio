@@ -483,6 +483,18 @@ function App() {
     return () => window.removeEventListener('keydown', handleEsc)
   }, [selectedExperience])
 
+  // Disable body scroll when overlay is open
+  useEffect(() => {
+    if (selectedExperience !== null) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [selectedExperience])
+
   // Close menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {

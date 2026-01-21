@@ -201,6 +201,7 @@
   position: absolute;
   top: calc(100% + 0.5rem);
   right: 0;
+  left: auto;
   background-color: var(--bg-primary);
   border: 1px solid var(--border-primary);
   border-radius: 0.5rem;
@@ -1226,8 +1227,26 @@ a.action-button:focus .action-arrow {
   }
 
   .how-i-work-list {
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+  }
+
+  /* Reset desktop border rules for mobile */
+  .how-i-work-item:nth-child(3n) {
+    border-right: 1px solid var(--border-primary);
+  }
+
+  .how-i-work-item:nth-last-child(-n+3) {
+    border-bottom: 1px solid var(--border-primary);
+  }
+
+  /* Apply 2-column border rules */
+  .how-i-work-item:nth-child(2n) {
+    border-right: none;
+  }
+
+  .how-i-work-item:nth-last-child(-n+2) {
+    border-bottom: none;
   }
 }
 
@@ -1513,16 +1532,17 @@ a.action-button:focus .action-arrow {
     width: 2.5rem;
     height: 2.5rem;
   }
+}
 
+@media (max-width: 420px) {
   .menu-dropdown {
     position: fixed;
     top: 4.5rem;
-    left: 50%;
-    transform: translateX(-50%);
-    right: auto;
-    width: calc(100vw - 2rem);
-    max-width: 360px;
-    animation: dropdown-fade-in-mobile 0.2s ease;
+    left: 24px;
+    right: 24px;
+    width: auto;
+    max-width: none;
+    animation: dropdown-fade-in 0.2s ease;
   }
 
   .contact-form {
