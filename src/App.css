@@ -122,6 +122,63 @@
   --letter-spacing-wide: 0.08em;
 }
 
+/* Theme Variables - Party Mode */
+.party-theme {
+  /* Background colors */
+  --bg-primary: #000000;
+  --bg-secondary: #1a1a1a;
+  --bg-tertiary: #0f0f0f;
+  
+  /* Border colors */
+  --border-primary: #1f1f1f;
+  --border-secondary: #2f2f2f;
+  
+  /* Text colors */
+  --text-primary: #ffffff;
+  --text-secondary: #d1d5db;
+  --text-tertiary: #9ca3af;
+  --text-muted: #6b7280;
+  
+  /* Accent colors */
+  --accent-green: #10b981;
+  --accent-blue: #3b82f6;
+  --accent-red: #ef4444;
+  --accent-orange: #f97316;
+  --accent-pink: #f472b6;
+  
+  /* Overlay colors */
+  --overlay-bg: rgba(0, 0, 0, 0.9);
+  --overlay-border: rgba(255, 255, 255, 0.05);
+  
+  /* Shadow colors */
+  --shadow-dark: rgba(0, 0, 0, 0.5);
+  --shadow-medium: rgba(0, 0, 0, 0.3);
+  
+  /* Typography (same as dark theme) */
+  --font-primary: 'Inter', sans-serif;
+  --font-size-hero: 2.5rem;
+  --font-size-h1: 1.5rem;
+  --font-size-h2: 1.25rem;
+  --font-size-h3: 1.125rem;
+  --font-size-body: 1rem;
+  --font-size-body-large: 1.125rem;
+  --font-size-body-small: 0.9375rem;
+  --font-size-caption: 0.875rem;
+  --font-size-tiny: 0.75rem;
+  --font-weight-bold: 700;
+  --font-weight-semibold: 600;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --line-height-tight: 1.2;
+  --line-height-snug: 1.4;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.6;
+  --line-height-loose: 1.7;
+  --letter-spacing-tight: -0.02em;
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide: 0.05em;
+}
+
 .landing-page {
   width: 100%;
   min-height: 100vh;

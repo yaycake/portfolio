@@ -29,6 +29,8 @@ import SunLine from './assets/icons/sun-line.svg?react'
 import SunFill from './assets/icons/sun-fill.svg?react'
 import RobotFill from './assets/icons/robot-fill.svg?react'
 import RobotLine from './assets/icons/robot-line.svg?react'
+import DiscoBallFill from './assets/icons/discoball-solid.svg?react'
+import DiscoBallLine from './assets/icons/discoball-line.svg?react'
 
 // Resume PDF
 import ResumePDF from './assets/resume-2025.pdf'
@@ -82,7 +84,7 @@ function App() {
   const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0)
   const [isTestimonialTransitioning, setIsTestimonialTransitioning] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [theme, setTheme] = useState<'light' | 'dark' | 'robot'>('dark')
+  const [theme, setTheme] = useState<'light' | 'dark' | 'robot' | 'party'>('dark')
   const [showDarkModeTooltip, setShowDarkModeTooltip] = useState(false)
   const [hoveredTheme, setHoveredTheme] = useState<string | null>(null)
   const [formData, setFormData] = useState({ email: '', message: '', interest: '' })
@@ -639,6 +641,19 @@ function App() {
                     <RobotFill width="16" height="16" fill="currentColor" />
                   ) : (
                     <RobotLine width="16" height="16" fill="currentColor" />
+                  )}
+                </button>
+                <button
+                  className={`mode-button ${theme === 'party' ? 'active' : ''}`}
+                  onClick={() => setTheme('party')}
+                  onMouseEnter={() => setHoveredTheme('party')}
+                  onMouseLeave={() => setHoveredTheme(null)}
+                  aria-label="Party theme"
+                >
+                  {(theme === 'party' || hoveredTheme === 'party') ? (
+                    <DiscoBallFill width="16" height="16" fill="currentColor" />
+                  ) : (
+                    <DiscoBallLine width="16" height="16" fill="currentColor" />
                   )}
                 </button>
               </div>
